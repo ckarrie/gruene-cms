@@ -46,3 +46,13 @@
     padding-right: 2.5rem;
     color: #fff;
 }
+
+.sunflower-background {
+    background-image: url(/static/images/sunflower.jpg);
+    position: relative;
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: top;
+    overflow: hidden;
+    padding: 3.5rem 0;
+}
