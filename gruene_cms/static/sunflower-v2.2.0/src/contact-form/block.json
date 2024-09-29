@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "sunflower/contact-form",
+	"version": "2.1.0",
+	"title": "Contact Form (Sunflower)",
+	"category": "sunflower-blocks",
+	"icon": "feedback",
+	"description": "Simple Contact Form",
+	"example": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+			"default": ""
+		},
+        "mailTo": {
+            "type": "string",
+			"default": ""
+		},
+		"requireMail": {
+			"type": "boolean",
+			"default": false
+		},
+		"displayPhone": {
+			"type": "boolean",
+			"default": false
+		},
+		"requirePhone": {
+			"type": "boolean",
+			"default": false
+		},
+		"sendCopy": {
+			"type": "boolean",
+			"default": false
+		}
+    },
+	"supports": {
+		"html": false
+	},
+	"textdomain": "sunflower-contact-form",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+    "render": "file:./render.php",
+	"viewScript": [ "file:./view.js" ]
+}

@@ -1,0 +1,11 @@
+/* header: fix logo / name distance */
+
+@media (min-width: 768px) {
+    .bloginfo .img-container {
+        margin-right: 1.25rem;
+    }
+}
+
+.theme--default .bloginfo h2 {
+	font-family: "PT Sans";
+}
