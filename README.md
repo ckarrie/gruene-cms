@@ -1,1 +1,69 @@
 # gruene-cms
+
+## Installation Grundsystem
+```
+cd ~/venvs
+python3 -m venv gruene_venv
+cd gruene_venv/
+source bin/activate
+pip install --upgrade pip
+pip install psycopg2-binary
+pip install django-cms
+```
+
+## Pro Instanz
+```
+djangocms gruene_web
+nano gruene_web/gruene_web/settings.py
+```
+
+```
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'YOUR_PUBLIC_IP']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ['https://gruene.tld']
+
+INSTALLED_APPS = [
+    ...
+    'gruene_cms',
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'gruene',
+        'USER': 'gruene',
+        'PASSWORD': 'gruene',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+LANGUAGE_CODE = 'de'
+
+LANGUAGES = [
+    ("de", _("German")),
+    ("en", _("English")),
+]
+
+TIME_ZONE = 'Europe/Berlin'
+
+SITE_ID = 1
+```
+
+### Setup Database
+`sudo -u postgres psql`
+
+```
+CREATE DATABASE gruene;
+CREATE USER gruene WITH PASSWORD 'gruene';
+ALTER ROLE gruene SET client_encoding TO 'utf8';
+ALTER ROLE gruene SET default_transaction_isolation TO 'read committed';
+ALTER ROLE gruene SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE gruene TO gruene;
+GRANT postgres TO gruene;
+```
+
+```
+python gruene_web/manage.py migrate
+python gruene_web/manage.py createsuperuser
+python gruene_web/manage.py runserver 127.0.0.1:9100
+```
