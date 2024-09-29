@@ -11,6 +11,14 @@ pip install psycopg2-binary
 pip install django-cms
 ```
 
+## Installation grunen-cms
+
+```
+cd ~/src/
+git clone https://github.com/ckarrie/gruene-cms
+pip install -e gruene-cms
+```
+
 ## Pro Instanz
 ```
 djangocms gruene_web
