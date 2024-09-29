@@ -1,7 +1,7 @@
 # gruene-cms
 
 ## Installation Grundsystem
-```
+```shell
 cd ~/venvs
 python3 -m venv gruene_venv
 cd gruene_venv/
@@ -13,19 +13,19 @@ pip install django-cms
 
 ## Installation grunen-cms
 
-```
+```shell
 cd ~/src/
 git clone https://github.com/ckarrie/gruene-cms
 pip install -e gruene-cms
 ```
 
 ## Pro Instanz
-```
+```shell
 djangocms gruene_web
 nano gruene_web/gruene_web/settings.py
 ```
 
-```
+```python
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'YOUR_PUBLIC_IP']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = ['https://gruene.tld']
@@ -60,7 +60,7 @@ SITE_ID = 1
 ### Setup Database
 `sudo -u postgres psql`
 
-```
+```sql
 CREATE DATABASE gruene;
 CREATE USER gruene WITH PASSWORD 'gruene';
 ALTER ROLE gruene SET client_encoding TO 'utf8';
@@ -70,7 +70,7 @@ GRANT ALL PRIVILEGES ON DATABASE gruene TO gruene;
 GRANT postgres TO gruene;
 ```
 
-```
+```shell
 python gruene_web/manage.py migrate
 python gruene_web/manage.py createsuperuser
 python gruene_web/manage.py runserver 127.0.0.1:9100
