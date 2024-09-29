@@ -1,5 +1,5 @@
 [project]
-name = "Gruene djangoCMS integration"
+name = "gruene-cms"
 version = "0.0.1"
 authors = [
   { name="Christian Karrié", email="ckarrie@gmail.com" },
