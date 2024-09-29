@@ -1,11 +1,48 @@
 /* header: fix logo / name distance */
 
+@media (min-width: 992px) {
+    .decoration-primary {
+        padding-right: 5rem;
+    }
+}
+
+
 @media (min-width: 768px) {
     .bloginfo .img-container {
         margin-right: 1.25rem;
+    }
+    
+    .decoration-primary {
+        padding-right: 3.75rem;
     }
 }
 
 .theme--default .bloginfo h2 {
 	font-family: "PT Sans";
+}
+
+
+
+
+.decoration-primary:before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    background: #005437;
+    width: 100vw;
+    height: 125%;
+    right: 0;
+    top: 50%;
+    transform: skewX(-12deg) translateY(-50%);
+}
+
+
+.decoration-primary {
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
+    display: inline-block;
+    padding-right: 2.5rem;
+    color: #fff;
 }
