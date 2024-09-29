@@ -1,0 +1,138 @@
+{% load cms_tags sekizai_tags %}
+{% load static %}
+<html lang="de" class="theme--default">
+<head>
+  <title>{% page_attribute "page_title" %}</title>
+  
+  <style>
+  @font-face{font-family:"PT Sans";font-style:normal;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.ttf') format('truetype');font-stretch:normal;}
+  @font-face{font-family:"PT Sans";font-style:italic;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.ttf') format('truetype');font-stretch:normal;}
+  @font-face{font-family:"PT Sans";font-style:normal;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.ttf') format('truetype');font-stretch:normal;}
+  @font-face{font-family:"PT Sans";font-style:italic;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.ttf') format('truetype');font-stretch:normal;}
+  @font-face{font-family:GruenType;font-style:bold;font-weight:900;font-display:block;src:url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.ttf') format('truetype');font-stretch:normal;}
+  </style>
+  <link rel="stylesheet" href="{% static "sunflower-v2.2.0/style.css" %}">
+  <link rel="stylesheet" href="{% static "sunflower-fixes.css" %}">
+  {% render_block "css" %}
+</head>
+<body class="home page-template-default page">
+  {% cms_toolbar %}
+        
+  <header id="masthead" class="site-header">
+		<nav class="navbar navbar-top d-none d-lg-block navbar-expand-lg navbar-dark p-0 topmenu">
+			<div class="container">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topmenu-container" aria-controls="topmenu-container" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse justify-content-between" id="topmenu-container">
+					<div class="social-media-profiles d-none d-md-flex"></div>
+					<div class="d-flex">
+					  <ul id="topmenu" class="navbar-nav small">
+					    <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1916" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+					      <a title="Quellcode" href="https://github.com/verdigado/sunflower" class="nav-link">Quellcode</a>
+				      </li>
+              <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1917" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1917 nav-item">
+                <a title="Fehler melden" href="https://github.com/verdigado/sunflower/issues" class="nav-link">Fehler melden</a>
+              </li>
+            </ul>
+            <form class="form-inline my-2 my-md-0 search d-flex" action="https://sunflower-theme.de">
+							<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche"	value="">
+							<input type="submit" class="d-none" value="Suche" aria-label="Suche">
+						</form>
+						<button class="show-search me-3" title="zeige Suche" aria-label="zeige Suche">
+							<i class="fas fa-search"></i>
+						</button>
+						<button class="d-none show-contrast" title="Kontrast erhöhen" aria-label="Kontrast erhöhen">
+							<i class="fab fa-accessible-icon"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container-fluid bloginfo bg-primary">
+			<div class="container d-flex align-items-center">
+				<div class="img-container sunflower-logo">
+					<a href="https://sunflower-theme.de" rel="home" aria-current="page" title="Sunflower 2.2.0">
+					  <img src="https://sunflower-theme.de/wp-content/themes/sunflower/assets/img/sunflower.svg" class="" alt="Logo">
+				  </a>
+			  </div>
+				<div>
+					<h1 class="d-block h5 text-white bloginfo-name">BÜNDNIS 90/DIE GRÜNEN</h1>
+					<!--<a href="https://sunflower-theme.de" class="d-block h5 text-white bloginfo-name no-link">BÜNDNIS 90/DIE GRÜNEN</a>-->
+					<h2 class="d-block text-white mb-0 bloginfo-description">{% page_attribute "page_title" %}</h2>
+					<!--
+					<a href="https://sunflower-theme.de" class="d-block text-white mb-0 bloginfo-description no-link">{% page_attribute "page_title" %}</a>
+					-->
+				</div>
+			</div>
+		</div>
+		
+		
+	</header>
+	
+	<nav class="navbar navbar-main navbar-expand-lg navbar-light bg-white">
+		<div class="container">
+		  <a class="navbar-brand" href="https://sunflower-theme.de/demo">
+		    <img src="https://sunflower-theme.de/demo/wp-content/themes/sunflower/assets/img/sunflower.svg" class="sunflower-logo" alt="Sonnenblume - Logo" title="Grüne Musterstadt">
+	    </a>
+
+			<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu-container" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
+				<i class="fas fa-times close"></i>
+				<i class="fas fa-bars open"></i>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="mainmenu-container">
+				<ul id="mainmenu" class="navbar-nav mr-auto">
+				  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-5" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item active menu-item-5 nav-item">
+				    <a title="Startseite" href="/demo" class="nav-link" aria-current="page">Startseite</a>
+				  </li>
+          <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-432" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-432 nav-item">
+            <a title="Partei" href="https://sunflower-theme.de/demo/partei/" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link" id="menu-item-dropdown-432">Partei</a>
+            <div class="submenu-opener" data-bs-toggle="dropdown">
+              <i class="fas fa-angle-down"></i>
+            </div>
+            <div class="dropdown-menu dropdown-menu-level-0">
+              <ul aria-labelledby="menu-item-dropdown-432">
+	              <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-72" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-72 nav-item">
+	                <a title="Vorstand" href="https://sunflower-theme.de/demo/partei/vorstand/" class="dropdown-item">Vorstand</a>
+                </li>
+	              <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-71" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71 nav-item">
+	                <a title="Satzung" href="https://sunflower-theme.de/demo/partei/satzung/" class="dropdown-item">Satzung</a>
+                </li>
+	
+              	<div class="dropdown-submenu dropdown-menu-level-1">
+              	  <ul aria-labelledby="menu-item-dropdown-432">
+              		  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-255" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-255 nav-item"><a title="Klappbarer Text" href="https://sunflower-theme.de/demo/klappbarer-text/" class="dropdown-item">Klappbarer Text</a></li>
+              		  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-161" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-161 nav-item"><a title="Diskussion" href="https://sunflower-theme.de/demo/deine-meinung-ist-gefragt/" class="dropdown-item">Diskussion</a></li>
+                	</ul>
+                </div>
+                
+              </ul>
+            </div>
+          </li>
+          <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-155" class="menu-item menu-item-type-post_type_archive menu-item-object-sunflower_event menu-item-155 nav-item"><a title="Termine" href="https://sunflower-theme.de/demo/termine/" class="nav-link">Termine</a></li>
+          <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-77" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-77 nav-item"><a title="Aktuelles" href="https://sunflower-theme.de/demo/category/aktuelles/" class="nav-link">Aktuelles</a></li>
+          <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-207" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-207 nav-item"><a title="Anträge" href="https://sunflower-theme.de/demo/category/antraege/" class="nav-link">Anträge</a></li>
+          <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-64" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64 nav-item"><a title="Kontakt" href="https://sunflower-theme.de/demo/kontakt/" class="nav-link">Kontakt</a></li>
+        </ul>
+				<form class="form-inline my-2 mb-2 search d-block d-lg-none" action="https://sunflower-theme.de/demo">
+					<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche" value="">
+					<input type="submit" class="d-none" value="Suche" aria-label="Suche">
+				</form>
+			</div>
+		</div>
+	</nav>
+	{% comment %}
+	<div class="container-fluid">
+        <div class="container d-flex align-items-center">
+        {% placeholder "content" %}
+   
+        </div>      
+  </div>
+  {% endcomment %}
+  
+  {% placeholder "content" %}
+        {% render_block "js" %}
+</body>
+</html>
