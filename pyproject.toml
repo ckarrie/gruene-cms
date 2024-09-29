@@ -1,5 +1,9 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "gruene-cms"
+name = "gruene"
 version = "0.0.1"
 authors = [
   { name="Christian Karrié", email="ckarrie@gmail.com" },
