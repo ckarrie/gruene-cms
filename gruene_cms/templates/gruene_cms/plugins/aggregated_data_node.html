@@ -1,1 +1,7 @@
-<span class="aggregated-data-node" title="{{ instance.agg_datasource.last_history.timestamp }}">{{ instance.agg_datasource.last_history.value }}</span>{% if instance.display_unit %}<span class="aggregated-data-node-unit">{{ instance.agg_datasource.unit }}</span>{% endif %}
+<h1>
+  <span class="aggregated-data-node" title="{{ instance.agg_datasource.last_history.timestamp }}">{{ instance.agg_datasource.last_history.value|int }}</span>
+  {% if instance.display_unit %}
+    <span class="aggregated-data-node-unit">
+      {{ instance.agg_datasource.unit }}</span>
+  {% endif %}
+</h1>
