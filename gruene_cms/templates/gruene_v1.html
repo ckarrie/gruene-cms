@@ -15,7 +15,9 @@
   @font-face{font-family:GruenType;font-style:bold;font-weight:900;font-display:block;src:url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.ttf') format('truetype');font-stretch:normal;}
   </style>
   <link rel="stylesheet" href="{% static "sunflower-v2.2.0/style.css" %}">
-  <link rel="stylesheet" href="{% static "sunflower-fixes.css" %}">
+  <link rel="stylesheet" href="{% static "sunflower-fixes.css
+	<script src="../static/js/coblocks-tinyswiper-initializer.js"></script>
+	" %}">
   {% render_block "css" %}
 </head>
 <body class="home page-template-default page">
@@ -145,5 +147,6 @@
 	{% render_block "js" %}
 	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
   <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
+  <script src="{% static 'js/coblocks-tinyswiper-initializer.js' %}"></script>
 </body>
 </html>
