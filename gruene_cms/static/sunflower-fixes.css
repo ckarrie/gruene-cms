@@ -21,7 +21,10 @@
 	font-family: "PT Sans";
 }
 
-
+span.aggregated-data-timestamp {
+    font-size: 0.7rem;
+    vertical-align: super;
+}
 
 
 .decoration-primary:before {
