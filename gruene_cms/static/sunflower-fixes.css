@@ -23,7 +23,8 @@
 
 span.aggregated-data-timestamp {
     font-size: 0.7rem;
-    vertical-align: super;
+    /* vertical-align: sub; */
+    font-family: 'PT Sans';
 }
 
 
