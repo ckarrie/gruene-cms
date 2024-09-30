@@ -1,9 +1,12 @@
-{% load cms_tags sekizai_tags %}
+<!DOCTYPE html>
+{% load cms_tags menu_tags sekizai_tags static i18n %}
 {% load static %}
-<html lang="de" class="theme--default">
+<html lang="{{ LANGUAGE_CODE }}" class="theme--default">
 <head>
   <title>{% page_attribute "page_title" %}</title>
-  
+  <meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <style>
   @font-face{font-family:"PT Sans";font-style:normal;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.ttf') format('truetype');font-stretch:normal;}
   @font-face{font-family:"PT Sans";font-style:italic;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.ttf') format('truetype');font-stretch:normal;}
@@ -84,6 +87,10 @@
 			
 			<div class="collapse navbar-collapse" id="mainmenu-container">
 				<ul id="mainmenu" class="navbar-nav mr-auto">
+					<!-- Home -->
+					{% show_menu 0 0 0 0 "gruene_cms/menu.html" %}
+					<!-- Subpages -->
+					{% show_menu 1 1 0 1 "gruene_cms/menu.html" %}
 				  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-5" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item active menu-item-5 nav-item">
 				    <a title="Startseite" href="/demo" class="nav-link" aria-current="page">Startseite</a>
 				  </li>
@@ -133,6 +140,8 @@
   {% endcomment %}
   
   {% placeholder "content" %}
-        {% render_block "js" %}
+	{% render_block "js" %}
+	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
 </body>
 </html>

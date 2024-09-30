@@ -1,0 +1,10 @@
+{% load l10n %}
+{{ instance.pre_text|safe|default_if_none:"" }} <span
+    class="animate-typing"
+    data-animate-loop="{% if instance.enable_animation %}true{% else %}false{% endif %}"
+    data-type-speed="{{ instance.type_speed|unlocalize }}"
+    data-type-delay="{{ instance.type_delay|unlocalize }}"
+    data-remove-speed="{{ instance.remove_speed|unlocalize }}"
+    data-remove-delay="{{ instance.remove_delay|unlocalize }}"
+    data-cursor-speed="{{ instance.cursor_speed|unlocalize }}"
+>{{ instance.animated_text }}</span>{{ instance.post_text|safe|default_if_none:"" }}

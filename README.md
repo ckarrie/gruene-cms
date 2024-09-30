@@ -75,3 +75,17 @@ python gruene_web/manage.py migrate
 python gruene_web/manage.py createsuperuser
 python gruene_web/manage.py runserver 127.0.0.1:9100
 ```
+
+# Models
+
+## external Datasources
+
+```python
+from gruene_cms.models import DataSource, AggregatedData
+ds = DataSource.objects.first()
+ds.fetch_data()
+
+ag = AggregatedData.objects.first()
+ag.aggregate_datasources()
+
+```
