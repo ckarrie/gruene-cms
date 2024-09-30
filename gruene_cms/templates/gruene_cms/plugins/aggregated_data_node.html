@@ -1,6 +1,6 @@
 <h2>
   <span class="aggregated-data-node">{{ instance.agg_datasource.last_history.value|floatformat:"0" }}</span>
-  <span class="aggregated-data-timestamp">Stand {{ instance.agg_datasource.last_history.timestamp|datetime:"SHORT_DATETIME_FORMAT" }}</span>
+  <span class="aggregated-data-timestamp">Stand {{ instance.agg_datasource.last_history.timestamp|date:"SHORT_DATETIME_FORMAT" }}</span>
   {% if instance.display_unit %}
     <span class="aggregated-data-node-unit">
       {{ instance.agg_datasource.unit }}</span>
