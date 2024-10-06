@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}">
   {% render_block "css" %}
 	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-  <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
+
   <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/chartjs-4.2.1/chart.umd.min.js' %}"></script>
 </head>
@@ -147,6 +147,6 @@
   
   {% placeholder "content" %}
 	{% render_block "js" %}
-
+  <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
 </body>
 </html>
