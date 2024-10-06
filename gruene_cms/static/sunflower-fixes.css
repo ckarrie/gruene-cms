@@ -21,6 +21,13 @@
     .decoration-primary {
         padding-right: 3.75rem;
     }
+    h4, .h4 {
+        font-size: 24px;
+    }
+
+    h5, .h5 {
+        font-size: 22px;
+    }
 }
 
 .theme--default .bloginfo h2 {
