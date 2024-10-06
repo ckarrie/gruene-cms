@@ -113,6 +113,21 @@ class AggregatedDataNode(CMSPlugin):
 
 class GrueneCMSImageBackgroundNode(CMSPlugin):
     background_image = FilerImageField(on_delete=models.CASCADE, related_name='+')
+    background_size = models.CharField(max_length=10, default="cover", choices=(
+        ('auto', "Auto"),
+        ('contain', "Contain"),
+        ('cover', "Cover"),
+    ))
+    background_pos_x = models.CharField(max_length=10, default="center", choices=(
+        ('center', "Center"),
+        ('left', "Left"),
+        ('right', "Right"),
+    ))
+    background_pos_y = models.CharField(max_length=10, default="top", choices=(
+        ('center', "Center"),
+        ('top', "Top"),
+        ('bottom', "Bottom"),
+    ))
 
 
 class GrueneCMSAnimateTypingNode(CMSPlugin):

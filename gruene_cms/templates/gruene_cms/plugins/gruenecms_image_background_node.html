@@ -1,5 +1,5 @@
 {% load cms_tags %}
-<div class="container-full sunflower-background" style="background-image: url('{{ instance.background_image.url }}')">
+<div class="container-full sunflower-background" style="background-image: url('{{ instance.background_image.url }}'); background-position-x: {{ instance.background_pos_x }}; background-position-y: {{ instance.background_pos_y }}; background-size: {{ instance.background_size }}">
   <div class="row">
     <div class="col">
       <div class="container">
