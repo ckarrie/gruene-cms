@@ -24,6 +24,7 @@ DATATYPE_CHOICES = (
     ('int', 'Int'),
     ('text', 'Text'),
 )
+DEBUG_NEWS = True
 
 
 class DataSource(models.Model):
@@ -220,7 +221,7 @@ class NewsItem(models.Model):
     keywords = models.CharField(max_length=255)
     summary = HTMLField(blank=True)
     content = HTMLField(blank=True)
-    content_rendered = models.TextField(null=True, blank=True, editable=False)
+    content_rendered = models.TextField(null=True, blank=True, editable=DEBUG_NEWS)
     published_from = models.DateTimeField()
     published_until = models.DateTimeField(null=True, blank=True)
     insert_images = models.CharField(max_length=255, default='inside-hr', choices=(
@@ -243,7 +244,11 @@ class NewsItem(models.Model):
     def save(self, *args, **kwargs):
         super(NewsItem, self).save(*args, **kwargs)
         if self.content:
+            if DEBUG_NEWS:
+                print("Start render content")
             self.content_rendered = self._render_content()
+            if DEBUG_NEWS:
+                print("End render content")
         super(NewsItem, self).save(*args, **kwargs)
 
     def _render_content(self):
@@ -266,11 +271,13 @@ class NewsItem(models.Model):
                 })
                 return _img_tag
             except IndexError:
-                pass
+                return None
 
         if self.insert_images == 'inside-hr':
             for hr_tag in root.iter('hr'):
                 img_tag = create_img_tag(current_image_index)
+                if DEBUG_NEWS:
+                    print("render img_tag", hr_tag, img_tag)
                 if img_tag:
                     hr_tag.addnext(img_tag)
                     root.remove(hr_tag)
@@ -280,10 +287,14 @@ class NewsItem(models.Model):
             marker_tags = root.xpath("//span[@class='marker']")
             for marker_tag in marker_tags:
                 img_tag = create_img_tag(current_image_index)
-                if img_tag:
+                if DEBUG_NEWS:
+                    print("render img_tag", marker_tag, img_tag)
+                if img_tag is not None:
                     marker_tag.getparent().replace(marker_tag, img_tag)
+                    current_image_index += 1
 
         body = etree.tostring(root).decode()
+        print("rendered body", body)
         return body
 
 
