@@ -118,7 +118,8 @@ class ChartJSNodePlugin(CMSPluginBase):
         dataset = []
         labels = []
         dataset_qs = instance.agg_datasource.aggregateddatahistory_set.filter(
-            timestamp__gte=timezone.now() - timezone.timedelta(hours=instance.dataset_history_hours)
+            timestamp__gte=timezone.now() - timezone.timedelta(hours=instance.dataset_history_hours),
+            value__gt=0,
         ).order_by('timestamp')
         for ah in dataset_qs:
             dataset.append(ah.value)
