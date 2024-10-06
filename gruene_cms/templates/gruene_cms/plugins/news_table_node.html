@@ -7,7 +7,7 @@
   <div class="news-summary">{{ item.summary }}</div>
   <div class="btn-group btn-group-sm" role="group" aria-label="Weiterlesen">
     {% if user.is_authenticated %}
-      <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}"  data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"> Bearbeiten</i></a>
+      <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}"  data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
     {% endif %}
     <a class="btn btn-primary text-white" href="{{ instance.news_page.attr.redirect_url|default:instance.news_page.get_absolute_url }}#news-{{ item.slug }}">Weiterlesen...</a></p>
   </div>
