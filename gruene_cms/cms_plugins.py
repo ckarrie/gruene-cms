@@ -1,6 +1,7 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from .models import AggregatedDataNode, GrueneCMSImageBackgroundNode, GrueneCMSAnimateTypingNode, LimitUserGroupNode, ChartJSNode
 
@@ -90,7 +91,9 @@ class ChartJSNodePlugin(CMSPluginBase):
         context = super(ChartJSNodePlugin, self).render(context, instance, placeholder)
         dataset = []
         labels = []
-        dataset_qs = instance.agg_datasource.aggregateddatahistory_set.order_by('timestamp')
+        dataset_qs = instance.agg_datasource.aggregateddatahistory_set.filter(
+            timestamp__date=timezone.now().date()
+        ).order_by('timestamp')
         for ah in dataset_qs:
             dataset.append(ah.value)
             labels.append(ah.timestamp.strftime("%H:%M"))
