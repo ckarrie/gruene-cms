@@ -75,3 +75,7 @@ span.aggregated-data-timestamp {
 .calendarnode {
     padding-top: 0.44rem;
 }
+
+.alert p {
+    margin-bottom: 0;
+}
