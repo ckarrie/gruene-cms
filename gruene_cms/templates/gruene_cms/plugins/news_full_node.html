@@ -1,7 +1,7 @@
 {% for item in news_items %}
 
 <div class="news-item py-5" id="news-{{ item.slug }}">
-  <div class="my-5">
+  <div class="mt-5 mb-1">
     <div class="container-full">
       <div class="row">
         <div class="col-9">
@@ -10,7 +10,7 @@
           </h2>
         </div>
         <div class="col-3 text-end">
-          <p><strong>{{ item.published_from|date:"SHORT_DATE_FORMAT" }}</strong> <br />von {% for author in item.authors.all %}{{ author.username }}{% endfor %}</p>
+          <p><strong>{{ item.published_from|date:"SHORT_DATE_FORMAT" }}</strong></p>
         </div>
       </div>
     </div>
