@@ -1,10 +1,15 @@
 import requests
+from lxml import etree
 from cms.models.pluginmodel import CMSPlugin
+from cms.models import Page
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from filer.fields.image import FilerImageField
+from filer.fields.multistorage_file import MultiStorageFileField
 from djangocms_text_ckeditor.fields import HTMLField
 from djangocms_text_ckeditor.models import AbstractText
+
 
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
@@ -144,6 +149,7 @@ class ChartJSNode(CMSPlugin):
     chart_width = models.PositiveIntegerField(default=500)
     chart_height = models.PositiveIntegerField(default=500)
     dataset_label = models.CharField(max_length=100)
+    dataset_history_hours = models.PositiveIntegerField(default=2)
 
 
 class Calendar(models.Model):
@@ -195,6 +201,16 @@ class Category(models.Model):
         return self.title
 
 
+class NewsImage(models.Model):
+    item = models.ForeignKey("NewsItem", on_delete=models.CASCADE)
+    image = FilerImageField(on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    position = models.PositiveIntegerField(default=5)
+
+    def __str__(self):
+        return self.title
+
+
 class NewsItem(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
@@ -204,8 +220,17 @@ class NewsItem(models.Model):
     keywords = models.CharField(max_length=255)
     summary = HTMLField(blank=True)
     content = HTMLField(blank=True)
+    content_rendered = models.TextField(null=True, blank=True, editable=False)
     published_from = models.DateTimeField()
     published_until = models.DateTimeField(null=True, blank=True)
+    insert_images = models.CharField(max_length=255, default='inside-hr', choices=(
+        ('inside-hr', _('Inside HRs')),
+        ('replace-marker', _('Replace Marker')),
+    ))
+
+    @property
+    def is_public(self):
+        return True
 
     def __str__(self):
         return self.title
@@ -214,6 +239,52 @@ class NewsItem(models.Model):
         if self.published_until:
             return self.published_from <= timezone.now() <= self.published_until
         return self.published_from <= timezone.now()
+    
+    def save(self, *args, **kwargs):
+        super(NewsItem, self).save(*args, **kwargs)
+        if self.content:
+            self.content_rendered = self._render_content()
+        super(NewsItem, self).save(*args, **kwargs)
+
+    def _render_content(self):
+        body = self.content
+        news_images = list(self.newsimage_set.all().order_by('position'))
+        body = body.replace('<hr>', '<hr />')
+        body = f'<?xml version="1.0"?><div class="news-content">{body}</div>'
+        tree = etree.ElementTree(etree.fromstring(body))
+        root = tree.getroot()
+        current_image_index = 0
+
+        def create_img_tag(index):
+            try:
+                _news_image = news_images[index]
+                _img_tag = etree.Element('img', attrib={
+                    'src': _news_image.image.url,
+                    'alt': _news_image.title,
+                    'title': _news_image.title,
+                    'class': 'news-image'
+                })
+                return _img_tag
+            except IndexError:
+                pass
+
+        if self.insert_images == 'inside-hr':
+            for hr_tag in root.iter('hr'):
+                img_tag = create_img_tag(current_image_index)
+                if img_tag:
+                    hr_tag.addnext(img_tag)
+                    root.remove(hr_tag)
+                    current_image_index += 1
+
+        elif self.insert_images == 'replace-marker':
+            marker_tags = root.xpath("//span[@class='marker']")
+            for marker_tag in marker_tags:
+                img_tag = create_img_tag(current_image_index)
+                if img_tag:
+                    marker_tag.getparent().replace(marker_tag, img_tag)
+
+        body = etree.tostring(root).decode()
+        return body
 
 
 class NewsListNode(CMSPlugin):
@@ -225,6 +296,18 @@ class NewsListNode(CMSPlugin):
     ), default='tiles')
     max_entries = models.PositiveIntegerField(default=10)
     show_outdated = models.BooleanField(default=False)
+    news_page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'News {self.pk}'
+
+    def get_news_items(self):
+        categories = list(self.categories.all())
+        news_items = NewsItem.objects.all()
+        condition = models.Q(categories__in=categories)
+        news_items = news_items.filter(condition).order_by('-published_from').distinct()
+        return news_items
+
+    def copy_relations(self, oldinstance):
+        # see https://docs.django-cms.org/en/latest/how_to/09-custom_plugins.html#for-foreign-key-relations-from-other-objects
+        self.categories.set(oldinstance.categories.all())

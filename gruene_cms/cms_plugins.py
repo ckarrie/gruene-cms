@@ -1,6 +1,6 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from django.db.models import Q
+
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -118,7 +118,7 @@ class ChartJSNodePlugin(CMSPluginBase):
         dataset = []
         labels = []
         dataset_qs = instance.agg_datasource.aggregateddatahistory_set.filter(
-            timestamp__gte=timezone.now() - timezone.timedelta(hours=2)
+            timestamp__gte=timezone.now() - timezone.timedelta(hours=instance.dataset_history_hours)
         ).order_by('timestamp')
         for ah in dataset_qs:
             dataset.append(ah.value)
@@ -153,7 +153,7 @@ class CalendarNodePlugin(CMSPluginBase):
 
         calendar_items = CalendarItem.objects.filter(
             calendar__in=instance.calendars.all()
-        ).order_by('-dt_from')
+        ).order_by('dt_from')
 
         labeled_calendars = list(instance.labeled_calendars.all())
 
@@ -183,16 +183,7 @@ class NewsListNodePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super(NewsListNodePlugin, self).render(context, instance, placeholder)
-        categories = list(instance.categories.all())
-        condition = Q()
-
-        news_items = NewsItem.objects.all()
-        for cat in categories:
-            condition |= Q(categories__in=cat)
-        news_items = news_items.filter(condition).distinct()
-
         context.update({
-            'news_items': news_items,
+            'news_items': instance.get_news_items(),
         })
-
         return context

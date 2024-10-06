@@ -28,7 +28,16 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title']
 
 
+class NewsImageInlineAdmin(admin.TabularInline):
+    model = models.NewsImage
+
+
 class NewsItemAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    inlines = [NewsImageInlineAdmin]
+
+
+class NewsImageAdmin(admin.ModelAdmin):
     list_display = ['title']
 
 
@@ -44,3 +53,4 @@ admin.site.register(models.CalendarItem, CalendarItemAdmin)
 # news
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.NewsItem, NewsItemAdmin)
+admin.site.register(models.NewsImage, NewsImageAdmin)

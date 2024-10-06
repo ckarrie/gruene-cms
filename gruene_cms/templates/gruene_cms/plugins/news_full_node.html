@@ -1,0 +1,49 @@
+{% for item in news_items %}
+
+<div class="news-item py-5" id="news-{{ item.slug }}">
+  <div class="my-5">
+    <div class="container-full">
+      <div class="row">
+        <div class="col-9">
+          <h2 class="news-title">
+            <span class="decoration-primary">{{ item.title }}</span>
+          </h2>
+        </div>
+        <div class="col-3 text-end">
+          <p><strong>{{ item.published_from|date:"SHORT_DATE_FORMAT" }}</strong> <br />von {% for author in item.authors.all %}{{ author.username }}{% endfor %}</p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  {% if user.is_authenticated %}
+  <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+    <a type="button" class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}" data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i></a>
+    <!--<button type="button" class="btn btn-success">Right</button>-->
+  </div>
+  {% endif %}
+  {% if item.subtitle %}
+  <h3 class="news-subtitle my-3">{{ item.subtitle }}</h3>
+  {% endif %}
+  <div class="news-summary">
+    <div class="container-full">
+      <div class="row">
+        <div class="col-9">
+          {{ item.summary }}
+        </div>
+        <div class="col-3 text-end">
+          <strong>{{ item.published_from|date:"SHORT_DATE_FORMAT" }}</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  {{ item.content_rendered|safe }}
+
+</div>
+{% if not forloop.last %}
+  <!-- <hr/> -->
+{% endif %}
+{% endfor %}

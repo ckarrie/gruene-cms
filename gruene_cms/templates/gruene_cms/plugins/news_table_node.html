@@ -1,0 +1,17 @@
+{% for item in news_items %}
+<div class="news-item" id="news-{{ item.slug }}">
+  <h2 class="news-title">{{ item.title }}</h2>
+  {% if user.is_authenticated %}
+    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+      <a type="button" class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}"  data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i></a>
+      <!--<button type="button" class="btn btn-success">Right</button>-->
+    </div>
+  {% endif %}
+  {% if item.subtitle %}
+    <h3 class="news-subtitle">{{ item.subtitle }}</h3>
+  {% endif %}
+  <div class="news-summary">{{ item.summary }}</div>
+  <div class="news-content">{{ item.content_rendered|safe }}</div>
+
+</div>
+{% endfor %}
