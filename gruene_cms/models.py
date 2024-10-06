@@ -78,7 +78,7 @@ class AggregatedData(models.Model):
         return agg_value
 
     def last_history(self):
-        l = AggregatedDataHistory.objects.last()
+        l = AggregatedDataHistory.objects.filter(agg_datasource=self).last()
         if l:
             return l
         return {'value': 'NO HISTORY DATA', 'timestamp': None}
@@ -116,4 +116,26 @@ class GrueneCMSAnimateTypingNode(CMSPlugin):
     remove_speed = models.PositiveIntegerField(default=30, help_text='Remove speed in ms')
     remove_delay = models.PositiveIntegerField(default=1500, help_text='Remove delay in ms')
     cursor_speed = models.PositiveIntegerField(default=500, help_text='Cursor speed in ms')
+
+
+class LimitUserGroupNode(CMSPlugin):
+    logged_in = models.BooleanField(default=True)
+    logged_in_groups = models.ManyToManyField("auth.Group", blank=True)
+
+    def __str__(self):
+        return 'Logged in' if self.logged_in else 'Logged out'
+
+
+class LoginFormNode(CMSPlugin):
+    display_form = models.BooleanField(default=True)
+    display_greeting = models.BooleanField(default=True)
+    display_button = models.BooleanField(default=False)
+
+
+class ChartJSNode(CMSPlugin):
+    agg_datasource = models.ForeignKey(AggregatedData, on_delete=models.SET_NULL, null=True)
+    chart_title = models.CharField(max_length=100)
+    chart_width = models.PositiveIntegerField(default=500)
+    chart_height = models.PositiveIntegerField(default=500)
+    dataset_label = models.CharField(max_length=100)
 

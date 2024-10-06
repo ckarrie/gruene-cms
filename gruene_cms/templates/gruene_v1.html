@@ -17,6 +17,10 @@
   <link rel="stylesheet" href="{% static 'sunflower-v2.2.0/style.css' %}">
   <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}">
   {% render_block "css" %}
+	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
+  <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/chartjs-4.2.1/chart.umd.min.js' %}"></script>
 </head>
 <body class="home page-template-default page">
   {% cms_toolbar %}
@@ -56,8 +60,8 @@
 		<div class="container-fluid bloginfo bg-primary">
 			<div class="container d-flex align-items-center">
 				<div class="img-container sunflower-logo">
-					<a href="https://sunflower-theme.de" rel="home" aria-current="page" title="Sunflower 2.2.0">
-					  <img src="https://sunflower-theme.de/wp-content/themes/sunflower/assets/img/sunflower.svg" class="" alt="Logo">
+					<a href="/" rel="home" aria-current="page" title="Sunflower 2.2.0">
+					  <img src="{% static 'images/sunflower.svg' %}" class="" alt="Logo">
 				  </a>
 			  </div>
 				<div>
@@ -143,8 +147,6 @@
   
   {% placeholder "content" %}
 	{% render_block "js" %}
-	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-  <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
-  <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+
 </body>
 </html>

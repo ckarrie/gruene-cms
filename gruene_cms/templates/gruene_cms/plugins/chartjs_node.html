@@ -1,0 +1,24 @@
+<canvas id="chartjs-{{ instance.pk }}" width="{{ instance.chart_width }}" height="{{ instance.chart_height }}"></canvas>
+<script>
+  let ctx = document.getElementById("chartjs-{{ instance.pk }}").getContext("2d");
+  let chart = new Chart(ctx, {
+    type: "line",
+    data: {
+       labels: {{ labels_data|safe }},
+       datasets: [
+          {
+            label: "{{ instance.chart_title }}",
+            backgroundColor: "#79AEC8",
+            borderColor: "#417690",
+            data: {{ dataset_data }}
+          }
+       ]
+    },
+    options: {
+       title: {
+          text: "Gross Volume in 2020",
+          display: true
+       }
+    }
+  });
+</script>

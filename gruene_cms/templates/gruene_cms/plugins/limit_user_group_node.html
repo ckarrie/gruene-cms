@@ -1,0 +1,8 @@
+{% load cms_tags %}
+{% if display_children %}
+  {% for plugin in instance.child_plugin_instances %}
+    <div class="limit-user-group-plugin">
+      {% render_plugin plugin %}
+    </div>
+  {% endfor %}
+{% endif %}

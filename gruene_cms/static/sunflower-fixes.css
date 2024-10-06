@@ -45,7 +45,7 @@ span.aggregated-data-timestamp {
 .decoration-primary {
     position: relative;
     z-index: 0;
-    cursor: pointer;
+    /*cursor: pointer;*/
     display: inline-block;
     padding-right: 2.5rem;
     color: #fff;
