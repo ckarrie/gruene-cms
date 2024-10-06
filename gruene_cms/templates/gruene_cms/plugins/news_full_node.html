@@ -25,16 +25,13 @@
   </div>
   {% endif %}
   {% if item.subtitle %}
-  <h3 class="news-subtitle my-3">{{ item.subtitle }}</h3>
+    <h3 class="news-subtitle my-2">{{ item.subtitle }}</h3>
   {% endif %}
   <div class="news-summary">
     <div class="container-full">
       <div class="row">
-        <div class="col-9">
+        <div class="col-12">
           {{ item.summary }}
-        </div>
-        <div class="col-3 text-end">
-          <strong>{{ item.published_from|date:"SHORT_DATE_FORMAT" }}</strong>
         </div>
       </div>
     </div>

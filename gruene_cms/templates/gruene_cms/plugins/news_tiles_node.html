@@ -14,7 +14,7 @@
     <p><a class="btn btn-primary btn-sm text-white" href="{{ instance.news_page.attr.redirect_url|default:instance.news_page.get_absolute_url }}#news-{{ item.slug }}">Weiterlesen...</a></p>
   {% endif %}
   {% if not forloop.last %}
-    <div class="my-4"></div>
+    <div class="py-4"></div>
   {% endif %}
 </div>
 {% endfor %}
