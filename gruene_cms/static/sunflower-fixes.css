@@ -4,6 +4,12 @@
     .decoration-primary {
         padding-right: 5rem;
     }
+    .navbar-light .navbar-nav > .nav-item.active {
+        border-bottom: 4px solid #005437;
+    }
+    .navbar-light .navbar-nav .nav-link.active {
+        color: #005437;
+    }
 }
 
 
@@ -79,3 +85,4 @@ span.aggregated-data-timestamp {
 .alert p {
     margin-bottom: 0;
 }
+
