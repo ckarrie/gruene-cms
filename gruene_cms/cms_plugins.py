@@ -3,7 +3,7 @@ from cms.plugin_pool import plugin_pool
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
-from .models import AggregatedDataNode, GrueneCMSImageBackgroundNode, GrueneCMSAnimateTypingNode, LimitUserGroupNode, ChartJSNode
+from .models import AggregatedDataNode, GrueneCMSImageBackgroundNode, GrueneCMSAnimateTypingNode, LimitUserGroupNode, ChartJSNode, CalendarNode, CalendarItem
 
 module_name = _('GruenenCMS')
 
@@ -101,6 +101,32 @@ class ChartJSNodePlugin(CMSPluginBase):
         context.update({
             'dataset_data': dataset,
             'labels_data': labels,
+        })
+
+        return context
+
+
+@plugin_pool.register_plugin
+class CalendarNodePlugin(CMSPluginBase):
+    model = CalendarNode
+    name = _('Calendar')
+    allow_children = False
+    cache = False
+    module = module_name
+    render_template = 'gruene_cms/plugins/calendar_node.html'
+
+    def render(self, context, instance, placeholder):
+        context = super(CalendarNodePlugin, self).render(context, instance, placeholder)
+
+        calendar_items = CalendarItem.objects.filter(
+            calendar__in=instance.calendars.all()
+        ).order_by('-dt_from')
+
+        labeled_calendars = list(instance.labeled_calendars.all())
+
+        context.update({
+            'calendar_items': calendar_items,
+            'labeled_calendars': labeled_calendars
         })
 
         return context

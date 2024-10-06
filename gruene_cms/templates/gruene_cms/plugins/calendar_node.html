@@ -1,0 +1,6 @@
+{% load cms_tags %}
+<div class="calendarnode">
+  {% for item in calendar_items %}
+    <p class="mb-0">{{ item.dt_from|date:"d.m." }} {{ item.title }} {{ item.location }} {% if item.calendar in labeled_calendars %}<span class="badge bg-primary rounded-pill">{{ item.calendar.title }}</span>{% endif %}</p>
+  {% endfor %}
+</div>

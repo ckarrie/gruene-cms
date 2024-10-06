@@ -15,6 +15,20 @@ class AggregatedDataHistoryAdmin(admin.ModelAdmin):
     list_display = ['agg_datasource', 'timestamp', 'value']
 
 
+class CalendarAdmin(admin.ModelAdmin):
+    list_display = ['title']
+
+
+class CalendarItemAdmin(admin.ModelAdmin):
+    list_display = ['title', 'calendar', 'subtitle', 'dt_from', 'dt_until', 'location']
+    list_filter = ['calendar']
+
+
+# datasources
 admin.site.register(models.DataSource, DataSourceAdmin)
 admin.site.register(models.AggregatedData, AggregatedDataAdmin)
 admin.site.register(models.AggregatedDataHistory, AggregatedDataHistoryAdmin)
+
+# calendar
+admin.site.register(models.Calendar, CalendarAdmin)
+admin.site.register(models.CalendarItem, CalendarItemAdmin)

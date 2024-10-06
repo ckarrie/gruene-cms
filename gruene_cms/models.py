@@ -139,3 +139,33 @@ class ChartJSNode(CMSPlugin):
     chart_height = models.PositiveIntegerField(default=500)
     dataset_label = models.CharField(max_length=100)
 
+
+class Calendar(models.Model):
+    title = models.CharField(max_length=100)
+    visible_groups = models.ManyToManyField("auth.Group", blank=True, related_name='calendar_visible_groups_set')
+    edit_groups = models.ManyToManyField("auth.Group", blank=True, related_name='calendar_edit_groups_set')
+
+    def __str__(self):
+        return self.title
+
+
+class CalendarItem(models.Model):
+    calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    subtitle = models.CharField(max_length=255, null=True, blank=True)
+    dt_from = models.DateTimeField()
+    dt_until = models.DateTimeField(null=True, blank=True)
+    location = models.CharField(max_length=255)
+    # link_page =
+
+    def __str__(self):
+        return self.title
+
+
+class CalendarNode(CMSPlugin):
+    calendars = models.ManyToManyField(Calendar, related_name='calendar_calendarnode_set')
+    labeled_calendars = models.ManyToManyField(Calendar, blank=True, related_name='calendar_labeled_set')
+    max_entries = models.PositiveIntegerField(default=5)
+    history_entries_days = models.PositiveIntegerField(default=0)
+    show_more_button = models.BooleanField(default=False)
+    #link_detail_page =
