@@ -1,0 +1,29 @@
+{% load cms_tags %}
+
+<table>
+  <thead>
+  <tr>
+    <th>Wann</th>
+    <th>Was</th>
+    <th>Wo</th>
+    <th>Aktionen</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for item in calendar_items %}
+  <tr>
+    <td>{{ item.dt_from|date:"d.m." }}</td>
+    <td>{{ item.title }}</td>
+    <td>{{ item.location }}</td>
+    <td>
+      <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+        <a type="button" class="btn btn-danger" href="{% url 'admin:gruene_cms_calendaritem_delete' item.id %}?next={{ request.path }}" data-toggle="tooltip" data-placement="top" title="Löschen"><i class="fa-solid fa-trash-can"></i></a>
+        <a type="button" class="btn btn-warning" href="{% url 'admin:gruene_cms_calendaritem_change' item.id %}?next={{ request.path }}"  data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i></a>
+        <a type="button" class="btn btn-outline-success" href="{% url 'admin:gruene_cms_calendaritem_change' item.id %}?next={{ request.path }}" data-toggle="tooltip" data-placement="top" title="Kopieren"><i class="fa-solid fa-copy"></i></a>
+        <!--<button type="button" class="btn btn-success">Right</button>-->
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>

@@ -148,5 +148,10 @@
   {% placeholder "content" %}
 	{% render_block "js" %}
   <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
+	<script>
+		$(function () {
+  		$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
 </body>
 </html>

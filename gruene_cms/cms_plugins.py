@@ -113,7 +113,14 @@ class CalendarNodePlugin(CMSPluginBase):
     allow_children = False
     cache = False
     module = module_name
-    render_template = 'gruene_cms/plugins/calendar_node.html'
+
+    def get_render_template(self, context, instance, placeholder):
+        render_templates = {
+            'default': 'gruene_cms/plugins/calendar_node.html',
+            'table': 'gruene_cms/plugins/calendar_node_table.html',
+            'table_editable': 'gruene_cms/plugins/calendar_node_table_editable.html',
+        }
+        return render_templates[instance.render_template]
 
     def render(self, context, instance, placeholder):
         context = super(CalendarNodePlugin, self).render(context, instance, placeholder)

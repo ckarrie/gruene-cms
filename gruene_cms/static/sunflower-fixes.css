@@ -71,3 +71,7 @@ span.aggregated-data-timestamp {
     background-color: #005437;
     opacity: 0.91;
 }
+
+.calendarnode {
+    padding-top: 0.44rem;
+}
