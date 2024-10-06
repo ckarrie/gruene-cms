@@ -169,3 +169,9 @@ class CalendarNode(CMSPlugin):
     history_entries_days = models.PositiveIntegerField(default=0)
     show_more_button = models.BooleanField(default=False)
     #link_detail_page =
+
+    def copy_relations(self, oldinstance):
+        # see https://docs.django-cms.org/en/latest/how_to/09-custom_plugins.html#for-foreign-key-relations-from-other-objects
+        self.calendars.set(oldinstance.calendars.all())
+        self.labeled_calendars.set(oldinstance.labeled_calendars.all())
+
