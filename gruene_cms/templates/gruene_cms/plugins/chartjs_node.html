@@ -10,14 +10,17 @@
             label: "{{ instance.chart_title }}",
             backgroundColor: "#79AEC8",
             borderColor: "#417690",
-            data: {{ dataset_data }}
+            data: {{ dataset_data }},
+            pointRadius: 0
           }
        ]
     },
     options: {
+      legend: {
+        display: false
+      }
        title: {
-          text: "Gross Volume in 2020",
-          display: true
+          display: false
        }
     }
   });
