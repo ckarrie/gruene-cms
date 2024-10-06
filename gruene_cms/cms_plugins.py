@@ -96,7 +96,7 @@ class ChartJSNodePlugin(CMSPluginBase):
         ).order_by('timestamp')
         for ah in dataset_qs:
             dataset.append(ah.value)
-            labels.append(ah.timestamp.strftime("%H:%M"))
+            labels.append(ah.timestamp.astimezone(timezone.get_current_timezone()).strftime("%H:%M"))
 
         context.update({
             'dataset_data': dataset,

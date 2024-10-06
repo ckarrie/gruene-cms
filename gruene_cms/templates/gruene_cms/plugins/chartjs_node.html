@@ -8,8 +8,8 @@
        datasets: [
           {
             label: "{{ instance.chart_title }}",
-            backgroundColor: "#79AEC8",
-            borderColor: "#417690",
+            backgroundColor: "#fad507",
+            borderColor: "#fad507",
             data: {{ dataset_data }},
             pointRadius: 0
           }
@@ -19,9 +19,14 @@
       legend: {
         display: false
       },
-       title: {
+      title: {
+        display: false
+      },
+      plugins: {
+        legend: {
           display: false
-       }
+        }
+      }
     }
   });
 </script>
