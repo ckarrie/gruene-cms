@@ -1,0 +1,7 @@
+{% for ancestor in ancestors %}
+    {% if not forloop.last %}
+        &raquo; <a class="text-white" href="{{ ancestor.get_absolute_url }}">{{ ancestor.get_menu_title }}</a>
+    {% else %}
+	    &raquo; {{ ancestor.get_menu_title }}
+	{% endif %}
+{% endfor %}

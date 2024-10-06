@@ -67,7 +67,11 @@
 				<div>
 					<h1 class="d-block h5 text-white bloginfo-name">BÜNDNIS 90/DIE GRÜNEN</h1>
 					<!--<a href="https://sunflower-theme.de" class="d-block h5 text-white bloginfo-name no-link">BÜNDNIS 90/DIE GRÜNEN</a>-->
-					<h2 class="d-block text-white mb-0 bloginfo-description">{% page_attribute "page_title" %}</h2>
+					<h2 class="d-block text-white mb-0 bloginfo-description">
+						<a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+						{% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+						<!-- {% page_attribute "page_title" %} -->
+					</h2>
 					<!--
 					<a href="https://sunflower-theme.de" class="d-block text-white mb-0 bloginfo-description no-link">{% page_attribute "page_title" %}</a>
 					-->
