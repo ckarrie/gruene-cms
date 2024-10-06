@@ -1,9 +1,16 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from django.utils.translation import gettext_lazy as _
+from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
-from .models import AggregatedDataNode, GrueneCMSImageBackgroundNode, GrueneCMSAnimateTypingNode, LimitUserGroupNode, ChartJSNode, CalendarNode, CalendarItem
+from .models import AggregatedDataNode, \
+    GrueneCMSImageBackgroundNode, \
+    GrueneCMSAnimateTypingNode, \
+    LimitUserGroupNode, \
+    ChartJSNode, \
+    CalendarNode, CalendarItem, \
+    NewsListNode, NewsItem
 
 module_name = _('GruenenCMS')
 
@@ -32,10 +39,29 @@ class GrueneCMSImageBackgroundNodePlugin(CMSPluginBase):
 class GrueneCMSAnimateTypingNodePlugin(CMSPluginBase):
     model = GrueneCMSAnimateTypingNode
     name = _('Animate Typing')
+    text_enabled = True
     allow_children = False
     cache = False
     module = module_name
     render_template = 'gruene_cms/plugins/gruenecms_animate_typing_node.html'
+    fieldsets = [
+        (None, {
+            'fields': (
+                ('animated_text',),
+            )
+        }),
+        (_('Advanced settings'), {
+            'classes': ('collapse',),
+            'fields': (
+                'enable_animation',
+                'type_speed',
+                'type_delay',
+                'remove_speed',
+                'remove_delay',
+                'cursor_speed',
+            )
+        }),
+    ]
 
 
 @plugin_pool.register_plugin
@@ -134,6 +160,39 @@ class CalendarNodePlugin(CMSPluginBase):
         context.update({
             'calendar_items': calendar_items,
             'labeled_calendars': labeled_calendars
+        })
+
+        return context
+
+
+@plugin_pool.register_plugin
+class NewsListNodePlugin(CMSPluginBase):
+    model = NewsListNode
+    name = _('News')
+    allow_children = False
+    cache = False
+    module = module_name
+
+    def get_render_template(self, context, instance, placeholder):
+        render_templates = {
+            'tiles': 'gruene_cms/plugins/news_tiles_node.html',
+            'table': 'gruene_cms/plugins/news_table_node.html',
+            'full': 'gruene_cms/plugins/news_full_node.html',
+        }
+        return render_templates[instance.render_template]
+
+    def render(self, context, instance, placeholder):
+        context = super(NewsListNodePlugin, self).render(context, instance, placeholder)
+        categories = list(instance.categories.all())
+        condition = Q()
+
+        news_items = NewsItem.objects.all()
+        for cat in categories:
+            condition |= Q(categories__in=cat)
+        news_items = news_items.filter(condition).distinct()
+
+        context.update({
+            'news_items': news_items,
         })
 
         return context

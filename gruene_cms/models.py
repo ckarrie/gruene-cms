@@ -1,7 +1,10 @@
 import requests
 from cms.models.pluginmodel import CMSPlugin
 from django.db import models
+from django.utils import timezone
 from filer.fields.image import FilerImageField
+from djangocms_text_ckeditor.fields import HTMLField
+from djangocms_text_ckeditor.models import AbstractText
 
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
@@ -107,15 +110,18 @@ class GrueneCMSImageBackgroundNode(CMSPlugin):
 
 
 class GrueneCMSAnimateTypingNode(CMSPlugin):
-    pre_text = models.CharField(max_length=255, null=True, blank=True)
-    animated_text = models.CharField(max_length=500, null=True, blank=True, help_text='Separated by |. i.e. "bla1!bla2!bla3!"')
-    post_text = models.CharField(max_length=255, null=True, blank=True)
+    animated_text = models.CharField(max_length=500, help_text='Separated by |. i.e. "bla1|bla2|bla3|"')
     enable_animation = models.BooleanField(default=True)
     type_speed = models.PositiveIntegerField(default=200, help_text='Type speed in ms')
     type_delay = models.PositiveIntegerField(default=1200, help_text='Type delay in ms')
     remove_speed = models.PositiveIntegerField(default=30, help_text='Remove speed in ms')
     remove_delay = models.PositiveIntegerField(default=1500, help_text='Remove delay in ms')
     cursor_speed = models.PositiveIntegerField(default=500, help_text='Cursor speed in ms')
+    
+    def save(self, *args, **kwargs):
+        if self.animated_text and not self.animated_text.endswith('|'):
+            self.animated_text = f'{self.animated_text}|'
+        super(GrueneCMSAnimateTypingNode, self).save(*args, **kwargs)
 
 
 class LimitUserGroupNode(CMSPlugin):
@@ -181,3 +187,44 @@ class CalendarNode(CMSPlugin):
         self.labeled_calendars.set(oldinstance.labeled_calendars.all())
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=50)
+    slug = models.SlugField()
+
+    def __str__(self):
+        return self.title
+
+
+class NewsItem(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField()
+    categories = models.ManyToManyField(Category)
+    subtitle = HTMLField(blank=True)
+    authors = models.ManyToManyField("auth.User", blank=True)
+    keywords = models.CharField(max_length=255)
+    summary = HTMLField(blank=True)
+    content = HTMLField(blank=True)
+    published_from = models.DateTimeField()
+    published_until = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def is_published(self):
+        if self.published_until:
+            return self.published_from <= timezone.now() <= self.published_until
+        return self.published_from <= timezone.now()
+
+
+class NewsListNode(CMSPlugin):
+    categories = models.ManyToManyField(Category)
+    render_template = models.CharField(max_length=20, choices=(
+        ('tiles', "Tiles, Image and Summary"),
+        ('table', "Table, Image and Summary"),
+        ('full', "Full"),
+    ), default='tiles')
+    max_entries = models.PositiveIntegerField(default=10)
+    show_outdated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'News {self.pk}'
