@@ -1,8 +1,7 @@
-{% for item in news_items %}
-  <div class="container-full news-table news-item mb-5" id="news-{{ item.slug }}">
-    <div class="row g-5">
-      <div class="col col-12">
-        <h{{ instance.title_h }} class="news-title">
+<div class="row news-table news-item mb-3">
+  {% for item in news_items %}
+    <div class="col col-12 col-sm-6 col-lg-6 col-xxl-12">
+      <h{{ instance.title_h }} class="news-title">
           <a href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>
             {{ item.title }}
           </a>
@@ -11,10 +10,6 @@
           <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
         {% endif %}
         <div class="news-summary">{{ item.summary }}</div>
-      </div>
     </div>
-    {% if not forloop.last %}
-      <hr class="my-4" />
-    {% endif %}
-  </div>
-{% endfor %}
+  {% endfor %}
+</div>
