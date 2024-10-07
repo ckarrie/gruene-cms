@@ -33,12 +33,22 @@ class NewsImageInlineAdmin(admin.TabularInline):
 
 
 class NewsItemAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['title', 'published_from', 'newsfeedreader_source']
+    list_filter = ['newsfeedreader_source']
     inlines = [NewsImageInlineAdmin]
 
 
 class NewsImageAdmin(admin.ModelAdmin):
     list_display = ['title']
+
+
+class NewsFeedReaderAdmin(admin.ModelAdmin):
+    list_display = ['title', 'url', 'category', 'last_updated', 'author_user']
+    actions = ['fetch_feeds']
+
+    def fetch_feeds(self, request, queryset):
+        for obj in queryset:
+            obj.fetch_feed()
 
 
 # datasources
@@ -54,3 +64,4 @@ admin.site.register(models.CalendarItem, CalendarItemAdmin)
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.NewsItem, NewsItemAdmin)
 admin.site.register(models.NewsImage, NewsImageAdmin)
+admin.site.register(models.NewsFeedReader, NewsFeedReaderAdmin)

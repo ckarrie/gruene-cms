@@ -1,17 +1,18 @@
 {% for item in news_items %}
 <div class="news-item" id="news-{{ item.slug }}">
-  <h3 class="news-title">{{ item.title }}</h3>
+  <h{{ instance.title_h }} class="news-title">{{ item.title }}</h{{ instance.title_h }}>
   {% if item.subtitle %}
-    <h4 class="news-subtitle">{{ item.subtitle }}</h4>
+    <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
   {% endif %}
   <div class="news-summary">{{ item.summary }}</div>
   {% if user.is_authenticated %}
     <div class="btn-group btn-group-sm" role="group" aria-label="Weiterlesen">
       <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}"  data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
-      <a class="btn btn-primary text-white" href="{{ instance.news_page.attr.redirect_url|default:instance.news_page.get_absolute_url }}#news-{{ item.slug }}">Weiterlesen...</a>
+      <a class="btn btn-outline-primary" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
     </div>
   {% else %}
-    <p><a class="btn btn-primary btn-sm text-white" href="{{ instance.news_page.attr.redirect_url|default:instance.news_page.get_absolute_url }}#news-{{ item.slug }}">Weiterlesen...</a></p>
+
+    <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>
   {% endif %}
   {% if not forloop.last %}
     <div class="py-4"></div>

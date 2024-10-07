@@ -1,12 +1,15 @@
+import time
+
 import requests
+from django.utils.text import slugify
 from lxml import etree
+import feedparser
 from cms.models.pluginmodel import CMSPlugin
 from cms.models import Page
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from filer.fields.image import FilerImageField
-from filer.fields.multistorage_file import MultiStorageFileField
 from djangocms_text_ckeditor.fields import HTMLField
 from djangocms_text_ckeditor.models import AbstractText
 
@@ -217,6 +220,53 @@ class Category(models.Model):
         return self.title
 
 
+class NewsFeedReader(models.Model):
+    title = models.CharField(max_length=255)
+    url = models.URLField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    last_updated = models.DateTimeField(null=True, blank=True)
+    author_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+    def fetch_feed(self):
+        feed = feedparser.parse(self.url)
+        got_updates = False
+        for feed_entry in feed.entries:
+            feed_entry_link = feed_entry.get('link')
+            if feed_entry_link:
+                existing_newsitem = NewsItem.objects.filter(
+                    newsfeedreader_external_link=feed_entry_link
+                )
+                if not existing_newsitem.exists():
+                    feed_entry_title = feed_entry.get('title')
+                    feed_entry_summary = feed_entry.get('summary')
+                    feed_entry_published_parsed = feed_entry.get('published_parsed')
+                    feed_entry_keyswords = feed_entry.get('author_detail', {}).get('name', self.title)
+
+                    dt = timezone.datetime.fromtimestamp(time.mktime(feed_entry_published_parsed))
+                    published_from = timezone.make_aware(dt, timezone=timezone.get_current_timezone())
+
+                    news_item = NewsItem(
+                        title=feed_entry_title,
+                        summary=f'<p>{feed_entry_summary}</p>',
+                        keywords=feed_entry_keyswords,
+                        published_from=published_from,
+                        newsfeedreader_source=self,
+                        newsfeedreader_external_link=feed_entry_link,
+                        slug=slugify(feed_entry_title),
+                    )
+
+                    news_item.save()
+                    news_item.authors.set([self.author_user])
+                    news_item.categories.set([self.category])
+                    got_updates = True
+        if got_updates:
+            self.last_updated = timezone.now()
+            self.save(update_fields=['last_updated'])
+
+
 class NewsImage(models.Model):
     item = models.ForeignKey("NewsItem", on_delete=models.CASCADE)
     image = FilerImageField(on_delete=models.CASCADE)
@@ -243,6 +293,9 @@ class NewsItem(models.Model):
         ('inside-hr', _('Inside HRs')),
         ('replace-marker', _('Replace Marker')),
     ))
+    # For NewsReader
+    newsfeedreader_source = models.ForeignKey(NewsFeedReader, null=True, blank=True, on_delete=models.CASCADE)
+    newsfeedreader_external_link = models.URLField(null=True, blank=True)
 
     @property
     def is_public(self):
@@ -323,15 +376,38 @@ class NewsListNode(CMSPlugin):
     max_entries = models.PositiveIntegerField(default=10)
     show_outdated = models.BooleanField(default=False)
     news_page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
+    title_h = models.IntegerField(default=3, choices=(
+        (1, 'h1'),
+        (2, 'h2'),
+        (3, 'h3'),
+        (4, 'h4'),
+    ))
 
     def __str__(self):
         return f'News {self.pk}'
+
+    @property
+    def subtitle_h(self):
+        return self.title_h + 1
 
     def get_news_items(self):
         categories = list(self.categories.all())
         news_items = NewsItem.objects.all()
         condition = models.Q(categories__in=categories)
         news_items = news_items.filter(condition).order_by('-published_from').distinct()
+        if news_items.count() > self.max_entries:
+            news_items = news_items[:self.max_entries]
+
+        for news_item in news_items:
+            if news_item.newsfeedreader_external_link:
+                news_item.link_to_url = news_item.newsfeedreader_external_link
+                news_item.link_is_external = True
+            else:
+                anchor = f'#news-{news_item.slug}'
+                news_page_url = self.news_page.get_absolute_url()
+                news_item.link_to_url = f'{news_page_url}{anchor}'
+                news_item.link_is_external = False
+
         return news_items
 
     def copy_relations(self, oldinstance):
