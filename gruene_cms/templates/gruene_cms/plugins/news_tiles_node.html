@@ -20,7 +20,7 @@
             <a class="btn btn-outline-primary" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
           </div>
         {% else %}
-          <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>
+          <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>
         {% endif %}
       </div>
     </div>
