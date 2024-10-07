@@ -242,11 +242,15 @@ class NewsFeedReader(models.Model):
                 if not existing_newsitem.exists():
                     feed_entry_title = feed_entry.get('title')
                     feed_entry_summary = feed_entry.get('summary')
+                    if isinstance(feed_entry_summary, (tuple, list)):
+                        feed_entry_summary = feed_entry_summary[0]
                     feed_entry_published_parsed = feed_entry.get('published_parsed')
                     feed_entry_keyswords = feed_entry.get('author_detail', {}).get('name', self.title)
 
                     dt = timezone.datetime.fromtimestamp(time.mktime(feed_entry_published_parsed))
                     published_from = timezone.make_aware(dt, timezone=timezone.get_current_timezone())
+                    news_item_slug = slugify(feed_entry_title)[:50]
+
 
                     news_item = NewsItem(
                         title=feed_entry_title,
@@ -255,7 +259,7 @@ class NewsFeedReader(models.Model):
                         published_from=published_from,
                         newsfeedreader_source=self,
                         newsfeedreader_external_link=feed_entry_link,
-                        slug=slugify(feed_entry_title),
+                        slug=news_item_slug,
                     )
 
                     news_item.save()
