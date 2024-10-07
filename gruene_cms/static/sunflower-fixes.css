@@ -97,3 +97,6 @@ span.aggregated-data-timestamp {
     margin-bottom: 0;
 }
 
+.news-table .news-summary p, .news-table .news-title, .news-table .news-subtitle {
+    font-size: smaller;
+}

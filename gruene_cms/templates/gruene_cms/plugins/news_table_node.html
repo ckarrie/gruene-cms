@@ -1,5 +1,5 @@
 {% for item in news_items %}
-  <div class="container-full news-item mb-5" id="news-{{ item.slug }}">
+  <div class="container-full news-table news-item mb-5" id="news-{{ item.slug }}">
     <div class="row g-5">
       <div class="col col-12">
         <h{{ instance.title_h }} class="news-title">
@@ -11,14 +11,6 @@
           <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
         {% endif %}
         <div class="news-summary">{{ item.summary }}</div>
-        {% if user.is_authenticated %}
-          <div class="btn-group btn-group-sm" role="group" aria-label="Weiterlesen">
-            <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}" data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
-            <a class="btn btn-outline-primary" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
-          </div>
-        {% else %}
-          <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>
-        {% endif %}
       </div>
     </div>
     {% if not forloop.last %}
