@@ -42,6 +42,9 @@
 								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
 									<a title="Dashboard" href="/de/mitglieder-dashboard/" class="nav-link">Dashboard</a>
 								</li>
+								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+									<a title="Benutzer abmelden" href="{% url 'admin:logout' %}?next=/" class="nav-link">Abmelden</a>
+								</li>
 							{% else %}
 								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
 									<a title="Login" href="?toolbar_on" class="nav-link">Anmelden</a>
