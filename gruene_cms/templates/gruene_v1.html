@@ -36,8 +36,17 @@
 					<div class="d-flex">
 					  <ul id="topmenu" class="navbar-nav small">
 							<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-					      <a title="Login" href="?toolbar_on" class="nav-link">Anmelden</a>
+					      <a title="GRÜNEN Rheinland-Pfalz" href="https://gruene-rlp.de" class="nav-link">GRÜNEN RLP</a>
 				      </li>
+							{% if user.is_authenticated %}
+								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+									<a title="Dashboard" href="/de/mitglieder-dashboard/" class="nav-link">Dashboard</a>
+								</li>
+							{% else %}
+								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+									<a title="Login" href="?toolbar_on" class="nav-link">Anmelden</a>
+								</li>
+							{% endif %}
 					    <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1916" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
 					      <a title="Quellcode" href="https://github.com/ckarrie/gruene-cms" class="nav-link">Quellcode</a>
 				      </li>
