@@ -1,10 +1,10 @@
 {% for item in news_items %}
   <div class="container-full news-item mb-5" id="news-{{ item.slug }}">
     <div class="row g-5">
-      <div class="col col-3 {% cycle "order-1" "order-2" %}">
-        <img src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" class="rounded-3"/>
+      <div class="col col-12 col-lg-3 col-xxl-3 {% cycle "order-lg-1" "order-lg-2" %} {% if item.first_image_is_cat_img %}d-none d-lg-block{% endif %}">
+        <img src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" title="{{ item.first_image_alt_text }}" class="rounded-4" />
       </div>
-      <div class="col col-9 {% cycle "order-2" "order-1" %}">
+      <div class="col col-12 col-lg-9 col-xxl-9 mt-sm-3 {% cycle "order-lg-2" "order-lg-1" %}">
         <h{{ instance.title_h }} class="news-title">
           <a href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>
             {{ item.title }}
@@ -25,7 +25,7 @@
       </div>
     </div>
     {% if not forloop.last %}
-      <div class="py-4"></div>
+      <hr class="my-4" />
     {% endif %}
   </div>
 {% endfor %}

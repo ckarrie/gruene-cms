@@ -326,18 +326,22 @@ class NewsItem(models.Model):
         news_image = self.newsimage_set.order_by('position').first()
         url = "/static/images/sunflower.svg"
         alt_text = ""
+        is_cat_img = True
         if news_image:
             url = news_image.image.url
             alt_text = news_image.title
+            is_cat_img = False
         else:
             category = self.categories.filter(logo__isnull=False).first()
             if category:
                 url = category.logo.url
                 alt_text = category.title
+                is_cat_img = True
 
         return {
             'url': url,
             'alt_text': alt_text,
+            'is_cat_img': is_cat_img,
         }
 
     def _render_content(self):
@@ -423,6 +427,7 @@ class NewsListNode(CMSPlugin):
             first_image = news_item.get_first_image()
             news_item.first_image_url = first_image['url']
             news_item.first_image_alt_text = first_image['alt_text']
+            news_item.first_image_is_cat_img = first_image['is_cat_img']
             if news_item.newsfeedreader_external_link:
                 news_item.link_to_url = news_item.newsfeedreader_external_link
                 news_item.link_is_external = True
