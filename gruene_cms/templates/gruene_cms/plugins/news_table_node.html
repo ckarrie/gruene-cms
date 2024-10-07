@@ -1,6 +1,6 @@
 <div class="row news-table news-item mb-3">
   {% for item in news_items %}
-    <div class="col col-12 col-sm-6 col-lg-6 col-xxl-12">
+    <div class="col col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-xxl-12">
       <h{{ instance.title_h }} class="news-title">
           <a href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>
             {{ item.title }}
