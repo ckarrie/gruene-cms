@@ -215,6 +215,7 @@ class CalendarNode(CMSPlugin):
 class Category(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField()
+    logo = FilerImageField(null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
 
     def __str__(self):
         return self.title
@@ -250,8 +251,6 @@ class NewsFeedReader(models.Model):
                     dt = timezone.datetime.fromtimestamp(time.mktime(feed_entry_published_parsed))
                     published_from = timezone.make_aware(dt, timezone=timezone.get_current_timezone())
                     news_item_slug = slugify(feed_entry_title)[:50]
-
-
                     news_item = NewsItem(
                         title=feed_entry_title,
                         summary=f'<p>{feed_entry_summary}</p>',
@@ -322,6 +321,24 @@ class NewsItem(models.Model):
             if DEBUG_NEWS:
                 print("End render content")
         super(NewsItem, self).save(*args, **kwargs)
+
+    def get_first_image(self):
+        news_image = self.newsimage_set.order_by('position').first()
+        url = "/static/images/sunflower.svg"
+        alt_text = ""
+        if news_image:
+            url = news_image.image.url
+            alt_text = news_image.title
+        else:
+            category = self.categories.filter(logo__isnull=False).first()
+            if category:
+                url = category.logo.url
+                alt_text = category.title
+
+        return {
+            'url': url,
+            'alt_text': alt_text,
+        }
 
     def _render_content(self):
         body = self.content
@@ -403,6 +420,9 @@ class NewsListNode(CMSPlugin):
             news_items = news_items[:self.max_entries]
 
         for news_item in news_items:
+            first_image = news_item.get_first_image()
+            news_item.first_image_url = first_image['url']
+            news_item.first_image_alt_text = first_image['alt_text']
             if news_item.newsfeedreader_external_link:
                 news_item.link_to_url = news_item.newsfeedreader_external_link
                 news_item.link_is_external = True

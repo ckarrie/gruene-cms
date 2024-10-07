@@ -1,21 +1,31 @@
 {% for item in news_items %}
-<div class="news-item" id="news-{{ item.slug }}">
-  <h{{ instance.title_h }} class="news-title">{{ item.title }}</h{{ instance.title_h }}>
-  {% if item.subtitle %}
-    <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
-  {% endif %}
-  <div class="news-summary">{{ item.summary }}</div>
-  {% if user.is_authenticated %}
-    <div class="btn-group btn-group-sm" role="group" aria-label="Weiterlesen">
-      <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}"  data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
-      <a class="btn btn-outline-primary" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
+  <div class="container-full news-item mb-5" id="news-{{ item.slug }}">
+    <div class="row g-5">
+      <div class="col col-3 {% cycle "order-1" "order-2" %}">
+        <img src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" class="rounded-3"/>
+      </div>
+      <div class="col col-9 {% cycle "order-2" "order-1" %}">
+        <h{{ instance.title_h }} class="news-title">
+          <a href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>
+            {{ item.title }}
+          </a>
+        </h{{ instance.title_h }}>
+        {% if item.subtitle %}
+          <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
+        {% endif %}
+        <div class="news-summary">{{ item.summary }}</div>
+        {% if user.is_authenticated %}
+          <div class="btn-group btn-group-sm" role="group" aria-label="Weiterlesen">
+            <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}" data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
+            <a class="btn btn-outline-primary" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
+          </div>
+        {% else %}
+          <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>
+        {% endif %}
+      </div>
     </div>
-  {% else %}
-
-    <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>
-  {% endif %}
-  {% if not forloop.last %}
-    <div class="py-4"></div>
-  {% endif %}
-</div>
+    {% if not forloop.last %}
+      <div class="py-4"></div>
+    {% endif %}
+  </div>
 {% endfor %}

@@ -64,6 +64,10 @@ span.aggregated-data-timestamp {
     color: #fff;
 }
 
+.decoration-primary .btn {
+    vertical-align: top;
+}
+
 .sunflower-background {
     background-image: url(/static/images/sunflower.jpg);
     position: relative;
