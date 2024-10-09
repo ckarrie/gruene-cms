@@ -437,6 +437,14 @@ class NewsListNode(CMSPlugin):
         (3, 'h3'),
         (4, 'h4'),
     ))
+    extra_row_classes = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=_('Example: "mb-3"')
+    )
+    extra_col_classes = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=_('Example: "col-12" or "col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-xxl-12" for two-col for small screens')
+    )
 
     def __str__(self):
         return f'News {self.pk}'
