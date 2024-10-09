@@ -26,6 +26,7 @@ class CalendarItemAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title']
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class NewsImageInlineAdmin(admin.TabularInline):
@@ -36,6 +37,7 @@ class NewsItemAdmin(admin.ModelAdmin):
     list_display = ['title', 'published_from', 'newsfeedreader_source']
     list_filter = ['newsfeedreader_source']
     inlines = [NewsImageInlineAdmin]
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class NewsImageAdmin(admin.ModelAdmin):
