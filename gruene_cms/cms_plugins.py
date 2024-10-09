@@ -145,6 +145,7 @@ class CalendarNodePlugin(CMSPluginBase):
         render_templates = {
             'default': 'gruene_cms/plugins/calendar_node.html',
             'table': 'gruene_cms/plugins/calendar_node_table.html',
+            'table2': 'gruene_cms/plugins/calendar_node_table_2.html',
             'table_editable': 'gruene_cms/plugins/calendar_node_table_editable.html',
         }
         return render_templates[instance.render_template]

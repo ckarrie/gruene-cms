@@ -203,6 +203,7 @@ class CalendarNode(CMSPlugin):
     render_template = models.CharField(max_length=255, choices=(
         ('default', "Default"),
         ('table', "Table"),
+        ('table2', "Table 2 (without head)"),
         ('table_editable', "Table (editable)"),
     ), default='default')
     #link_detail_page =
