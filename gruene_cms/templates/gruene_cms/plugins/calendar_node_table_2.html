@@ -3,7 +3,7 @@
 <table class="table">
   <tbody>
   {% for item in calendar_items %}
-    <tr>
+    <tr class="{% if item.dt_from.date == current_dt.date %}table-active {% elif item.dt_from.date < current_dt.date %}opacity-25{% endif %}">
       <th scope="row">{{ item.dt_from|date:"d.m." }} {{ item.dt_from|date:"H" }} <span class="small">Uhr</span></th>
       <td>
         {{ item.title }}
