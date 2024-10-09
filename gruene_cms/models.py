@@ -1,6 +1,7 @@
 import time
 
 import requests
+from django.urls import reverse
 from django.utils.text import slugify
 from lxml import etree
 import feedparser
@@ -431,14 +432,40 @@ class NewsListNode(CMSPlugin):
             if news_item.newsfeedreader_external_link:
                 news_item.link_to_url = news_item.newsfeedreader_external_link
                 news_item.link_is_external = True
+                news_item.detail_link = False
             else:
                 anchor = f'#news-{news_item.slug}'
                 news_page_url = self.news_page.get_absolute_url()
                 news_item.link_to_url = f'{news_page_url}{anchor}'
                 news_item.link_is_external = False
+                news_item.detail_link = reverse('gruene_cms_news:detail', kwargs={'slug': news_item.slug})
 
         return news_items
 
     def copy_relations(self, oldinstance):
         # see https://docs.django-cms.org/en/latest/how_to/09-custom_plugins.html#for-foreign-key-relations-from-other-objects
         self.categories.set(oldinstance.categories.all())
+
+
+class NewsPageConfig(models.Model):
+    namespace = models.CharField(
+        _("instance namespace"),
+        default=None,
+        max_length=100,
+        unique=True,
+    )
+    paginate_by = models.PositiveIntegerField(
+        _("paginate size"),
+        blank=False,
+        default=5,
+    )
+    render_template = models.CharField(max_length=100, choices=(
+        ('detail', "Detail with Inline Images"),
+        ('detail_img_content', "Detail with Images-Col and Content-Col"),
+        ('detail_content_img', "Detail with Content-Col and Images-Col"),
+        ('detail_img_then_content', "Detail with Images-Row then Content-Row"),
+    ), default='detail')
+
+    def __str__(self):
+        return f'paginate_by={self.paginate_by} ns={self.namespace} render={self.get_render_template_display()}'
+

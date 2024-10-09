@@ -1,0 +1,39 @@
+{% extends "gruene_v1.html" %}
+{% load cms_tags menu_tags sekizai_tags static i18n %}
+{% block page_subtitle %}
+  <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+  {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+  <!-- {% page_attribute "page_title" %} -->
+{% endblock %}
+
+{% block content %}
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col col-12">
+        <h2 class="news-title">{{ object.title }}</h2>
+        {% if object.subtitle %}
+          <h3>{{ object.subtitle }}</h3>
+        {% endif %}
+        <p>
+          <strong>{{ object.published_from|date:"SHORT_DATE_FORMAT" }}</strong>
+          <small>
+            vor {{ object.published_from|timesince }}
+          </small>
+        </p>
+        {% if object.summary %}
+          <div class="news-summary">
+            {{ object.summary }}
+          </div>
+        {% endif %}
+        {% if object.content_rendered %}
+          <div class="news-content pb-5">
+            {{ object.content_rendered|safe }}
+          </div>
+        {% endif %}
+
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

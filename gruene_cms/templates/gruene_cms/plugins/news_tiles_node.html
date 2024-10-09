@@ -6,7 +6,7 @@
       </div>
       <div class="col col-12 col-lg-9 col-xxl-9 mt-sm-3 {% cycle "order-lg-2" "order-lg-1" %}">
         <h{{ instance.title_h }} class="news-title">
-          <a href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>
+          <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
             {{ item.title }}
           </a>
         </h{{ instance.title_h }}>
@@ -17,7 +17,7 @@
         {% if user.is_authenticated %}
           <div class="btn-group btn-group-sm" role="group" aria-label="Weiterlesen">
             <a class="btn btn-warning" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}" data-toggle="tooltip" data-placement="top" title="Bearbeiten"><i class="fa-solid fa-pencil"></i> Bearbeiten</a>
-            <a class="btn btn-outline-primary" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
+            <a class="btn btn-outline-primary" href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a>
           </div>
         {% else %}
           <p><a class="btn btn-outline-primary btn-sm" href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen {% if item.newsfeedreader_source %} auf der Seite der {{ item.newsfeedreader_source.title }}{% endif %} ...</a></p>

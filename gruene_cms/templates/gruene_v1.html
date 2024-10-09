@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load cms_tags menu_tags sekizai_tags static i18n %}
-{% load static %}
 <html lang="{{ LANGUAGE_CODE }}" class="theme--default">
 <head>
   <title>{% page_attribute "page_title" %}</title>
@@ -84,15 +83,20 @@
 			  </div>
 				<div>
 					<h1 class="d-block h5 text-white bloginfo-name">
-						<a href="/" class="text-white">
-							BÜNDNIS 90/DIE GRÜNEN
-						</a>
+            {% block page_maintitle %}
+              <a href="/" class="text-white">
+                BÜNDNIS 90/DIE GRÜNEN
+              </a>
+            {% endblock %}
 					</h1>
 					<!--<a href="https://sunflower-theme.de" class="d-block h5 text-white bloginfo-name no-link">BÜNDNIS 90/DIE GRÜNEN</a>-->
 					<h2 class="d-block text-white mb-0 bloginfo-description">
-						<a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
-						{% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
-						<!-- {% page_attribute "page_title" %} -->
+						{% block page_subtitle %}
+              <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+              {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+              <!-- {% page_attribute "page_title" %} -->
+            {% endblock %}
 					</h2>
 					<!--
 					<a href="https://sunflower-theme.de" class="d-block text-white mb-0 bloginfo-description no-link">{% page_attribute "page_title" %}</a>
@@ -170,8 +174,10 @@
         </div>      
   </div>
   {% endcomment %}
-  
-  {% placeholder "content" %}
+
+  {% block content %}
+    {% placeholder "content" %}
+  {% endblock %}
 	{% render_block "js" %}
   <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
 	<script>

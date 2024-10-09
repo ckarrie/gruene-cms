@@ -9,8 +9,8 @@
                     {% if user.is_authenticated %}
                       <a class="btn btn-primary text-white me-3" href="{% url 'admin:gruene_cms_newsitem_change' item.id %}?next={{ request.path }}"><i class="fa-solid fa-pencil"></i></a>
                     {% endif %}
-                    {% if item.link_is_external %}
-                      <a class="text-white" href="{{ item.link_to_url }}" target="_blank">{{ item.title }}</a>
+                    {% if item.link_is_external or item.detail_link %}
+                      <a class="text-white" href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" target="{% if item.link_is_external %}_blank{% endif %}">{{ item.title }}</a>
                     {% else %}
                         {{ item.title }}
                     {% endif %}

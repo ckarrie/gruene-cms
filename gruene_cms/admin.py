@@ -51,6 +51,10 @@ class NewsFeedReaderAdmin(admin.ModelAdmin):
             obj.fetch_feed()
 
 
+class NewsPageConfigAdmin(admin.ModelAdmin):
+    pass
+
+
 # datasources
 admin.site.register(models.DataSource, DataSourceAdmin)
 admin.site.register(models.AggregatedData, AggregatedDataAdmin)
@@ -65,3 +69,4 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.NewsItem, NewsItemAdmin)
 admin.site.register(models.NewsImage, NewsImageAdmin)
 admin.site.register(models.NewsFeedReader, NewsFeedReaderAdmin)
+admin.site.register(models.NewsPageConfig, NewsPageConfigAdmin)
