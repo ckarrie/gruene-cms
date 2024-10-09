@@ -4,13 +4,13 @@
   <tbody>
   {% for item in calendar_items %}
     <tr class="{% if item.dt_from.date == current_dt.date %}table-active {% elif item.dt_from.date < current_dt.date %}opacity-25{% endif %}">
-      <th scope="row">
+      <th scope="row" class="w-25">
         {{ item.dt_from|date:"d.m." }} {% if item.dt_until %}- {{ item.dt_until|date:"d.m." }}{% endif %}
         <p class="small mb-0">
           {% if not item.full_day %}{{ item.dt_from|date:"H" }} Uhr{% endif %}
         </p>
       </th>
-      <td>
+      <td class="w-75">
         {% if item.linked_url %}
           <a href="{{ item.linked_url }}">{{ item.title }}</a>
         {% else %}
