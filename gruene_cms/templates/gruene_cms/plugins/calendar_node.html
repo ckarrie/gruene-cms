@@ -1,19 +1,18 @@
 {% load cms_tags %}
-<div class="calendarnode">
-  <dl class="row">
-    {% for item in calendar_items %}
-      <dt class="col-sm-3">
-        {{ item.dt_from|date:"d.m." }}
-        {% if item.dt_until and item.dt_from.date != item.dt_until.date %}
-          - {{ item.dt_until|date:"d.m." }}
-        {% endif %}
-      </dt>
-      <dd class="col-sm-9">
-        {{ item.title }} {{ item.location }}
-        {% if item.subtitle %}
-          <span class="small d-block">{{ item.subtitle }}</span>
-        {% endif %}
-      </dd>
-    {% endfor %}
+
+{% for item in calendar_items %}
+  <dl class="row calendarnode">
+    <dt class="col-sm-3">
+      {{ item.dt_from|date:"d.m." }}
+      {% if item.dt_until and item.dt_from.date != item.dt_until.date %}
+        - {{ item.dt_until|date:"d.m." }}
+      {% endif %}
+    </dt>
+    <dd class="col-auto">
+      {{ item.title }} {{ item.location }}
+      {% if item.subtitle %}
+        <span class="small d-block">{{ item.subtitle }}</span>
+      {% endif %}
+    </dd>
   </dl>
-</div>
+{% endfor %}
