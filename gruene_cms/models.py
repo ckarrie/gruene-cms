@@ -187,8 +187,10 @@ class CalendarItem(models.Model):
     subtitle = models.CharField(max_length=255, null=True, blank=True)
     dt_from = models.DateTimeField()
     dt_until = models.DateTimeField(null=True, blank=True)
+    full_day = models.BooleanField(default=False)
     location = models.CharField(max_length=255)
-    # link_page =
+    linked_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True)
+    linked_news = models.ForeignKey('NewsItem', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -206,12 +208,38 @@ class CalendarNode(CMSPlugin):
         ('table2', "Table 2 (without head)"),
         ('table_editable', "Table (editable)"),
     ), default='default')
-    #link_detail_page =
+    linked_news_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True)
 
     def copy_relations(self, oldinstance):
         # see https://docs.django-cms.org/en/latest/how_to/09-custom_plugins.html#for-foreign-key-relations-from-other-objects
         self.calendars.set(oldinstance.calendars.all())
         self.labeled_calendars.set(oldinstance.labeled_calendars.all())
+
+    def get_calendar_items(self):
+        calendar_items = CalendarItem.objects.filter(
+            calendar__in=self.calendars.all()
+        )
+        history_datetime = timezone.now()
+        if self.history_entries_days:
+            history_datetime = timezone.now() - timezone.timedelta(days=self.history_entries_days)
+
+        calendar_items = calendar_items.filter(
+            dt_from__gte=history_datetime
+        )
+
+        calendar_items = calendar_items.order_by('dt_from').distinct()
+
+        if calendar_items.count() > self.max_entries:
+            calendar_items = calendar_items[:self.max_entries]
+
+        # Add Link
+        for item in calendar_items:
+            if self.linked_news_page and item.linked_news:
+                item.linked_url = reverse('gruene_cms_news:detail', kwargs={'slug': item.linked_news.slug})
+            if item.linked_page:
+                item.linked_url = item.linked_page.get_absolute_url()
+
+        return calendar_items
 
 
 class Category(models.Model):

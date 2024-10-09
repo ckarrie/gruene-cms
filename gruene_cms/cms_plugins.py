@@ -152,23 +152,10 @@ class CalendarNodePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super(CalendarNodePlugin, self).render(context, instance, placeholder)
-
-        calendar_items_qs = CalendarItem.objects.filter(
-            calendar__in=instance.calendars.all()
-        )
-        history_datetime = timezone.now()
-        if instance.history_entries_days:
-            history_datetime = timezone.now() - timezone.timedelta(days=instance.history_entries_days)
-        calendar_items_qs = calendar_items_qs.filter(
-            dt_from__gte=history_datetime
-        )
-
-        calendar_items_qs = calendar_items_qs.order_by('dt_from')[:instance.max_entries]
-
+        calendar_items = instance.get_calendar_items()
         labeled_calendars = list(instance.labeled_calendars.all())
-
         context.update({
-            'calendar_items': calendar_items_qs,
+            'calendar_items': calendar_items,
             'labeled_calendars': labeled_calendars,
             'current_dt': timezone.now()
         })
