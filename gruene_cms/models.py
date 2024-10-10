@@ -513,6 +513,18 @@ class TaskItem(models.Model):
     assigned_to_users = models.ManyToManyField("auth.User")
     created_at = models.DateTimeField(auto_now_add=True)
     progress = models.PositiveIntegerField(default=0)
+    priority = models.PositiveIntegerField(default=0, choices=(
+        (0, _('Normal')),
+        (1, _('Warning')),
+        (2, _('Danger')),
+    ))
+
+    def get_priority_table_css_class(self):
+        return {
+            0: '',
+            1: 'table-warning',
+            2: 'table-danger',
+        }[self.priority]
 
 
 class TaskComment(models.Model):

@@ -17,6 +17,10 @@
         {{ task.progress }}%
       </td>
     </tr>
+  {% empty %}
+    <tr>
+      <td colspan="2">Derzeit keine Aufgaben. <a href="{% url 'gruene_cms_dashboard:task_add' %}">Neue Aufgabe...</a> | <a href="{% url 'gruene_cms_dashboard:task_list' %}">Alle Aufgaben...</a></td>
+    </tr>
   {% endfor %}
 	</tbody>
 </table>
