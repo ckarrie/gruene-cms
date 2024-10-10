@@ -18,7 +18,7 @@
         {% endif %}
         <p class="small mb-0">
           {{ item.location }}
-          {% if item.dt_until %} | bis {{ item.dt_until|date:"d.m." }}{% endif %}
+          {% comment %}{% if item.dt_until %} | bis {{ item.dt_until|date:"d.m." }}{% endif %}{% endcomment %}
           {% if item.subtitle %} | {{ item.subtitle }}{% endif %}
           {% if item.calendar in labeled_calendars %} | <span class="badge bg-primary rounded-pill">{{ item.calendar.title }}</span>{% endif %}
         </p>

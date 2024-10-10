@@ -2,7 +2,7 @@
   {% for item in news_items %}
     <div class="col {{ instance.extra_col_classes|default:"" }}">
       <h{{ instance.title_h }} class="news-title">
-          <a href="{{ item.link_to_url }}" {% if item.link_is_external %}target="_blank"{% endif %}>
+          <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
             {{ item.title }}
           </a>
         </h{{ instance.title_h }}>
