@@ -555,4 +555,4 @@ class TaskNode(CMSPlugin):
             tasks = tasks.filter(category__in=self.categories.all())
         if not self.include_obsolete:
             tasks = tasks.filter(progress__lt=100)
-        return tasks.order_by('-created_at')
+        return tasks.order_by('created_at')
