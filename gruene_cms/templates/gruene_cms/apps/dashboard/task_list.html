@@ -27,7 +27,7 @@
           </thead>
           <tbody>
             {% for obj in object_list %}
-              <tr>
+              <tr class="{{ obj.get_priority_table_css_class }}">
                 <td scope="row">
                   <a href="{% url 'gruene_cms_dashboard:task_edit' obj.pk %}">#{{ obj.pk }}</a>
                 </td>

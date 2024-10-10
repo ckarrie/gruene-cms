@@ -7,7 +7,7 @@
 	</thead>
 	<tbody>
   {% for task in task_items %}
-    <tr>
+    <tr class="{{ task.get_priority_table_css_class }}">
       <td>
         <a href="{% url 'gruene_cms_dashboard:task_edit' task.pk %}">
           {{ task.summary }}

@@ -508,16 +508,16 @@ class NewsPageConfig(models.Model):
 
 
 class TaskItem(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    summary = HTMLField(blank=True)
-    assigned_to_users = models.ManyToManyField("auth.User")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('Category'))
+    summary = HTMLField(blank=True, verbose_name=_('Task Summary'))
+    assigned_to_users = models.ManyToManyField("auth.User", verbose_name=_('Assign Task to'))
     created_at = models.DateTimeField(auto_now_add=True)
-    progress = models.PositiveIntegerField(default=0)
+    progress = models.PositiveIntegerField(default=0, verbose_name=_('Progress'))
     priority = models.PositiveIntegerField(default=0, choices=(
         (0, _('Normal')),
         (1, _('Warning')),
         (2, _('Danger')),
-    ))
+    ), verbose_name=_('Task Priority'))
 
     def get_priority_table_css_class(self):
         return {
@@ -537,6 +537,7 @@ class TaskComment(models.Model):
 class TaskNode(CMSPlugin):
     categories = models.ManyToManyField(Category)
     limit_own_tasks = models.BooleanField(default=False)
+    include_obsolete = models.BooleanField(default=False)
     render_template = models.CharField(max_length=40, choices=(
         ('list', 'Task List'),
         ('list_with_assignments', 'Task List (with assignments)'),
@@ -552,4 +553,6 @@ class TaskNode(CMSPlugin):
             tasks = tasks.filter(assigned_to_users=user)
         if self.categories.exists():
             tasks = tasks.filter(category__in=self.categories.all())
+        if not self.include_obsolete:
+            tasks = tasks.filter(progress__lt=100)
         return tasks.order_by('-created_at')

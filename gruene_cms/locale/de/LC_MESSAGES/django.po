@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-10 17:31+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: cms_plugins.py:15
+msgid "GruenenCMS"
+msgstr "GRÜNEN CMS"
+
+#: cms_plugins.py:21
+msgid "Aggregated Data Node"
+msgstr "Datenpunkt (zusammengefasst)"
+
+#: cms_plugins.py:31
+msgid "Image as Background"
+msgstr "Hintergrundbild"
+
+#: cms_plugins.py:41
+msgid "Animate Typing"
+msgstr ""
+
+#: cms_plugins.py:53
+msgid "Advanced settings"
+msgstr "Erweiterte Einstellungen"
+
+#: cms_plugins.py:70
+msgid "Limit User/Group"
+msgstr "Limitierung Benutzer/Gruppe"
+
+#: cms_plugins.py:100
+msgid "Limit User"
+msgstr "Limitierung Benutzer"
+
+#: cms_plugins.py:110
+msgid "Chart"
+msgstr ""
+
+#: cms_plugins.py:139
+msgid "Calendar"
+msgstr "Kalender"
+
+#: cms_plugins.py:169
+msgid "News"
+msgstr ""
+
+#: cms_plugins.py:193
+msgid "Task"
+msgstr "Aufgabe"
+
+#: cms_plugins.py:204
+msgid "Filters"
+msgstr "Filter"
+
+#: models.py:326
+msgid "Inside HRs"
+msgstr "Innerhab HR-Tags"
+
+#: models.py:327
+msgid "Replace Marker"
+msgstr "Ersetze .marker"
+
+#: models.py:442
+msgid "Example: \"mb-3\""
+msgstr "z.B. \"mb-3\""
+
+#: models.py:446
+msgid ""
+"Example: \"col-12\" or \"col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-"
+"xxl-12\" for two-col for small screens"
+msgstr ""
+"z.B.: \"col-12\" oder \"col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-"
+"xxl-12\" für zweispaltige kleine Bildschirme"
+
+#: models.py:489
+msgid "instance namespace"
+msgstr "Namespace Instanz"
+
+#: models.py:495
+msgid "paginate size"
+msgstr "Elemente pro Seite"
+
+#: models.py:511
+msgid "Category"
+msgstr "Kategorie"
+
+#: models.py:512
+msgid "Task Summary"
+msgstr "Beschreibung Aufgabe"
+
+#: models.py:513
+msgid "Assign Task to"
+msgstr "Aufgabe zuordnen zu"
+
+#: models.py:515
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: models.py:517
+msgid "Normal"
+msgstr "Normal"
+
+#: models.py:518
+msgid "Warning"
+msgstr "Warnung"
+
+#: models.py:519
+msgid "Danger"
+msgstr "Dringend"
+
+#: models.py:520
+msgid "Task Priority"
+msgstr "Aufgabenpriorität"
