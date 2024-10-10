@@ -1,11 +1,17 @@
 from django.urls import reverse
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 from gruene_cms import models
 from gruene_cms import forms
 from gruene_cms.views.base import AppHookConfigMixin
 
 
-class TaskCreateView(AppHookConfigMixin, generic.CreateView):
+class AuthenticatedOnlyMixin(LoginRequiredMixin):
+    #raise_exception = True
+    login_url = '/dashboard/'
+
+
+class TaskCreateView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.CreateView):
     model = models.TaskItem
     template_name = 'gruene_cms/apps/dashboard/task_form.html'
     form_class = forms.TaskCreateForm
@@ -20,12 +26,12 @@ class TaskCreateView(AppHookConfigMixin, generic.CreateView):
         return reverse('gruene_cms_dashboard:task_list')
 
 
-class TaskListView(AppHookConfigMixin, generic.ListView):
+class TaskListView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.ListView):
     model = models.TaskItem
     template_name = 'gruene_cms/apps/dashboard/task_list.html'
 
 
-class TaskEditView(AppHookConfigMixin, generic.UpdateView):
+class TaskEditView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.UpdateView):
     model = models.TaskItem
     template_name = 'gruene_cms/apps/dashboard/task_form.html'
     form_class = forms.TaskUpdateForm

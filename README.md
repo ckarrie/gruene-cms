@@ -89,3 +89,9 @@ ag = AggregatedData.objects.first()
 ag.aggregate_datasources()
 
 ```
+
+# README Todo
+
+- add doc for management command `gruenecms_setup` and `update_datasources`
+- requirements fpr django-bootstrap5
+- update settings.py
