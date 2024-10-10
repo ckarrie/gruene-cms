@@ -26,6 +26,8 @@ def get_app_instance(request):
 
 
 class AppHookConfigMixin:
+    cms_page = None
+
     def dispatch(self, request, *args, **kwargs):
         # get namespace and config
         self.namespace, self.config = get_app_instance(request)
@@ -37,4 +39,10 @@ class AppHookConfigMixin:
         return qs
         #return qs.filter(app_config__namespace=self.namespace)
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx.update({
+            'current_page': self.cms_page,
+        })
+        return ctx
 

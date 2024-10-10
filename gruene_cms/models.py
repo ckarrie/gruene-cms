@@ -506,3 +506,38 @@ class NewsPageConfig(models.Model):
     def __str__(self):
         return f'paginate_by={self.paginate_by} ns={self.namespace} render={self.get_render_template_display()}'
 
+
+class TaskItem(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    summary = HTMLField(blank=True)
+    assigned_to_users = models.ManyToManyField("auth.User")
+    created_at = models.DateTimeField(auto_now_add=True)
+    progress = models.PositiveIntegerField(default=0)
+
+
+class TaskComment(models.Model):
+    task = models.ForeignKey(TaskItem, on_delete=models.CASCADE)
+    comment = HTMLField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+
+
+class TaskNode(CMSPlugin):
+    categories = models.ManyToManyField(Category)
+    limit_own_tasks = models.BooleanField(default=False)
+    render_template = models.CharField(max_length=40, choices=(
+        ('list', 'Task List'),
+        ('list_with_assignments', 'Task List (with assignments)'),
+        ('summary', 'Summary my Tasks')
+    ), default='list')
+
+    def copy_relations(self, oldinstance):
+        self.categories.set(oldinstance.categories.all())
+
+    def get_task_items(self, user=None):
+        tasks = TaskItem.objects.all()
+        if self.limit_own_tasks and user:
+            tasks = tasks.filter(assigned_to_users=user)
+        if self.categories.exists():
+            tasks = tasks.filter(category__in=self.categories.all())
+        return tasks.order_by('-created_at')

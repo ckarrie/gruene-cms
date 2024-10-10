@@ -1,0 +1,36 @@
+{% extends "gruene_v1.html" %}
+{% load cms_tags menu_tags sekizai_tags static i18n django_bootstrap5 %}
+{% block page_subtitle %}
+  <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+  {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+  <!-- {% page_attribute "page_title" %} -->
+{% endblock %}
+
+{% block content %}
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col col-12">
+        <h2 class="">
+          {% if object %}
+            Aufgabe #{{ object.pk }} bearbeiten
+          {% else %}
+            Neue Aufgabe hinzufügen
+          {% endif %}
+        </h2>
+
+
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+
+            {% bootstrap_form form layout='horizontal' %}
+
+            {% bootstrap_button button_type="submit" content="Speichern" %}
+            {% bootstrap_button button_type="reset" content="Eingaben zurücksetzen" %}
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

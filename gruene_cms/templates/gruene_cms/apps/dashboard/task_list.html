@@ -1,0 +1,55 @@
+{% extends "gruene_v1.html" %}
+{% load cms_tags menu_tags sekizai_tags static i18n django_bootstrap5 %}
+{% block page_subtitle %}
+  <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+  {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+  <!-- {% page_attribute "page_title" %} -->
+{% endblock %}
+
+{% block content %}
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col col-12">
+        <h2 class="">Aufgaben</h2>
+
+        <p><a href="{% url 'gruene_cms_dashboard:task_add' %}" class="btn btn-outline-primary">Neue Aufgabe</a> </p>
+
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Erstellt</th>
+              <th>Aufgabe</th>
+              <th>Zuordnungen</th>
+              <th>Fortschritt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in object_list %}
+              <tr>
+                <td scope="row">
+                  <a href="{% url 'gruene_cms_dashboard:task_edit' obj.pk %}">#{{ obj.pk }}</a>
+                </td>
+                <td>
+                  {{ obj.created_at|date:"SHORT_DATETIME_FORMAT" }}
+                </td>
+                <td>{{ obj.summary }}</td>
+                <td>
+                  <ul>
+                    {% for user in obj.assigned_to_users.all %}
+                      <li>{{ user.get_full_name|default:user.get_username }}</li>
+                    {% endfor %}
+                  </ul>
+                </td>
+                <td>{{ obj.progress }}%</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

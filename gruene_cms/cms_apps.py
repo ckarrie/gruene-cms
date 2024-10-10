@@ -2,11 +2,10 @@ from cms.app_base import CMSApp
 from cms.apphook_pool import apphook_pool
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import path, reverse
-from gruene_cms.views import news as news_views
+from gruene_cms.views import news as news_views, dashboard as dashboard_views
 from gruene_cms.models import NewsPageConfig
 
 
-@apphook_pool.register  # register the application
 class NewsPageApphook(CMSApp):
     app_name = "gruene_cms_news"
     name = "GrueneCMS News"
@@ -34,3 +33,19 @@ class NewsPageApphook(CMSApp):
                 "admin:{}_{}_add".format(self.app_config._meta.app_label, self.app_config._meta.module_name)
             )
 
+
+class DashboardApphook(CMSApp):
+    app_name = "gruene_cms_dashboard"
+    name = "GrueneCMS Dashboard"
+
+    def get_urls(self, page=None, language=None, **kwargs):
+        return [
+            # tasks
+            path('tasks/add/', dashboard_views.TaskCreateView.as_view(cms_page=page), name="task_add"),
+            path('tasks/<int:pk>/', dashboard_views.TaskEditView.as_view(cms_page=page), name="task_edit"),
+            path('tasks/', dashboard_views.TaskListView.as_view(cms_page=page), name="task_list"),
+        ]
+
+
+apphook_pool.register(NewsPageApphook)
+apphook_pool.register(DashboardApphook)

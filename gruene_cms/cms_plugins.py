@@ -10,7 +10,7 @@ from .models import AggregatedDataNode, \
     LimitUserGroupNode, \
     ChartJSNode, \
     CalendarNode, CalendarItem, \
-    NewsListNode, NewsItem
+    NewsListNode, NewsItem, TaskNode
 
 module_name = _('GruenenCMS')
 
@@ -185,3 +185,50 @@ class NewsListNodePlugin(CMSPluginBase):
             'news_items': instance.get_news_items(),
         })
         return context
+
+
+@plugin_pool.register_plugin
+class TaskNodePlugin(CMSPluginBase):
+    model = TaskNode
+    name = _('Task')
+    text_enabled = False
+    allow_children = False
+    cache = False
+    module = module_name
+    fieldsets = [
+        (None, {
+            'fields': (
+                ('render_template', ),
+            )
+        }),
+        (_('Filters'), {
+            'classes': ('collapse',),
+            'fields': (
+                'categories',
+                'limit_own_tasks',
+            )
+        }),
+    ]
+
+    def get_render_template(self, context, instance, placeholder):
+        render_templates = {
+            'list': 'gruene_cms/plugins/task_node_list.html',
+            'summary': 'gruene_cms/plugins/task_node_summary.html',
+        }
+        return render_templates[instance.render_template]
+
+    def render(self, context, instance, placeholder):
+        context = super(TaskNodePlugin, self).render(context, instance, placeholder)
+        user = context['request'].user
+        task_items = instance.get_task_items(user=user)
+        context.update({
+            'task_items': task_items,
+        })
+        return context
+
+
+@plugin_pool.register_plugin
+class TaskInlineNodePlugin(TaskNodePlugin):
+    text_enabled = True
+    #parent_classes = ['TextPlugin']
+    render_template = 'gruene_cms/plugins/task_node_summary.html'
