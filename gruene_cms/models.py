@@ -520,11 +520,15 @@ class TaskItem(models.Model):
     ), verbose_name=_('Task Priority'))
 
     def get_priority_table_css_class(self):
-        return {
+        tr_class = {
             0: '',
             1: 'table-warning',
             2: 'table-danger',
         }[self.priority]
+
+        if self.progress == 100:
+            tr_class += ' text-decoration-line-through'
+        return tr_class
 
 
 class TaskComment(models.Model):
