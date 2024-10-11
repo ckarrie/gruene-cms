@@ -19,7 +19,8 @@ classifiers = [
 dependencies = [
   'requests',
   'feedparser',
-  'django-bootstrap5'
+  'django-bootstrap5',
+  'webdavclient3'
 ]
 
 [project.urls]

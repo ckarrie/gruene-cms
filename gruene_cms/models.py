@@ -601,7 +601,7 @@ class WebDAVClient(models.Model):
             d = OrderedDict()
             d['name'] = os.path.basename(path)
             d['path'] = path.replace(self.local_path, '')
-            d['dl_url'] = '/dashboard/webdav/1/view_file/?path=' + d['path']  # reverse('gruene_cms_dashboard:webdav_view_local_file' webdav.pk)
+            d['dl_url'] = reverse('gruene_cms_dashboard:webdav_view_local_file', self.pk) + '?path=' + d['path']  # '/dashboard/webdav/1/view_file/?path=' + d['path']  # reverse('gruene_cms_dashboard:webdav_view_local_file' webdav.pk)
             if os.path.isdir(path):
                 d['type'] = "folder"
                 content = [path_to_dict(os.path.join(path, x)) for x in sorted(os.listdir(path))]

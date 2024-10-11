@@ -93,5 +93,5 @@ ag.aggregate_datasources()
 # README Todo
 
 - add doc for management command `gruenecms_setup` and `update_datasources`
-- requirements fpr django-bootstrap5
+- requirements fpr django-bootstrap5, pip install webdavclient3
 - update settings.py
