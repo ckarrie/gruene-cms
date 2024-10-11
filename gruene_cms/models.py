@@ -161,6 +161,9 @@ class LimitUserGroupNode(CMSPlugin):
     def __str__(self):
         return 'Logged in' if self.logged_in else 'Logged out'
 
+    def copy_relations(self, oldinstance):
+        self.logged_in_groups.set(oldinstance.logged_in_groups.all())
+
 
 class LoginFormNode(CMSPlugin):
     display_form = models.BooleanField(default=True)
@@ -626,5 +629,4 @@ class LocalFolderNode(CMSPlugin):
     webdav_client = models.ForeignKey(WebDAVClient, on_delete=models.CASCADE)
     is_public = models.BooleanField(default=False)
     show_root_node = models.BooleanField(default=False)
-
 
