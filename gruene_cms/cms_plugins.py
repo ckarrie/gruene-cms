@@ -81,12 +81,13 @@ class LimitUserGroupNodePlugin(CMSPluginBase):
         }
         user = context['request'].user
         if instance.logged_in and user.is_authenticated:
-            if instance.logged_in_groups.count() == 0:
+            instance_groups = instance.logged_in_groups.all()
+            if instance_groups.count() == 0:
                 display_children = True
                 matched_options['is_logged_in'] = True
             else:
                 for user_group in user.groups.all():
-                    if user_group in instance.logged_in_groups.all():
+                    if user_group in instance_groups:
                         display_children = True
                         matched_options['matched_user_group'] = user_group.name
                         break
