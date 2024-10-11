@@ -52,6 +52,7 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
     def get_queryset(self):
         qs = super(WebDAVViewLocalFileView, self).get_queryset()
         qs = qs.filter(Q(user=self.request.user) | Q(access_groups__user=self.request.user))
+        qs = qs.distinct()
         return qs
 
     def get_context_data(self, **kwargs):
