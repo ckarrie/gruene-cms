@@ -1,19 +1,24 @@
+import mimetypes
+import os
 import time
+from collections import OrderedDict
 
-import requests
-from django.urls import reverse
-from django.utils.text import slugify
-from lxml import etree
 import feedparser
-from cms.models.pluginmodel import CMSPlugin
+import requests
 from cms.models import Page
+from cms.models.pluginmodel import CMSPlugin
+from django.conf import settings
+from django.core.files import File
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-from filer.fields.image import FilerImageField
 from djangocms_text_ckeditor.fields import HTMLField
 from djangocms_text_ckeditor.models import AbstractText
-
+from filer.fields.image import FilerImageField
+from filer.models import Folder as FilerFolder, File as FilerFile, Image as FilerImage
+from lxml import etree
 
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
@@ -142,7 +147,7 @@ class GrueneCMSAnimateTypingNode(CMSPlugin):
     remove_speed = models.PositiveIntegerField(default=30, help_text='Remove speed in ms')
     remove_delay = models.PositiveIntegerField(default=1500, help_text='Remove delay in ms')
     cursor_speed = models.PositiveIntegerField(default=500, help_text='Cursor speed in ms')
-    
+
     def save(self, *args, **kwargs):
         if self.animated_text and not self.animated_text.endswith('|'):
             self.animated_text = f'{self.animated_text}|'
@@ -341,7 +346,7 @@ class NewsItem(models.Model):
         if self.published_until:
             return self.published_from <= timezone.now() <= self.published_until
         return self.published_from <= timezone.now()
-    
+
     def save(self, *args, **kwargs):
         super(NewsItem, self).save(*args, **kwargs)
         if self.content:
@@ -560,3 +565,66 @@ class TaskNode(CMSPlugin):
         if not self.include_obsolete:
             tasks = tasks.filter(progress__lt=100)
         return tasks.order_by('created_at')
+
+
+def get_local_webdav_path(subfolder=None):
+    if subfolder:
+        path = os.path.join(settings.BASE_DIR, 'webdav', subfolder)
+    else:
+        path = os.path.join(settings.BASE_DIR, 'webdav')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
+
+
+class WebDAVClient(models.Model):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    webdav_hostname = models.CharField(max_length=255)
+    webdav_login = models.CharField(max_length=50)
+    webdav_app_password = models.CharField(max_length=255)
+    webdav_path = models.CharField(max_length=255, null=True, blank=True, help_text='URL to replace: /remote.php/dav/files/KarrieCh/')
+    entry_path = models.CharField(max_length=255, null=True, blank=True, help_text='i.e. 02_Kommunikation/02_Presse')
+    local_path = models.FilePathField(null=True, blank=True, path=get_local_webdav_path, allow_files=False, allow_folders=True)
+
+    def save(self, *args, **kwargs):
+        self.local_path = get_local_webdav_path(subfolder=str(self.pk))
+        super(WebDAVClient, self).save(*args, **kwargs)
+
+    def sync_folder(self):
+        from webdav3.client import Client
+        options = {'webdav_hostname': self.webdav_hostname, 'webdav_login': self.webdav_login, 'webdav_password': self.webdav_app_password}
+        client = Client(options)
+        client.download_sync(remote_path=self.entry_path, local_path=self.local_path)
+
+    def get_tree_items(self):
+        def path_to_dict(path):
+            d = OrderedDict()
+            d['name'] = os.path.basename(path)
+            d['path'] = path.replace(self.local_path, '')
+            d['dl_url'] = '/dashboard/webdav/1/view_file/?path=' + d['path']  # reverse('gruene_cms_dashboard:webdav_view_local_file' webdav.pk)
+            if os.path.isdir(path):
+                d['type'] = "folder"
+                content = [path_to_dict(os.path.join(path, x)) for x in sorted(os.listdir(path))]
+                d['content'] = content
+            else:
+                d['type'] = "file"
+                d['mtype'] = mimetypes.guess_type(d['name'])[0]
+                if d['mtype'].startswith('image/'):
+                    d['type'] = "image"
+            return d
+
+        tree = path_to_dict(self.local_path)
+        tree['name'] = '/wolke'
+
+        return tree
+
+    def __str__(self):
+        return self.webdav_hostname
+
+
+class LocalFolderNode(CMSPlugin):
+    webdav_client = models.ForeignKey(WebDAVClient, on_delete=models.CASCADE)
+    is_public = models.BooleanField(default=False)
+    show_root_node = models.BooleanField(default=False)
+
+

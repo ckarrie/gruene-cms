@@ -62,8 +62,23 @@ class TaskItemAdmin(admin.ModelAdmin):
     list_display = ['summary', 'created_at', 'progress', 'category',]
     list_filter = ['category']
 
+
 class TaskCommentAdmin(admin.ModelAdmin):
     list_display = ['task', 'comment']
+
+
+# webdav
+class WebDAVClientAdmin(admin.ModelAdmin):
+    list_display = ['user', 'webdav_hostname', 'entry_path', 'local_path']
+    actions = ['sync_folder', 'create_filer_objects']
+
+    def sync_folder(self, request, queryset):
+        for obj in queryset:
+            obj.sync_folder()
+
+    def create_filer_objects(self, request, queryset):
+        for obj in queryset:
+            obj.create_filer_objects()
 
 
 # datasources
@@ -85,3 +100,6 @@ admin.site.register(models.NewsPageConfig, NewsPageConfigAdmin)
 # tasks
 admin.site.register(models.TaskItem, TaskItemAdmin)
 admin.site.register(models.TaskComment, TaskCommentAdmin)
+
+#webdav
+admin.site.register(models.WebDAVClient, WebDAVClientAdmin)

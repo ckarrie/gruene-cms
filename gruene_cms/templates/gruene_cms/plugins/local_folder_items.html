@@ -1,0 +1,8 @@
+<li class="{{ tree_node.type }}">
+  <a href="{{ tree_node.dl_url }}" class="text-truncate {% if tree_node.path == current_item %}bg-primary-subtle{% endif %}">{{ tree_node.name }}</a>
+  <ul>
+  {% for sub in tree_node.content %}
+    {% include "gruene_cms/plugins/local_folder_items.html" with tree_node=sub %}
+  {% endfor %}
+  </ul>
+</li>

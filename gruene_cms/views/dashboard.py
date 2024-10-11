@@ -1,3 +1,7 @@
+import mimetypes
+import os
+
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -38,3 +42,55 @@ class TaskEditView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.UpdateVie
 
     def get_success_url(self):
         return reverse('gruene_cms_dashboard:task_list')
+
+
+class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.DetailView):
+    model = models.WebDAVClient
+    template_name = 'gruene_cms/apps/dashboard/webdav_local_files.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(WebDAVViewLocalFileView, self).get_context_data(**kwargs)
+        requested_file = self.request.GET.get('path')
+        full_path = os.path.join(self.object.local_path + '/', requested_file[1:])
+        file_exists = os.path.isfile(full_path)
+        is_image = False
+        is_embed = False
+        embeddable = [
+            #'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            #'application/vnd.oasis.opendocument.spreadsheet',
+            'application/pdf'
+        ]
+        content_type = mimetypes.guess_type(full_path)[0]
+        if content_type and content_type.startswith('image/'):
+            is_image = True
+        if content_type and 'pdf' in content_type:
+            is_embed = True
+        if content_type in embeddable:
+            is_embed = True
+
+        ctx.update({
+            'requested_file': requested_file,
+            'full_path': full_path,
+            'file_exists': file_exists,
+            'is_image': is_image,
+            'is_embed': is_embed,
+            'content_type': content_type,
+            'tree_items': self.object.get_tree_items()
+        })
+        return ctx
+
+
+class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
+    model = models.WebDAVClient
+    template_name = 'gruene_cms/apps/dashboard/webdav_local_files.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        requested_file = self.request.GET.get('path')
+        full_path = os.path.join(self.object.local_path + '/', requested_file[1:])
+        file_exists = os.path.isfile(full_path)
+        if file_exists:
+            content_type = mimetypes.guess_type(full_path)[0]
+            file_data = open(full_path, 'rb').read()
+            return HttpResponse(file_data, content_type=content_type)
+        return HttpResponse()
+

@@ -1,0 +1,79 @@
+{% extends "gruene_v1.html" %}
+{% load cms_tags menu_tags sekizai_tags static i18n django_bootstrap5 %}
+{% block page_subtitle %}
+  <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+  {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+  <!-- {% page_attribute "page_title" %} -->
+{% endblock %}
+
+{% block content %}
+  <div class="container-full my-5 mx-5">
+    <div class="row ">
+      <div class="col col-12 ">
+        <div class="d-flex shadow p-3 mb-5 bg-body-tertiary rounded">
+            <div class="me-auto"><h2 class="text-truncate mb-0">{{ requested_file }}</h2></div>
+            <div class="">
+              <p class="mb-0">
+
+                <span class="small">Dateityp: {{ content_type|default:"Ordner" }}</span>
+
+                {% if file_exists %}
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">Download</a>
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">Upload</a>
+                {% else %}
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">Upload</a>
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">+ Ordner</a>
+                {% endif %}
+
+
+              </p>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="row-cols-1 row g-5 row-cols-xxl-4 row-cols-md-12 row-cols-lg-2 row-cols-sm-1 row-cols-xl-2">
+
+
+      <div class="col-xxl-3 col col-lg-12 overflow-auto">
+
+        <h3>Dateiliste</h3>
+        {% include 'gruene_cms/plugins/local_folder_node.html' with show_root_node=False tree_items=tree_items current_item=requested_file %}
+
+
+      </div>
+
+      {% if is_image or is_embed%}
+
+        <div class="col-xxl-9 col col-lg-12 overflow-auto">
+
+
+
+          {% if is_image %}
+            <img src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">
+          {% endif %}
+          {% if is_embed %}
+            <embed src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}" type="{{ content_type }}" width="100%" height="1000">
+          {% endif %}
+
+
+        </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+
+
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col col-12">
+
+
+      </div>
+      <div class="col-12">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

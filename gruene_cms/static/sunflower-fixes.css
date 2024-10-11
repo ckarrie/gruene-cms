@@ -100,3 +100,23 @@ span.aggregated-data-timestamp {
 .news-table .news-summary p, .news-table .news-title, .news-table .news-subtitle {
     font-size: smaller;
 }
+
+
+.folder-list li.folder {
+    list-style-image: url('/static/images/Icons-mini-folder.gif');
+}
+
+.folder-list li.file {
+    list-style-image: url('/static/images/Icons-mini-page_text.gif');
+}
+
+.folder-list li.image {
+    list-style-image: url('/static/images/Icons-mini-image.gif');
+}
+
+
+
+.folder-list li > ul, .folder-list li > ol {
+    margin-bottom: 0;
+    margin-left: 0;
+}

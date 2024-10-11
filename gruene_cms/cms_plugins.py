@@ -10,7 +10,7 @@ from .models import AggregatedDataNode, \
     LimitUserGroupNode, \
     ChartJSNode, \
     CalendarNode, CalendarItem, \
-    NewsListNode, NewsItem, TaskNode
+    NewsListNode, NewsItem, TaskNode, LocalFolderNode
 
 module_name = _('GruenenCMS')
 
@@ -232,3 +232,27 @@ class TaskInlineNodePlugin(TaskNodePlugin):
     text_enabled = True
     #parent_classes = ['TextPlugin']
     render_template = 'gruene_cms/plugins/task_node_summary.html'
+
+
+@plugin_pool.register_plugin
+class LocalFolderNodePlugin(CMSPluginBase):
+    model = LocalFolderNode
+    name = _('Local Folder')
+    text_enabled = False
+    allow_children = False
+    cache = False
+    module = module_name
+
+    render_template = 'gruene_cms/plugins/local_folder_node.html'
+
+    def render(self, context, instance, placeholder):
+        context = super(LocalFolderNodePlugin, self).render(context, instance, placeholder)
+        user = context['request'].user
+        tree_items = instance.webdav_client.get_tree_items(
+            #include_root_node=instance.show_root_node
+        )
+        context.update({
+            'tree_items': tree_items,
+            'show_root_node': instance.show_root_node
+        })
+        return context

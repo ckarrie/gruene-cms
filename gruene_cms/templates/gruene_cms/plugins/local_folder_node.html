@@ -1,0 +1,10 @@
+
+<ul class="folder-list">
+  {% if show_root_node %}
+    {% include 'gruene_cms/plugins/local_folder_items.html' with tree_node=tree_items %}
+  {% else %}
+    {% for node in tree_items.content %}
+      {% include 'gruene_cms/plugins/local_folder_items.html' with tree_node=node %}
+    {% endfor %}
+  {% endif %}
+</ul>
