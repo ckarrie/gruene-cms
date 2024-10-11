@@ -8,7 +8,7 @@ from .models import AggregatedDataNode, \
     GrueneCMSAnimateTypingNode, \
     LimitUserGroupNode, \
     ChartJSNode, \
-    CalendarNode, NewsListNode, TaskNode, LocalFolderNode
+    CalendarNode, NewsListNode, TaskNode, LocalFolderNode, LoginFormNode
 
 module_name = _('GruenenCMS')
 
@@ -106,12 +106,12 @@ class LimitUserGroupNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class LoginFormNodePlugin(CMSPluginBase):
-    model = LimitUserGroupNode
-    name = _('Limit User')
+    model = LoginFormNode
+    name = _('Login Form')
     allow_children = True
     cache = False
     module = module_name
-    render_template = 'gruene_cms/plugins/limit_user_group_node.html'
+    render_template = 'gruene_cms/plugins/login_form_node.html'
 
 
 @plugin_pool.register_plugin
@@ -264,6 +264,7 @@ class LocalFolderNodePlugin(CMSPluginBase):
         context.update({
             'tree_items': tree_items,
             'show_root_node': instance.show_root_node,
-            'webdav_client_object': instance.webdav_client
+            'webdav_client_object': instance.webdav_client,
+            'extra_css_classes': instance.extra_css_classes,
         })
         return context

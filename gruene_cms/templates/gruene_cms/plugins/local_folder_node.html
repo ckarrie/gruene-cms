@@ -1,5 +1,4 @@
-
-<ul class="folder-list">
+<ul class="{{ extra_css_classes }}">
   {% if show_root_node %}
     {% include 'gruene_cms/plugins/local_folder_items.html' with tree_node=tree_items %}
   {% else %}

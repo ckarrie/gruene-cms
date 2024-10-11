@@ -1,6 +1,7 @@
 import mimetypes
 import os
 
+from django.db.models import Q
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views import generic
@@ -48,6 +49,11 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
     model = models.WebDAVClient
     template_name = 'gruene_cms/apps/dashboard/webdav_local_files.html'
 
+    def get_queryset(self):
+        qs = super(WebDAVViewLocalFileView, self).get_queryset()
+        qs = qs.filter(Q(user=self.request.user) | Q(access_groups__user=self.request.user))
+        return qs
+
     def get_context_data(self, **kwargs):
         ctx = super(WebDAVViewLocalFileView, self).get_context_data(**kwargs)
         requested_file = self.request.GET.get('path')
@@ -76,7 +82,7 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
             'is_embed': is_embed,
             'content_type': content_type,
             'tree_items': self.object.get_tree_items(),
-            'webdav_client_object': self.object
+            'webdav_client_object': self.object,
         })
         return ctx
 

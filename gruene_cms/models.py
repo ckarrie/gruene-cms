@@ -588,8 +588,10 @@ class WebDAVClient(models.Model):
     webdav_path = models.CharField(max_length=255, null=True, blank=True, help_text='URL to replace: /remote.php/dav/files/KarrieCh/')
     entry_path = models.CharField(max_length=255, null=True, blank=True, help_text='i.e. 02_Kommunikation/02_Presse')
     local_path = models.FilePathField(null=True, blank=True, path=get_local_webdav_path, allow_files=False, allow_folders=True)
+    access_groups = models.ManyToManyField("auth.Group", blank=True)
 
     def save(self, *args, **kwargs):
+        super(WebDAVClient, self).save(*args, **kwargs)
         self.local_path = get_local_webdav_path(subfolder=str(self.pk))
         super(WebDAVClient, self).save(*args, **kwargs)
 
@@ -629,4 +631,5 @@ class LocalFolderNode(CMSPlugin):
     webdav_client = models.ForeignKey(WebDAVClient, on_delete=models.CASCADE)
     is_public = models.BooleanField(default=False)
     show_root_node = models.BooleanField(default=False)
+    extra_css_classes = models.CharField(max_length=255, default='folder-list small')
 

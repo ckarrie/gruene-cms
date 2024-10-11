@@ -6,7 +6,9 @@
     </div>
   {% endfor %}
 {% endif %}
+{% comment %}
 <!-- matched_options={{ matched_options|safe }} -->
 <!-- allowed groups: {% for grp in instance_groups %}{{ grp.pk }}:{{ grp.name }} {% endfor %} -->
 <!-- user groups: {% for grp in user_groups %}{{ grp.pk }}:{{ grp.name }} {% endfor %} -->
 <!-- instance: LimitUserGroupNode pk={{ instance.pk }} -->
+{% endcomment %}
