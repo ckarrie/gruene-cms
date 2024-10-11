@@ -93,5 +93,28 @@ ag.aggregate_datasources()
 # README Todo
 
 - add doc for management command `gruenecms_setup` and `update_datasources`
-- requirements fpr django-bootstrap5, pip install webdavclient3
+- requirements fpr django-bootstrap5, pip install webdavclient3, django-markdownify, pip install pygments
 - update settings.py
+
+# Useful commands
+
+- `manage.py cms -h`
+- `manage.py cms fix-tree`
+- `manage.py cms delete-orphaned-plugins`
+
+
+# Contribution
+## generating codehilite_styles.css
+
+```
+cd workspace/src/github/gruene-cms/gruene_cms/static/
+pygmentize -S default -f html -a .codehilite > codehilite_styles.css
+```
+
+Add it to `gruenen_v1.html` Template
+
+```html
+<head>
+    <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}">
+</head>
+```

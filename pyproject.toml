@@ -20,7 +20,9 @@ dependencies = [
   'requests',
   'feedparser',
   'django-bootstrap5',
-  'webdavclient3'
+  'webdavclient3',
+  'django-markdownify',
+  'pygments',
 ]
 
 [project.urls]

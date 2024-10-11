@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from markdownify.templatetags.markdownify import markdownify
+
 from gruene_cms import models
 from gruene_cms import forms
 from gruene_cms.views.base import AppHookConfigMixin
@@ -62,6 +64,7 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
         file_exists = os.path.isfile(full_path)
         is_image = False
         is_embed = False
+        html_content = None
         embeddable = [
             #'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             #'application/vnd.oasis.opendocument.spreadsheet',
@@ -74,6 +77,14 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
             is_embed = True
         if content_type in embeddable:
             is_embed = True
+        if content_type in ['text/markdown', 'text/plain']:
+            content = open(full_path).read()
+            #print(content)
+            #html_content = '<h2>Dateiinhalt</h2>'
+            #html_content += markdownify(content)
+            #print(html_content)
+            html_content = content
+
 
         ctx.update({
             'requested_file': requested_file,
@@ -84,6 +95,7 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
             'content_type': content_type,
             'tree_items': self.object.get_tree_items(),
             'webdav_client_object': self.object,
+            'html_content': html_content,
         })
         return ctx
 
