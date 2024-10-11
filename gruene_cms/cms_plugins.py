@@ -1,6 +1,5 @@
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -9,8 +8,7 @@ from .models import AggregatedDataNode, \
     GrueneCMSAnimateTypingNode, \
     LimitUserGroupNode, \
     ChartJSNode, \
-    CalendarNode, CalendarItem, \
-    NewsListNode, NewsItem, TaskNode, LocalFolderNode
+    CalendarNode, NewsListNode, TaskNode, LocalFolderNode
 
 module_name = _('GruenenCMS')
 
@@ -76,20 +74,29 @@ class LimitUserGroupNodePlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super(LimitUserGroupNodePlugin, self).render(context, instance, placeholder)
         display_children = False
+        matched_options = {
+            'is_logged_in': None,
+            'is_not_logged_in': None,
+            'matched_user_group': None
+        }
         user = context['request'].user
         if instance.logged_in and user.is_authenticated:
             if instance.logged_in_groups.count() == 0:
                 display_children = True
+                matched_options['is_logged_in'] = True
             else:
                 for user_group in user.groups.all():
                     if user_group in instance.logged_in_groups.all():
                         display_children = True
+                        matched_options['matched_user_group'] = user_group.name
                         break
         if (not instance.logged_in) and (not user.is_authenticated):
             display_children = True
+            matched_options['is_not_logged_in'] = True
 
         context.update({
-            'display_children': display_children
+            'display_children': display_children,
+            'matched_options': matched_options
         })
         return context
 
@@ -198,7 +205,7 @@ class TaskNodePlugin(CMSPluginBase):
     fieldsets = [
         (None, {
             'fields': (
-                ('render_template', ),
+                ('render_template',),
             )
         }),
         (_('Filters'), {
@@ -230,7 +237,7 @@ class TaskNodePlugin(CMSPluginBase):
 @plugin_pool.register_plugin
 class TaskInlineNodePlugin(TaskNodePlugin):
     text_enabled = True
-    #parent_classes = ['TextPlugin']
+    # parent_classes = ['TextPlugin']
     render_template = 'gruene_cms/plugins/task_node_summary.html'
 
 
@@ -249,7 +256,7 @@ class LocalFolderNodePlugin(CMSPluginBase):
         context = super(LocalFolderNodePlugin, self).render(context, instance, placeholder)
         user = context['request'].user
         tree_items = instance.webdav_client.get_tree_items(
-            #include_root_node=instance.show_root_node
+            # include_root_node=instance.show_root_node
         )
         context.update({
             'tree_items': tree_items,
