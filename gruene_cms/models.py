@@ -597,13 +597,11 @@ class WebDAVClient(models.Model):
         client.download_sync(remote_path=self.entry_path, local_path=self.local_path)
 
     def get_tree_items(self):
-        view_file_url = reverse('gruene_cms_dashboard:webdav_view_local_file', self.pk)
-        
+
         def path_to_dict(path):
             d = OrderedDict()
             d['name'] = os.path.basename(path)
             d['path'] = path.replace(self.local_path, '')
-            d['dl_url'] = view_file_url + '?path=' + d['path']  # '/dashboard/webdav/1/view_file/?path=' + d['path']  # reverse('gruene_cms_dashboard:webdav_view_local_file' webdav.pk)
             if os.path.isdir(path):
                 d['type'] = "folder"
                 content = [path_to_dict(os.path.join(path, x)) for x in sorted(os.listdir(path))]

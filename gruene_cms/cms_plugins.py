@@ -253,6 +253,7 @@ class LocalFolderNodePlugin(CMSPluginBase):
         )
         context.update({
             'tree_items': tree_items,
-            'show_root_node': instance.show_root_node
+            'show_root_node': instance.show_root_node,
+            'webdav_client_object': instance.webdav_client
         })
         return context

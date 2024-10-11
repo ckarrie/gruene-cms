@@ -75,7 +75,8 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
             'is_image': is_image,
             'is_embed': is_embed,
             'content_type': content_type,
-            'tree_items': self.object.get_tree_items()
+            'tree_items': self.object.get_tree_items(),
+            'webdav_client_object': self.object
         })
         return ctx
 
