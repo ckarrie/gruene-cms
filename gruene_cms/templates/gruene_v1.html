@@ -25,7 +25,7 @@
   {% cms_toolbar %}
         
   <header id="masthead" class="site-header">
-		<nav class="navbar navbar-top d-none d-lg-block navbar-expand-lg navbar-dark p-0 topmenu">
+		<nav class="navbar navbar-top d-none d-lg-block navbar-expand-lg navbar-dark p-0 topmenu" aria-label="Navigation Topmenü">
 			<div class="container">
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topmenu-container" aria-controls="topmenu-container" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -59,6 +59,7 @@
 					      <a title="Quellcode" href="https://github.com/ckarrie/gruene-cms" class="nav-link">Quellcode</a>
 				      </li>
             </ul>
+            <!--
             <form class="form-inline my-2 my-md-0 search d-flex" action="https://sunflower-theme.de">
 							<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche"	value="">
 							<input type="submit" class="d-none" value="Suche" aria-label="Suche">
@@ -66,6 +67,7 @@
 						<button class="show-search me-3" title="zeige Suche" aria-label="zeige Suche">
 							<i class="fas fa-search"></i>
 						</button>
+						-->
 						<button class="d-none show-contrast" title="Kontrast erhöhen" aria-label="Kontrast erhöhen">
 							<i class="fab fa-accessible-icon"></i>
 						</button>
@@ -78,7 +80,7 @@
 			<div class="container d-flex align-items-center">
 				<div class="img-container sunflower-logo">
 					<a href="/" rel="home" aria-current="page" title="Sunflower 2.2.0">
-					  <img src="{% static 'images/sunflower.svg' %}" class="" alt="Logo">
+					  <img src="{% static 'images/sunflower.svg' %}" class="" alt="Sonnenblume - Logo">
 				  </a>
 			  </div>
 				<div>
@@ -108,10 +110,10 @@
 		
 	</header>
 	
-	<nav class="navbar navbar-main navbar-expand-lg navbar-light bg-white">
+	<nav class="navbar navbar-main navbar-expand-lg navbar-light bg-white" aria-label="Hauptmenü mobile Ansicht">
 		<div class="container">
-		  <a class="navbar-brand" href="https://sunflower-theme.de/demo">
-		    <img src="https://sunflower-theme.de/demo/wp-content/themes/sunflower/assets/img/sunflower.svg" class="sunflower-logo" alt="Sonnenblume - Logo" title="Grüne Musterstadt">
+		  <a class="navbar-brand" href="/">
+		    <img src="{% static 'images/sunflower.svg' %}" class="sunflower-logo" alt="Sonnenblume - Logo" title="{% page_attribute "page_title" current_page.get_root %}">
 	    </a>
 
 			<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu-container" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,10 +161,12 @@
           <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-64" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64 nav-item"><a title="Kontakt" href="https://sunflower-theme.de/demo/kontakt/" class="nav-link">Kontakt</a></li>
           -->
         </ul>
+        <!--
 				<form class="form-inline my-2 mb-2 search d-block d-lg-none" action="https://sunflower-theme.de/demo">
 					<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche" value="">
 					<input type="submit" class="d-none" value="Suche" aria-label="Suche">
 				</form>
+				-->
 			</div>
 		</div>
 	</nav>
@@ -174,10 +178,11 @@
         </div>      
   </div>
   {% endcomment %}
-
-  {% block content %}
-    {% placeholder "content" %}
-  {% endblock %}
+  <main>
+    {% block content %}
+      {% placeholder "content" %}
+    {% endblock %}
+  </main>
 	{% render_block "js" %}
   <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
 	<script>

@@ -12,7 +12,7 @@
   <tbody>
   {% for item in calendar_items %}
   <tr>
-    <td>{{ item.dt_from|date:"d.m." }}</td>
+    <td>{{ item.dt_from|date:"d.m. H:i" }}</td>
     <td>{{ item.title }}</td>
     <td>{{ item.location }}</td>
     <td>
