@@ -6,6 +6,13 @@
             {{ item.title }}
           </a>
         </h{{ instance.title_h }}>
+        {% if instance.show_date or instance.show_feed_title %}
+          <p class="news-meta mb-0">
+            {% if instance.show_date %}<strong>{{ item.published_from|date:"d.m.Y H:i" }} Uhr</strong>{% endif %}
+              {% if instance.show_date and instance.show_feed_title %}<span class="meta-seperator"> </span>{% endif %}
+            {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.username }}</i>{% endif %}
+          </p>
+        {% endif %}
         {% if item.subtitle %}
           <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
         {% endif %}

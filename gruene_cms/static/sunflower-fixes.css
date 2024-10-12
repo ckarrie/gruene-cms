@@ -97,8 +97,12 @@ span.aggregated-data-timestamp {
     margin-bottom: 0;
 }
 
-.news-table .news-summary p, .news-table .news-title, .news-table .news-subtitle {
+.news-table .news-summary p, .news-table .news-title, .news-table .news-subtitle, .news-table .news-meta {
     font-size: smaller;
+}
+
+.news-table .news-meta {
+    font-size: small;
 }
 
 
