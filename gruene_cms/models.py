@@ -42,6 +42,7 @@ class DataSource(models.Model):
     rest_api_url = models.CharField(max_length=255, help_text="http://IP_ADDRESS:8123/api/states/sensor.helper_pv_sum_yaml")
     json_attr = models.CharField(max_length=255, null=True, blank=True, help_text='For HomeAssistant use "state"')
     value_convert = models.CharField(choices=DATATYPE_CHOICES, max_length=10, default=DATATYPE_CHOICES[0][0])
+    enable_for_auto_update = models.BooleanField(default=False, help_text=_('If checked, data source will be downloaded automatically'))
 
     def fetch_data(self):
         url = self.rest_api_url
@@ -76,10 +77,13 @@ class AggregatedData(models.Model):
     unit = models.CharField(max_length=5)
     agg_method = models.CharField(choices=AGGREGATION_METHODS, max_length=10, default=AGGREGATION_METHODS[0][0])
 
-    def aggregate_datasources(self):
+    def aggregate_datasources(self, limit_enable_for_auto_update=False):
         agg_value = 0
         valid_datapoints = 0
-        for ds in self.data_sources.all():
+        ds_qs = self.data_sources.all()
+        if limit_enable_for_auto_update:
+            ds_qs = ds_qs.filter(enable_for_auto_update=True)
+        for ds in ds_qs:
             ds_value = ds.fetch_data()
             if ds_value is not None:
                 valid_datapoints += 1
@@ -265,6 +269,7 @@ class NewsFeedReader(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     last_updated = models.DateTimeField(null=True, blank=True)
     author_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    enable_for_auto_update = models.BooleanField(default=False, help_text=_('If checked, news will be synced automatically'))
 
     def __str__(self):
         return self.title
@@ -589,6 +594,7 @@ class WebDAVClient(models.Model):
     entry_path = models.CharField(max_length=255, null=True, blank=True, help_text='i.e. 02_Kommunikation/02_Presse')
     local_path = models.FilePathField(null=True, blank=True, path=get_local_webdav_path, allow_files=False, allow_folders=True)
     access_groups = models.ManyToManyField("auth.Group", blank=True)
+    enable_for_auto_update = models.BooleanField(default=False, help_text=_('If checked, folders will be synced automatically'))
 
     def save(self, *args, **kwargs):
         super(WebDAVClient, self).save(*args, **kwargs)
