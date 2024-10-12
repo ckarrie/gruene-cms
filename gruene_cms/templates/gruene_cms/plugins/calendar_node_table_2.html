@@ -7,7 +7,14 @@
       <th scope="row" class="w-25">
         {{ item.dt_from|date:"d.m." }} {% if item.dt_until %}- {{ item.dt_until|date:"d.m." }}{% endif %}
         <p class="small mb-0">
-          {% if not item.full_day %}{{ item.dt_from|date:"H" }} Uhr{% endif %}
+          {% if not item.full_day %}
+            {% if item.dt_from|date:"i" != "00" %}
+              {{ item.dt_from|date:"H:i" }}
+            {% else %}
+              {{ item.dt_from|date:"H" }}
+            {% endif %}
+            Uhr
+          {% endif %}
         </p>
       </th>
       <td class="w-75">
