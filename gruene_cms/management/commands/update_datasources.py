@@ -16,17 +16,19 @@ class Command(BaseCommand):
         )
 
         # news feed
-        for nf in NewsFeedReader.objects.filter(enable_for_auto_update=True):
+        nf_qs = NewsFeedReader.objects.filter(enable_for_auto_update=True)
+        for nf in nf_qs:
             nf.fetch_feed()
         self.stdout.write(
-            self.style.SUCCESS('Updated NewsFeedReaders')
+            self.style.SUCCESS(f'Updated {nf_qs.count()} NewsFeedReaders')
         )
 
         # webdav clients
-        for wc in WebDAVClient.objects.filter(enable_for_auto_update=True):
+        wc_qs = WebDAVClient.objects.filter(enable_for_auto_update=True)
+        for wc in wc_qs:
             wc.sync_folder()
         self.stdout.write(
-            self.style.SUCCESS('Updated WebDAVClients')
+            self.style.SUCCESS(f'Updated {wc_qs.count()} WebDAVClients')
         )
 
 
