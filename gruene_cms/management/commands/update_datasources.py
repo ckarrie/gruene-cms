@@ -31,7 +31,6 @@ class Command(BaseCommand):
             self.style.SUCCESS(f'Updated {wc_qs.count()} WebDAVClients')
         )
 
-
         # cleanup
         two_days_ago = timezone.now() - timezone.timedelta(days=2)
         adh_qs = AggregatedDataHistory.objects.filter(timestamp__lte=two_days_ago)

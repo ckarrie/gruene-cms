@@ -100,9 +100,9 @@ class AggregatedData(models.Model):
         return agg_value
 
     def last_history(self):
-        l = AggregatedDataHistory.objects.filter(agg_datasource=self).last()
-        if l:
-            return l
+        last_adh = AggregatedDataHistory.objects.filter(agg_datasource=self).last()
+        if last_adh:
+            return last_adh
         return {'value': 'NO HISTORY DATA', 'timestamp': None}
 
     def __str__(self):
