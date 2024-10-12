@@ -24,8 +24,8 @@
         {% endif %}
       </div>
     </div>
-    {% if not forloop.last %}
-      <hr class="my-4" />
+    {% if instance.show_newsitem_separator and not forloop.last %}
+        <hr class="newsitem-separator my-4">
     {% endif %}
   </div>
 {% endfor %}

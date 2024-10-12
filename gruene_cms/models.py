@@ -458,8 +458,11 @@ class NewsListNode(CMSPlugin):
         max_length=255, null=True, blank=True,
         help_text=_('Example: "col-12" or "col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-xxl-12" for two-col for small screens')
     )
+
     show_date = models.BooleanField(default=False)
     show_feed_title = models.BooleanField(default=False)
+    show_newsitem_separator = models.BooleanField(default=False)
+    extra_meta_classes = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f'News {self.pk}'

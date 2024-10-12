@@ -7,7 +7,7 @@
           </a>
         </h{{ instance.title_h }}>
         {% if instance.show_date or instance.show_feed_title %}
-          <p class="news-meta mb-0">
+          <p class="news-meta {{ instance.extra_meta_classes|default:"" }}">
             {% if instance.show_date %}<strong>{{ item.published_from|date:"d.m.Y H:i" }} Uhr</strong>{% endif %}
               {% if instance.show_date and instance.show_feed_title %}<span class="meta-seperator"> </span>{% endif %}
             {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.username }}</i>{% endif %}
@@ -18,5 +18,8 @@
         {% endif %}
         <div class="news-summary">{{ item.summary }}</div>
     </div>
+    {% if instance.show_newsitem_separator and not forloop.last %}
+        <hr class="newsitem-separator">
+    {% endif %}
   {% endfor %}
 </div>
