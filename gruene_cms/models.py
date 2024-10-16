@@ -635,6 +635,8 @@ class WebDAVClient(models.Model):
         return tree
 
     def __str__(self):
+        if self.entry_path:
+            return f'{self.webdav_hostname} {self.entry_path}'
         return self.webdav_hostname
 
 
