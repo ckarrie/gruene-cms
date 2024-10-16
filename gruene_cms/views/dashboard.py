@@ -37,6 +37,10 @@ class TaskListView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.ListView)
     model = models.TaskItem
     template_name = 'gruene_cms/apps/dashboard/task_list.html'
 
+    def get_queryset(self):
+        qs = super(TaskListView, self).get_queryset()
+        return qs.order_by('created_at')
+
 
 class TaskEditView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.UpdateView):
     model = models.TaskItem
