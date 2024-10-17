@@ -1,6 +1,6 @@
-<li class="{{ tree_node.type }}">
+<li class="{{ tree_node.type }} level-{{ tree_node.level }}">
   <a href="{% url 'gruene_cms_dashboard:webdav_view_local_file' webdav_client_object.pk %}?path={{ tree_node.path }}" class="text-truncate {% if tree_node.path == current_item %}bg-primary-subtle{% endif %}">{{ tree_node.name }}</a>
-  <ul>
+  <ul class="level-{{ tree_node.level }}">
   {% for sub in tree_node.content %}
     {% include "gruene_cms/plugins/local_folder_items.html" with tree_node=sub %}
   {% endfor %}
