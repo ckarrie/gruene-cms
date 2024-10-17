@@ -1,5 +1,5 @@
 {% load static %}
-{% if show_expand_hint %}
+{% if not hide_expand_hint %}
   <p class="mb-1" style="font-size: small;">Zum Ausklappen auf <img src="{% static 'images/Icons-mini-folder.gif' %}" alt="Ordernsymbol" />klicken</p>
 {% endif %}
 <ul class="{{ extra_css_classes }}">
