@@ -187,9 +187,14 @@
 	{% render_block "js" %}
   <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
 	<script>
-		$(function () {
+	$(function () {
   		$('[data-toggle="tooltip"]').tooltip();
+		
+		$('.level-3').hide();
+		$('.level-2').click(function() {
+		    $(this).find('.level-3').slideToggle();
 		});
+	});
 	</script>
 </body>
 </html>
