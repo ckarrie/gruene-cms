@@ -34,6 +34,8 @@
 	font-family: "PT Sans";
 }
 
+
+
 span.aggregated-data-timestamp {
     font-size: 0.7rem;
     /* vertical-align: sub; */
@@ -66,6 +68,55 @@ span.aggregated-data-timestamp {
 
 .decoration-primary .btn {
     vertical-align: top;
+}
+
+
+/* Highlighted class, see https://afd-verbot.jetzt/de/abgeordnetentool for example */
+.highlighted {
+    position: relative;
+    display: inline-block;
+    font-weight: 900;
+}
+.highlighted:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    margin-left: -2%;
+    top: 30%;
+    left: 0;
+    height: 70%;
+    width: 104%;
+    transform: skewY(-4deg);
+    transform-origin: left bottom;
+    background: #FFF17A; /* Hier eine GRÜNE Farbe */
+}
+
+.highlighted.tanne:after {
+	background: #005538;
+}
+
+.highlighted.klee:after {
+	background: #008939;
+}
+
+.highlighted.grashalm:after {
+	background: #8ABD24;
+}
+
+.highlighted.sand:after {
+	background: #F5F1E9;
+}
+
+.highlighted.himmel:after {
+	background: #0BA1DD;
+}
+
+.highlighted.sonne:after {
+	background: #FFF17A;
+}
+
+.highlighted.pink:after {
+	background: #ff6dae;
 }
 
 .sunflower-background {
