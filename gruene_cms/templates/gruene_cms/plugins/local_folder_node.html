@@ -1,4 +1,5 @@
-<p class="mb-1 small">Klicke auf das Ordner-Icon, um diesen auszuklappen.</p>
+{% load static %}
+<p class="mb-1" style="font-size: small;">Zum Ausklappen auf <img src="{% static 'images/Icons-mini-folder.gif' %}" alt="Ordernsymbol" />klicken</p>
 <ul class="{{ extra_css_classes }}">
   {% if show_root_node %}
     {% include 'gruene_cms/plugins/local_folder_items.html' with tree_node=tree_items %}
