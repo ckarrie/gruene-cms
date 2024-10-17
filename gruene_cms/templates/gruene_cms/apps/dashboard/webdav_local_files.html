@@ -19,11 +19,11 @@
                 <span class="small">Dateityp: {{ content_type|default:"Ordner" }}</span>
 
                 {% if file_exists %}
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">Download</a>
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">Upload</a>
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">Download</a>
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">Upload</a>
                 {% else %}
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">Upload</a>
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">+ Ordner</a>
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">Upload</a>
+                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">+ Ordner</a>
                 {% endif %}
 
 
@@ -37,7 +37,7 @@
 
       <div class="col-xxl-3 col col-lg-12 overflow-auto">
 
-        <h3>Dateiliste</h3>
+        <h3>{{ object.entry_path }}</h3>
         {% include 'gruene_cms/plugins/local_folder_node.html' with hide_expand_hint=True show_root_node=False tree_items=tree_items current_item=requested_file extra_css_classes='folder-list small' %}
 
 
