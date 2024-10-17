@@ -613,14 +613,15 @@ class WebDAVClient(models.Model):
         client.download_sync(remote_path=self.entry_path, local_path=self.local_path)
 
     def get_tree_items(self):
-
-        def path_to_dict(path):
+        tree_level = 0
+        def path_to_dict(path, sub_level):
             d = OrderedDict()
             d['name'] = os.path.basename(path)
             d['path'] = path.replace(self.local_path, '')
+            d['level'] = sub_level
             if os.path.isdir(path):
                 d['type'] = "folder"
-                content = [path_to_dict(os.path.join(path, x)) for x in sorted(os.listdir(path))]
+                content = [path_to_dict(os.path.join(path, x), sub_level=sub_level + 1) for x in sorted(os.listdir(path))]
                 d['content'] = content
             else:
                 d['type'] = "file"
@@ -629,8 +630,9 @@ class WebDAVClient(models.Model):
                     d['type'] = "image"
             return d
 
-        tree = path_to_dict(self.local_path)
+        tree = path_to_dict(self.local_path, sub_level=tree_level + 1)
         tree['name'] = '/wolke'
+        tree['level'] = tree_level
 
         return tree
 
