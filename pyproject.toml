@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gruene"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="Christian Karrié", email="ckarrie@gmail.com" },
 ]
@@ -23,6 +23,7 @@ dependencies = [
   'webdavclient3',
   'django-markdownify',
   'pygments',
+  'odfpy',
 ]
 
 [project.urls]

@@ -1,12 +1,14 @@
 import mimetypes
 import os
 
+from odf.odf2xhtml import ODF2XHTML
+from markdownify.templatetags.markdownify import markdownify
+
 from django.db.models import Q
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from markdownify.templatetags.markdownify import markdownify
 
 from gruene_cms import models
 from gruene_cms import forms
@@ -69,6 +71,7 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
         is_image = False
         is_embed = False
         html_content = None
+        is_markdown = False
         embeddable = [
             #'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             #'application/vnd.oasis.opendocument.spreadsheet',
@@ -88,6 +91,18 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
             #html_content += markdownify(content)
             #print(html_content)
             html_content = content
+            is_markdown = True
+
+        if content_type in [
+            #'application/vnd.openxmlformats-officedocument.wordprocessingml.document',  # docx
+            'application/vnd.oasis.opendocument.spreadsheet',  # ods
+            'application/vnd.oasis.opendocument.text',  # odt
+            ]:
+            # for docx use this: https://github.com/thalescr/django-docx-import/blob/master/core/utils.py
+            odhandler = ODF2XHTML(generate_css=False, embedable=True)
+            result = odhandler.odf2xhtml(full_path)
+            #result = result.replace('<table>', '<table class="table">')
+            html_content = result
 
 
         ctx.update({
@@ -96,6 +111,7 @@ class WebDAVViewLocalFileView(AppHookConfigMixin, AuthenticatedOnlyMixin, generi
             'file_exists': file_exists,
             'is_image': is_image,
             'is_embed': is_embed,
+            'is_markdown': is_markdown,
             'content_type': content_type,
             'tree_items': self.object.get_tree_items(),
             'webdav_client_object': self.object,
@@ -111,10 +127,13 @@ class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
     def render_to_response(self, context, **response_kwargs):
         requested_file = self.request.GET.get('path')
         full_path = os.path.join(self.object.local_path + '/', requested_file[1:])
+        filename = os.path.basename(full_path)
         file_exists = os.path.isfile(full_path)
         if file_exists:
             content_type = mimetypes.guess_type(full_path)[0]
             file_data = open(full_path, 'rb').read()
-            return HttpResponse(file_data, content_type=content_type)
+            response = HttpResponse(file_data, content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return response
         return HttpResponse()
 
