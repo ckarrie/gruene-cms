@@ -20,7 +20,7 @@ pip install -e gruene-cms
 ```
 
 ## Pro Instanz
-siehe 
+siehe [docs/setup.md](docs/setup.md) für ein Bespiel der `settings.py`
 
 ### Setup Database
 `sudo -u postgres psql`
