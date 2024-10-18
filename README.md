@@ -20,42 +20,7 @@ pip install -e gruene-cms
 ```
 
 ## Pro Instanz
-```shell
-djangocms gruene_web
-nano gruene_web/gruene_web/settings.py
-```
-
-```python
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'YOUR_PUBLIC_IP']
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = ['https://gruene.tld']
-
-INSTALLED_APPS = [
-    ...
-    'gruene_cms',
-]
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gruene',
-        'USER': 'gruene',
-        'PASSWORD': 'gruene',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-LANGUAGE_CODE = 'de'
-
-LANGUAGES = [
-    ("de", _("German")),
-    ("en", _("English")),
-]
-
-TIME_ZONE = 'Europe/Berlin'
-
-SITE_ID = 1
-```
+siehe 
 
 ### Setup Database
 `sudo -u postgres psql`
