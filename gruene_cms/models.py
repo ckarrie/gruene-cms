@@ -403,7 +403,7 @@ class NewsItem(models.Model):
                     'src': _news_image.image.url,
                     'alt': _news_image.title,
                     'title': _news_image.title,
-                    'class': 'news-image'
+                    'class': 'news-image float-end imgshadow ms-5 mb-5 mt-sm-5 mt-md-1 img-fluid'
                 })
                 return _img_tag
             except IndexError:
@@ -430,7 +430,7 @@ class NewsItem(models.Model):
                     current_image_index += 1
 
         body = etree.tostring(root).decode()
-        print("rendered body", body)
+        #print("rendered body", body)
         return body
 
 

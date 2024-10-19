@@ -1,18 +1,12 @@
 /* header: fix logo / name distance */
 
-@media (min-width: 992px) {
-    .decoration-primary {
-        padding-right: 5rem;
-    }
-    .navbar-light .navbar-nav > .nav-item.active {
-        border-bottom: 4px solid #005437;
-    }
-    .navbar-light .navbar-nav .nav-link.active {
-        color: #005437;
-    }
+
+/* Small	sm	≥576px */
+@media (min-width: 768px) {
+
 }
 
-
+/* Medium	md	≥768px */
 @media (min-width: 768px) {
     .bloginfo .img-container {
         margin-right: 1.25rem;
@@ -28,7 +22,46 @@
     h5, .h5 {
         font-size: 22px;
     }
+
+    img.news-image {
+        max-width: 100%;
+        /*max-width: 50vw;*/
+        /*max-width: 50%;*/
+    }
 }
+
+/* Large	lg	≥992px */
+@media (min-width: 992px) {
+    .decoration-primary {
+        padding-right: 5rem;
+    }
+    .navbar-light .navbar-nav > .nav-item.active {
+        border-bottom: 4px solid #005437;
+    }
+    .navbar-light .navbar-nav .nav-link.active {
+        color: #005437;
+    }
+    img.news-image {
+        max-width: 50vw;
+    }
+}
+
+/* Extra large	xl	≥1200px */
+
+@media (min-width: 1200px) {
+    img.news-image {
+        max-width: 40vw;
+    }
+}
+
+/* Extra extra large	xxl	≥1400px */
+@media (min-width: 1400px) {
+    img.news-image {
+        max-width: 40%;
+    }
+}
+
+
 
 .theme--default .bloginfo h2 {
 	font-family: "PT Sans";

@@ -13,6 +13,10 @@ PAGE_NEWS_ID = "aktuelles"
 PAGE_DASHBOARD_ID = "dashboard"
 LANG = 'de'
 
+"""
+References:
+- djangoCMS API: https://docs.django-cms.org/en/latest/reference/api_references.html
+"""
 
 class Command(BaseCommand):
     help = "Creates basic gruenen cms"
