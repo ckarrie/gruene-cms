@@ -1,66 +1,5 @@
 /* header: fix logo / name distance */
 
-
-/* Small	sm	≥576px */
-@media (min-width: 768px) {
-
-}
-
-/* Medium	md	≥768px */
-@media (min-width: 768px) {
-    .bloginfo .img-container {
-        margin-right: 1.25rem;
-    }
-    
-    .decoration-primary {
-        padding-right: 3.75rem;
-    }
-    h4, .h4 {
-        font-size: 24px;
-    }
-
-    h5, .h5 {
-        font-size: 22px;
-    }
-
-    img.news-image {
-        max-width: 100%;
-        /*max-width: 50vw;*/
-        /*max-width: 50%;*/
-    }
-}
-
-/* Large	lg	≥992px */
-@media (min-width: 992px) {
-    .decoration-primary {
-        padding-right: 5rem;
-    }
-    .navbar-light .navbar-nav > .nav-item.active {
-        border-bottom: 4px solid #005437;
-    }
-    .navbar-light .navbar-nav .nav-link.active {
-        color: #005437;
-    }
-    img.news-image {
-        max-width: 50vw;
-    }
-}
-
-/* Extra large	xl	≥1200px */
-
-@media (min-width: 1200px) {
-    img.news-image {
-        max-width: 40vw;
-    }
-}
-
-/* Extra extra large	xxl	≥1400px */
-@media (min-width: 1400px) {
-    img.news-image {
-        max-width: 40%;
-    }
-}
-
 /* Bootstrap/Sunflower fixes */
 
 .theme--default .bloginfo h2 {
@@ -75,6 +14,44 @@ span.aggregated-data-timestamp {
 
 .questa_slab {
     font-family: 'Questa Slab' !important;
+}
+
+/* Radial Backgrounds, from https://www.gruene-bundestag.de/ footer */
+
+.radial-bg-1 {
+    background-image: radial-gradient(circle closest-side at center, #01a147 0, #01a647 8%, rgba(61, 149, 186, 0) 100%);
+    background-repeat: no-repeat;
+    bottom: 60%;
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    right: -2%;
+    transform: translate(50%, 50%);
+    width: 100%;
+}
+
+.radial-bg-2 {
+    background-image: radial-gradient(circle closest-side at center, #3d95ba 0, #3d95ba 33%, rgba(61, 149, 186, 0) 100%);
+    background-repeat: no-repeat;
+    height: 180%;
+    pointer-events: none;
+    position: absolute;
+    right: -5%;
+    top: 0;
+    transform: translate(50%, -50%);
+    width: 100%;
+}
+
+.radial-bg-3 {
+    background-image: radial-gradient(circle closest-side at center, #6eb22a 0, #79ba28 20%, rgba(61, 149, 186, 0) 100%);
+    background-repeat: no-repeat;
+    height: 190%;
+    left: -10%;
+    pointer-events: none;
+    position: absolute;
+    top: 114%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
 /* Custom elements: Raute-Hintergrund */
@@ -221,4 +198,105 @@ span.aggregated-data-timestamp {
 .folder-list li > ul, .folder-list li > ol {
     margin-bottom: 0;
     margin-left: 0;
+}
+
+
+/* Media Querys - overwriting existing styles */
+
+
+/* Small	sm	≥576px */
+@media (min-width: 768px) {
+    
+}
+
+/* Medium	md	≥768px */
+@media (min-width: 768px) {
+    .bloginfo .img-container {
+        margin-right: 1.25rem;
+    }
+    
+    .decoration-primary {
+        padding-right: 3.75rem;
+    }
+    h4, .h4 {
+        font-size: 24px;
+    }
+
+    h5, .h5 {
+        font-size: 22px;
+    }
+
+    img.news-image {
+        max-width: 100%;
+        /*max-width: 50vw;*/
+        /*max-width: 50%;*/
+    }
+    
+    .radial-bg-1 {
+        bottom: -6%;
+        right: 10%;
+    }
+    .radial-bg-2 {
+        right: -5%;
+        top: 0;
+    }
+    .radial-bg-3 {
+        left: -7%;
+        top: -25%;
+    }
+}
+
+/* Large	lg	≥992px */
+@media (min-width: 992px) {
+    .decoration-primary {
+        padding-right: 5rem;
+    }
+    .navbar-light .navbar-nav > .nav-item.active {
+        border-bottom: 4px solid #005437;
+    }
+    .navbar-light .navbar-nav .nav-link.active {
+        color: #005437;
+    }
+    img.news-image {
+        max-width: 50vw;
+    }
+    .radial-bg-1 {
+        bottom: -15%;
+        right: 8%;
+    }
+    .radial-bg-2 {
+        right: -15%;
+        top: -20%;
+    }
+    .radial-bg-3 {
+        left: -27%;
+        top: -27%;
+    }
+}
+
+/* Extra large	xl	≥1200px */
+
+@media (min-width: 1200px) {
+    img.news-image {
+        max-width: 40vw;
+    }
+    .radial-bg-1 {
+        bottom: -20%;
+        right: 5%;
+    }
+    .radial-bg-2 {
+        right: -5%;
+        top: -20%;
+    }
+    .radial-bg-3 {
+        left: -10%;
+        top: -21%;
+    }
+}
+
+/* Extra extra large	xxl	≥1400px */
+@media (min-width: 1400px) {
+    img.news-image {
+        max-width: 40%;
+    }
 }
