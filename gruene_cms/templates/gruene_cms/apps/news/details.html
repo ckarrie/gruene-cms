@@ -8,19 +8,24 @@
 {% endblock %}
 
 {% block content %}
+
   <div class="container pt-5">
+    <nav>
+
+    </nav>
     <div class="row">
       <div class="col col-12">
-        <h2 class="news-title">{{ object.title }}</h2>
+        <h1 class="news-title text-primary text-center">{{ object.title }}</h1>
         {% if object.subtitle %}
-          <h3>{{ object.subtitle }}</h3>
+          <h2 class="text-primary text-center">{{ object.subtitle }}</h2>
         {% endif %}
-        <p>
+        <p class="text-primary text-center">
           <strong>{{ object.published_from|date:"SHORT_DATE_FORMAT" }}</strong>
           <small>
             vor {{ object.published_from|timesince }}
           </small>
         </p>
+        <div class="p-5"></div>
         {% if object.summary %}
           <div class="news-summary">
             {{ object.summary }}
