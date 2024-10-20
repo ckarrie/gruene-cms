@@ -191,9 +191,10 @@
   		$('[data-toggle="tooltip"]').tooltip();
 		
 		$('.level-3').hide();
-		$('.level-2').click(function() {
+		$('.level-2.folder').click(function() {
 		    $(this).find('.level-3').slideToggle();
 		});
+		
 	});
 	</script>
 	{% block js_end %}
