@@ -42,7 +42,7 @@
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="{{ request.META.HTTP_HOST }}">
+  <meta property="twitter:domain" content="https://{{ request.META.HTTP_HOST }}">
   <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
   <meta name="twitter:title" content="{% page_attribute "page_title" %}">
   <meta name="twitter:description" content="{% page_attribute "meta_description" %}">
@@ -109,7 +109,7 @@
 		<div class="container-fluid bloginfo bg-primary">
 			<div class="container d-flex align-items-center">
 				<div class="img-container sunflower-logo">
-					<a href="/" rel="home" aria-current="page" title="Sunflower 2.2.0">
+					<a href="/" rel="home" aria-current="page" title="{% page_attribute "title" request.current_page.get_root %}">
 					  <img src="{% static 'images/sunflower.svg' %}" class="" alt="Sonnenblume - Logo">
 				  </a>
 			  </div>
@@ -124,7 +124,7 @@
 					<!--<a href="https://sunflower-theme.de" class="d-block h5 text-white bloginfo-name no-link">BÜNDNIS 90/DIE GRÜNEN</a>-->
 					<h2 class="d-block text-white mb-0 bloginfo-description">
 						{% block page_subtitle %}
-              <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+              <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
               {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
 
               <!-- {% page_attribute "page_title" %} -->

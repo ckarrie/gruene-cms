@@ -83,3 +83,25 @@ Add it to `gruenen_v1.html` Template
     <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}">
 </head>
 ```
+
+# Deploy
+## Static files
+
+- create a dir accessible for nginx (www-data) user:
+  
+  `mkdir /var/www/gruene`
+
+- open `settings.py` and set `STATIC_ROOT` to `/var/www/gruene`
+- run as user `root`:
+  - `cd <your venv>`
+  - `python3 <project>/manage.py collectstatic` (optional with `--noinput`)
+- add to nginx conf:
+  
+## Media files
+- sudo chmod 755 /home/ckw/
+- sudo chmod 755 /home/ckw/venvs/gruene_venv/media
+- add to nginx conf:
+   location /media {
+        alias /home/ckw/venvs/gruene_venv/media; 
+   }
+- sudo service nginx restart

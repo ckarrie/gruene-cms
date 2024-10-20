@@ -116,4 +116,6 @@ class Command(BaseCommand):
             self.style.SUCCESS(f'Created Page {dashboard_page.get_page_title()} id={dashboard_page.pk}')
         )
 
+        cms_api.add_plugin("content")
+
 

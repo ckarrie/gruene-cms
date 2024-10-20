@@ -1,0 +1,6 @@
+{
+    "python.defaultInterpreterPath": "/home/ckarrie/workspace/venvs/gruene_venv/bin/python",
+    "ruff.interpreter": [
+        "/home/ckarrie/workspace/venvs/gruene_venv/bin/python"
+    ]
+}
