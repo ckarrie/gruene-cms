@@ -196,7 +196,7 @@ span.aggregated-data-timestamp {
     font-size: small;
 }
 
-.news-subtitle {
+.theme--default h2.news-subtitle {
     font-family: 'Questa Slab';
 }
 
