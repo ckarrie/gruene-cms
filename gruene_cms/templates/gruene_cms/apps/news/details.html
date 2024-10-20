@@ -17,13 +17,13 @@
       <div class="col col-12">
         <h1 class="news-title text-primary text-center">{{ object.title }}</h1>
         {% if object.subtitle %}
-          <h2 class="news-subtitle text-primary text-center">{{ object.subtitle }}</h2>
+          <h2 class="news-subtitle text-secondary text-center">{{ object.subtitle }}</h2>
         {% endif %}
-        <p class="text-primary text-center">
-          <strong>{{ object.published_from|date:"SHORT_DATE_FORMAT" }}</strong>
-          <small>
+        <p class="text-primary text-center fw-bold questa_slab">
+          {{ object.published_from|date:"SHORT_DATE_FORMAT" }}
+        </p>
+        <p class="text-primary text-center small questa_slab">
             vor {{ object.published_from|timesince }}
-          </small>
         </p>
         <div class="p-5"></div>
         {% if object.summary %}

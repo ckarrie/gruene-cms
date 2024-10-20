@@ -73,6 +73,10 @@ span.aggregated-data-timestamp {
     font-family: 'PT Sans';
 }
 
+.questa_slab {
+    font-family: 'Questa Slab' !important;
+}
+
 /* Custom elements: Raute-Hintergrund */
 
 .decoration-primary:before {
