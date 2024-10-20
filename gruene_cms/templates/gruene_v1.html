@@ -2,7 +2,7 @@
 {% load cms_tags menu_tags sekizai_tags static i18n %}
 <html lang="{{ LANGUAGE_CODE }}" class="theme--default">
 <head>
-  <title>{% page_attribute "page_title" %}</title>
+  <title>{% block page_title %}{% if request.current_page.is_home %}{% page_attribute "page_title" %}{% else %}{% page_attribute "page_title" %} | {% page_attribute "page_title" request.current_page.get_root %}{%endif %}{% endblock %}</title>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>

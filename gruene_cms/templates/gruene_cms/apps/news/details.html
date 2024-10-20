@@ -1,7 +1,7 @@
 {% extends "gruene_v1.html" %}
 {% load cms_tags menu_tags sekizai_tags static i18n %}
 {% block page_subtitle %}
-  <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+  <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
   {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
 
   <!-- {% page_attribute "page_title" %} -->

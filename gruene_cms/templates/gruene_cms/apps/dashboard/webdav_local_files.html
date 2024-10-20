@@ -1,7 +1,7 @@
 {% extends "gruene_v1.html" %}
 {% load cms_tags menu_tags sekizai_tags static i18n django_bootstrap5 markdownify %}
 {% block page_subtitle %}
-  <a class="text-white" href="/">{% page_attribute "page_title" current_page.get_root %}</a>
+  <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
   {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
 
   <!-- {% page_attribute "page_title" %} -->
@@ -33,8 +33,6 @@
       </div>
     </div>
     <div class="row-cols-1 row g-5 row-cols-xxl-4 row-cols-md-12 row-cols-lg-2 row-cols-sm-1 row-cols-xl-2">
-
-
       <div class="col-xxl-3 col col-lg-12 overflow-auto">
 
         <h3>{{ object.entry_path }}</h3>
