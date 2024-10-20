@@ -1,97 +1,101 @@
 <!DOCTYPE html>
-{% load cms_tags menu_tags sekizai_tags static i18n %}
+{% load cms_tags menu_tags sekizai_tags static i18n djangocms_alias_tags %}
 <html lang="{{ LANGUAGE_CODE }}" class="theme--default">
-<head>
-  <title>{% block page_title %}{% if request.current_page.is_home %}{% page_attribute "page_title" %}{% else %}{% page_attribute "page_title" %} | {% page_attribute "page_title" request.current_page.get_root %}{%endif %}{% endblock %}</title>
-  <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-  <link rel="icon" href="{% static "sunflower-v2.2.0/assets/img/sunflower.svg" %}" type="image/svg+xml" sizes="any">
-  <link rel="icon" href="{% static "sunflower-v2.2.0/assets/img/favicon-48x48.png" %}" type="image/png" sizes="48x48">
-  <style>
+  <head>
+    <title>
+      {% block page_title %}
+        {% if request.current_page.is_home %}
+          {% page_attribute 'page_title' %}
+        {% else %}
+          {% page_attribute 'page_title' %}|{% page_attribute 'page_title' request.current_page.get_root %}
+        {% endif %}
+      {% endblock %}
+    </title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="icon" href="{% static 'sunflower-v2.2.0/assets/img/sunflower.svg' %}" type="image/svg+xml" sizes="any" />
+    <link rel="icon" href="{% static 'sunflower-v2.2.0/assets/img/favicon-48x48.png' %}" type="image/png" sizes="48x48" />
+    <style>
   @font-face{font-family:"PT Sans";font-style:normal;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.ttf') format('truetype');font-stretch:normal;}
   @font-face{font-family:"PT Sans";font-style:italic;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.ttf') format('truetype');font-stretch:normal;}
   @font-face{font-family:"PT Sans";font-style:normal;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.ttf') format('truetype');font-stretch:normal;}
   @font-face{font-family:"PT Sans";font-style:italic;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.ttf') format('truetype');font-stretch:normal;}
   @font-face{font-family:GruenType;font-style:bold;font-weight:900;font-display:block;src:url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.ttf') format('truetype');font-stretch:normal;}
-  @font-face{font-family:"Questa Slab";font-style: normal;font-weight: normal;src: url('{% static "fonts/Questa_Slab_Regular_25.woff" %}') format('woff');
-  }  
+  @font-face{font-family:"Questa Slab";font-style: normal;font-weight: normal;src:url('/static/fonts/Questa_Slab_Regular_25.woff') format('woff');}
 </style>
-  <link rel="stylesheet" href="{% static 'sunflower-v2.2.0/style.css' %}">
-  <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}">
-  <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}">
-  {% render_block "css" %}
-	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'sunflower-v2.2.0/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}" />
+    <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}" />
+    {% render_block 'css' %}
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 
-  <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'js/chartjs-4.2.1/chart.umd.min.js' %}"></script>
-  
-  <!-- SEO -->
-  <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-  <meta name="description" content="{% page_attribute "meta_description" %}" />
-  <link rel="canonical" href="{{ request.META.HTTP_HOST }}" />
-  
+    <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/chartjs-4.2.1/chart.umd.min.js' %}"></script>
 
-  <!-- Facebook Meta Tags -->
-  <meta property="og:url" content="{{ request.build_absolute_uri }}">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="{% page_attribute "page_title" %}">
-  <meta property="og:description" content="{% page_attribute "meta_description" %}">
-  <meta property="og:image" content="{% static "sunflower-v2.2.0/assets/img/logo-diegruenen.png" %}">
-  <meta property="og:locale" content="de_DE" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="{% page_attribute "page_title" request.current_page.get_root %}" />
+    <!-- SEO -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="description" content="{% page_attribute 'meta_description' %}" />
+    <link rel="canonical" href="{{ request.META.HTTP_HOST }}" />
 
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="https://{{ request.META.HTTP_HOST }}">
-  <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
-  <meta name="twitter:title" content="{% page_attribute "page_title" %}">
-  <meta name="twitter:description" content="{% page_attribute "meta_description" %}">
-  <meta name="twitter:image" content="{% static "sunflower-v2.2.0/assets/img/logo-diegruenen.png" %}">
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{% page_attribute 'page_title' %}" />
+    <meta property="og:description" content="{% page_attribute 'meta_description' %}" />
+    <meta property="og:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{% page_attribute 'page_title' request.current_page.get_root %}" />
 
-  <!-- TODO-->
-  <meta property="article:modified_time" content="2024-09-09T08:03:28+00:00" />
-</head>
-<body class="home page-template-default page">
-  {% cms_toolbar %}
-        
-  <header id="masthead" class="site-header">
-		<nav class="navbar navbar-top d-none d-lg-block navbar-expand-lg navbar-dark p-0 topmenu" aria-label="Navigation Topmenü">
-			<div class="container">
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topmenu-container" aria-controls="topmenu-container" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse justify-content-between" id="topmenu-container">
-					<div class="social-media-profiles d-none d-md-flex"></div>
-					<div class="d-flex">
-					  <ul id="topmenu" class="navbar-nav small">
-              <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-					      <a title="German" href="/de/" class="nav-link">DE</a>
-				      </li>
-              <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-					      <a title="English" href="/en/" class="nav-link">EN</a>
-				      </li>
-							<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-					      <a title="GRÜNEN Rheinland-Pfalz" href="https://gruene-rlp.de" class="nav-link">GRÜNEN RLP</a>
-				      </li>
-							{% if user.is_authenticated %}
-								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-									<a title="Dashboard" href="/de/mitglieder-dashboard/" class="nav-link">Dashboard</a>
-								</li>
-								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-									<a title="Benutzer abmelden" href="{% url 'admin:logout' %}?next=/" class="nav-link">Abmelden</a>
-								</li>
-							{% else %}
-								<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-									<a title="Login" href="?toolbar_on" class="nav-link">Anmelden</a>
-								</li>
-							{% endif %}
-					    <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1916" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-					      <a title="Quellcode" href="https://github.com/ckarrie/gruene-cms" class="nav-link">Quellcode</a>
-				      </li>
-            </ul>
-            <!--
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="https://{{ request.META.HTTP_HOST }}" />
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}" />
+    <meta name="twitter:title" content="{% page_attribute 'page_title' %}" />
+    <meta name="twitter:description" content="{% page_attribute 'meta_description' %}" />
+    <meta name="twitter:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}" />
+
+    <!-- TODO -->
+    <meta property="article:modified_time" content="2024-09-09T08:03:28+00:00" />
+  </head>
+  <body class="home page-template-default page">
+    {% cms_toolbar %}
+
+    <header id="masthead" class="site-header">
+      <nav class="navbar navbar-top d-none d-lg-block navbar-expand-lg navbar-dark p-0 topmenu" aria-label="Navigation Topmenü">
+        <div class="container">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topmenu-container" aria-controls="topmenu-container" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse justify-content-between" id="topmenu-container">
+            <div class="social-media-profiles d-none d-md-flex"></div>
+            <div class="d-flex">
+              <ul id="topmenu" class="navbar-nav small">
+                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                  <a title="German" href="/de/" class="nav-link">DE</a>
+                </li>
+                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                  <a title="English" href="/en/" class="nav-link">EN</a>
+                </li>
+                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                  <a title="GRÜNEN Rheinland-Pfalz" href="https://gruene-rlp.de" class="nav-link">GRÜNEN RLP</a>
+                </li>
+                {% if user.is_authenticated %}
+                  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                    <a title="Dashboard" href="/de/mitglieder-dashboard/" class="nav-link">Dashboard</a>
+                  </li>
+                  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                    <a title="Benutzer abmelden" href="{% url 'admin:logout' %}?next=/" class="nav-link">Abmelden</a>
+                  </li>
+                {% else %}
+                  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                    <a title="Login" href="?toolbar_on" class="nav-link">Anmelden</a>
+                  </li>
+                {% endif %}
+                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1916" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                  <a title="Quellcode" href="https://github.com/ckarrie/gruene-cms" class="nav-link">Quellcode</a>
+                </li>
+              </ul>
+              <!-- 
             <form class="form-inline my-2 my-md-0 search d-flex" action="https://sunflower-theme.de">
 							<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche"	value="">
 							<input type="submit" class="d-none" value="Suche" aria-label="Suche">
@@ -99,67 +103,57 @@
 						<button class="show-search me-3" title="zeige Suche" aria-label="zeige Suche">
 							<i class="fas fa-search"></i>
 						</button>
-						-->
-						<button class="d-none show-contrast" title="Kontrast erhöhen" aria-label="Kontrast erhöhen">
-							<i class="fab fa-accessible-icon"></i>
-						</button>
-					</div>
-				</div>
-			</div>
-		</nav>
-		
-		<div class="container-fluid bloginfo bg-primary">
-			<div class="container d-flex align-items-center">
-				<div class="img-container sunflower-logo">
-					<a href="/" rel="home" aria-current="page" title="{% page_attribute "title" request.current_page.get_root %}">
-					  <img src="{% static 'images/sunflower.svg' %}" class="" alt="Sonnenblume - Logo">
-				  </a>
-			  </div>
-				<div>
-					<h1 class="d-block h5 text-white bloginfo-name">
-            {% block page_maintitle %}
-              <a href="/" class="text-white">
-                BÜNDNIS 90/DIE GRÜNEN
-              </a>
-            {% endblock %}
-					</h1>
-					<!--<a href="https://sunflower-theme.de" class="d-block h5 text-white bloginfo-name no-link">BÜNDNIS 90/DIE GRÜNEN</a>-->
-					<h2 class="d-block text-white mb-0 bloginfo-description">
-						{% block page_subtitle %}
-              <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
-              {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+						 -->
+              <button class="d-none show-contrast" title="Kontrast erhöhen" aria-label="Kontrast erhöhen"><i class="fab fa-accessible-icon"></i></button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
-              <!-- {% page_attribute "page_title" %} -->
-            {% endblock %}
-					</h2>
-					<!--
+      <div class="container-fluid bloginfo bg-primary">
+        <div class="container d-flex align-items-center">
+          <div class="img-container sunflower-logo">
+            <a href="/" rel="home" aria-current="page" title="{% page_attribute 'title' request.current_page.get_root %}"><img src="{% static 'images/sunflower.svg' %}" class="" alt="Sonnenblume - Logo" /></a>
+          </div>
+          <div>
+            <h1 class="d-block h5 text-white bloginfo-name">
+              {% block page_maintitle %}
+                <a href="/" class="text-white">BÜNDNIS 90/DIE GRÜNEN</a>
+              {% endblock %}
+            </h1>
+            <!-- <a href="https://sunflower-theme.de" class="d-block h5 text-white bloginfo-name no-link">BÜNDNIS 90/DIE GRÜNEN</a> -->
+            <h2 class="d-block text-white mb-0 bloginfo-description">
+              {% block page_subtitle %}
+                <a class="text-white" href="/">{% page_attribute 'title' request.current_page.get_root %}</a>
+                {% show_breadcrumb 1 'gruene_cms/breadcrumb.html' %}
+
+                <!-- {% page_attribute "page_title" %} -->
+              {% endblock %}
+            </h2>
+            <!-- 
 					<a href="https://sunflower-theme.de" class="d-block text-white mb-0 bloginfo-description no-link">{% page_attribute "page_title" %}</a>
-					-->
-				</div>
-			</div>
-		</div>
-		
-		
-	</header>
-	
-	<nav class="navbar navbar-main navbar-expand-lg navbar-light bg-white" aria-label="Hauptmenü mobile Ansicht">
-		<div class="container">
-		  <a class="navbar-brand" href="/">
-		    <img src="{% static 'images/sunflower.svg' %}" class="sunflower-logo" alt="Sonnenblume - Logo" title="{% page_attribute "page_title" current_page.get_root %}">
-	    </a>
+					 -->
+          </div>
+        </div>
+      </div>
+    </header>
 
-			<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu-container" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
-				<i class="fas fa-times close"></i>
-				<i class="fas fa-bars open"></i>
-			</button>
-			
-			<div class="collapse navbar-collapse" id="mainmenu-container">
-				<ul id="mainmenu" class="navbar-nav mr-auto">
-					<!-- Home -->
-					{% show_menu 0 0 0 0 "gruene_cms/menu.html" %}
-					<!-- Subpages -->
-					{% show_menu 1 1 0 1 "gruene_cms/menu.html" %}
-					<!--
+    <nav class="navbar navbar-main navbar-expand-lg navbar-light bg-white" aria-label="Hauptmenü mobile Ansicht">
+      <div class="container">
+        <a class="navbar-brand" href="/"><img src="{% static 'images/sunflower.svg' %}" class="sunflower-logo" alt="Sonnenblume - Logo" title="{% page_attribute 'page_title' current_page.get_root %}" /></a>
+
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu-container" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-times close"></i>
+          <i class="fas fa-bars open"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainmenu-container">
+          <ul id="mainmenu" class="navbar-nav mr-auto">
+            <!-- Home -->
+            {% show_menu 0 0 0 0 'gruene_cms/menu.html' %}
+            <!-- Subpages -->
+            {% show_menu 1 1 0 1 'gruene_cms/menu.html' %}
+            <!-- 
 				  <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-5" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item active menu-item-5 nav-item">
 				    <a title="Startseite" href="/demo" class="nav-link" aria-current="page">Startseite</a>
 				  </li>
@@ -191,33 +185,35 @@
           <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-77" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-77 nav-item"><a title="Aktuelles" href="https://sunflower-theme.de/demo/category/aktuelles/" class="nav-link">Aktuelles</a></li>
           <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-207" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-207 nav-item"><a title="Anträge" href="https://sunflower-theme.de/demo/category/antraege/" class="nav-link">Anträge</a></li>
           <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-64" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64 nav-item"><a title="Kontakt" href="https://sunflower-theme.de/demo/kontakt/" class="nav-link">Kontakt</a></li>
-          -->
-        </ul>
-        <!--
+           -->
+          </ul>
+          <!-- 
 				<form class="form-inline my-2 mb-2 search d-block d-lg-none" action="https://sunflower-theme.de/demo">
 					<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche" value="">
 					<input type="submit" class="d-none" value="Suche" aria-label="Suche">
 				</form>
-				-->
-			</div>
-		</div>
-	</nav>
-	{% comment %}
-	<div class="container-fluid">
-        <div class="container d-flex align-items-center">
-        {% placeholder "content" %}
-   
-        </div>      
-  </div>
-  {% endcomment %}
-  <main>
-    {% block content %}
-      {% placeholder "content" %}
-    {% endblock %}
-  </main>
-	{% render_block "js" %}
-  <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
-	<script>
+				 -->
+        </div>
+      </div>
+    </nav>
+    {% comment %}
+    <div class="container-fluid">
+      <div class="container d-flex align-items-center">
+        {% placeholder 'content' %}
+      </div>
+    </div>
+    {% endcomment %}
+    <main>
+      {% block content %}
+        {% placeholder 'content' %}
+      {% endblock %}
+    </main>
+    <footer>
+      {% static_alias 'footer' %}
+    </footer>
+    {% render_block 'js' %}
+    <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
+    <script>
 	$(function () {
   		$('[data-toggle="tooltip"]').tooltip();
 		
@@ -228,7 +224,9 @@
 		
 	});
 	</script>
-	{% block js_end %}
-	{% endblock %}
-</body>
+
+    {% block js_end %}
+
+    {% endblock %}
+  </body>
 </html>
