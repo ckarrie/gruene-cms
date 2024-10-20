@@ -626,7 +626,7 @@ class WebDAVClient(models.Model):
             else:
                 d['type'] = "file"
                 d['mtype'] = mimetypes.guess_type(d['name'])[0]
-                if d['mtype'].startswith('image/'):
+                if d['mtype'] and d['mtype'].startswith('image/'):
                     d['type'] = "image"
             return d
 
