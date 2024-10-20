@@ -22,6 +22,8 @@ footer .radial-main a, footer .radial-main a:hover, footer .radial-main a:focus,
     text-decoration-color: #FFF17A;
 }
 
+/* Footer + Radial */
+
 footer .radial-main a:hover {
     color: #fff;
     text-decoration-line: underline;
