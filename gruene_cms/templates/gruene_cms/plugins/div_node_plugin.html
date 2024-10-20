@@ -1,0 +1,17 @@
+{% load cms_tags %}
+<div class="radial-main {{ instance.div_classes }}">
+  {% if instance.enable_radial_bg_1 %}
+    <div class="radial-bg-1"></div>
+  {% endif %}
+  {% if instance.enable_radial_bg_2 %}
+    <div class="radial-bg-2"></div>
+  {% endif %}
+  {% if instance.enable_radial_bg_3 %}
+    <div class="radial-bg-3"></div>
+  {% endif %}
+  {% for plugin in instance.child_plugin_instances %}
+    <div class="radial-plugin">
+      {% render_plugin plugin %}
+    </div>
+  {% endfor %}
+</div>

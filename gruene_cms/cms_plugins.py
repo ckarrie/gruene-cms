@@ -3,7 +3,7 @@ from cms.plugin_pool import plugin_pool
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .models import AggregatedDataNode, \
+from .models import AggregatedDataNode, DivNode, \
     GrueneCMSImageBackgroundNode, \
     GrueneCMSAnimateTypingNode, \
     LimitUserGroupNode, \
@@ -257,7 +257,7 @@ class LocalFolderNodePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super(LocalFolderNodePlugin, self).render(context, instance, placeholder)
-        user = context['request'].user
+        #user = context['request'].user
         tree_items = instance.webdav_client.get_tree_items(
             # include_root_node=instance.show_root_node
         )
@@ -268,3 +268,14 @@ class LocalFolderNodePlugin(CMSPluginBase):
             'extra_css_classes': instance.extra_css_classes,
         })
         return context
+
+
+@plugin_pool.register_plugin
+class DivNodePlugin(CMSPluginBase):
+    model = DivNode
+    name = _('Div Element')
+    text_enabled = False
+    allow_children = True
+    cache = False
+    module = module_name
+    render_template = 'gruene_cms/plugins/div_node_plugin.html'

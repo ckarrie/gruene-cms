@@ -648,3 +648,10 @@ class LocalFolderNode(CMSPlugin):
     show_root_node = models.BooleanField(default=False)
     extra_css_classes = models.CharField(max_length=255, default='folder-list small')
 
+
+class DivNode(CMSPlugin):
+    div_classes = models.CharField(max_length=255, default='container')
+    extra_css_classes = models.CharField(max_length=255, null=True, blank=True)
+    enable_radial_bg_1 = models.BooleanField(default=False)
+    enable_radial_bg_2 = models.BooleanField(default=False)
+    enable_radial_bg_3 = models.BooleanField(default=False)

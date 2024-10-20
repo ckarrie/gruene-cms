@@ -16,7 +16,26 @@ span.aggregated-data-timestamp {
     font-family: 'Questa Slab' !important;
 }
 
+footer .radial-main a, footer .radial-main a:hover, footer .radial-main a:focus, footer .radial-main a:active {
+    color: #fff;
+    text-decoration-line: underline;
+    text-decoration-color: #FFF17A;
+}
+
+footer .radial-main a:hover {
+    color: #fff;
+    text-decoration-line: underline;
+    text-decoration-thickness: 4px;
+}
+
 /* Radial Backgrounds, from https://www.gruene-bundestag.de/ footer */
+
+.radial-main {
+    background: #067840;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+}
 
 .radial-bg-1 {
     background-image: radial-gradient(circle closest-side at center, #01a147 0, #01a647 8%, rgba(61, 149, 186, 0) 100%);
