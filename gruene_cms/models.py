@@ -403,7 +403,7 @@ class NewsItem(models.Model):
                     'src': _news_image.image.url,
                     'alt': _news_image.title,
                     'title': _news_image.title,
-                    'class': 'news-image float-end imgshadow ms-5 mb-5 mt-sm-5 mt-md-1 img-fluid'
+                    'class': 'news-image float-md-end imgshadow mt-sm-5 mb-sm-5 ms-md-5 rounded-3 img-fluid'
                 })
                 return _img_tag
             except IndexError:
