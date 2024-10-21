@@ -274,6 +274,19 @@ nav.subpages.justify-content-center .navbar-collapse {
     margin-left: 0;
 }
 
+/* accordion */
+
+.accordion-button {
+    padding: 0.25rem 1rem;
+}
+
+.accordion-header {
+    opacity: 0.25;
+}
+
+.accordion-header:hover {
+    opacity: 1;
+}
 
 /* Media Querys - overwriting existing styles */
 
