@@ -7,7 +7,7 @@
         {% if request.current_page.is_home %}
           {% page_attribute 'page_title' %}
         {% else %}
-          {% page_attribute 'page_title' %}|{% page_attribute 'page_title' request.current_page.get_root %}
+          {% page_attribute 'page_title' %} | {% page_attribute 'page_title' request.current_page.get_root %}
         {% endif %}
       {% endblock %}
     </title>

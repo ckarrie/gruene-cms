@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../venvs/gruene_venv"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
