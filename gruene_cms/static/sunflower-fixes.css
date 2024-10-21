@@ -230,7 +230,7 @@ nav.subpages.navbar-light .navbar-nav > .nav-item:hover {
     border-bottom: 4px solid #0BA1DD;
 }
 
-.justify-content-center nav.subpages .navbar-expand-md .navbar-collapse {
+nav.subpages.justify-content-center .navbar-collapse {
     justify-content: center;
 }
 
