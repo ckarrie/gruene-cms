@@ -226,6 +226,15 @@ nav.subpages.navbar-light .navbar-nav > .nav-item {
     border-bottom: 4px solid #005437;
 }
 
+nav.subpages.navbar-light .navbar-nav > .nav-item:hover {
+    border-bottom: 4px solid #0BA1DD;
+}
+
+.justify-content-center nav.subpages .navbar-expand-md .navbar-collapse {
+    justify-content: center;
+}
+
+
 /* gruene_cms Calendar Plugin */
 
 .calendarnode {
