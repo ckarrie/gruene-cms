@@ -108,7 +108,7 @@ footer .radial-main a:hover {
 .highlighted {
     position: relative;
     display: inline-block;
-    font-weight: 900;
+    /* font-weight: 900; */
 }
 .highlighted:after {
     content: "";
@@ -122,6 +122,10 @@ footer .radial-main a:hover {
     transform: skewY(-4deg);
     transform-origin: left bottom;
     background: #FFF17A; /* Hier eine GRÜNE Farbe */
+}
+
+.highlighted.tanne {
+    color: #F5F1E9;
 }
 
 .highlighted.tanne:after {
@@ -152,6 +156,41 @@ footer .radial-main a:hover {
 	background: #ff6dae;
 }
 
+/* "rich-text" aka Marker Link */
+:root {
+    --mark-height: 0.8em;
+    --mark-color: #fff17a;
+    --mark-skew: calc(var(--mark-height) / 100 * 22.5);
+    --mark-overlap: 0.3em
+}
+.rich-text a {
+    cursor: pointer;
+    --tw-text-opacity: 1;
+    color: rgb(0 84 55/var(--tw-text-opacity));
+    text-decoration-line: underline;
+    text-underline-offset: 4px
+}
+
+.rich-text a:active,.rich-text a:hover {
+    text-decoration-line: none;
+    margin-inline:calc(var(--mark-overlap) * -1);padding-inline: var(--mark-overlap);
+    background-color: transparent;
+    background-image: linear-gradient(to bottom right,transparent 0 50%,var(--mark-color) 50% 100%),linear-gradient(var(--mark-color),var(--mark-color)),linear-gradient(to top left,transparent 50%,var(--mark-color) 50%);
+    background-size: calc(var(--mark-skew)) calc(var(--mark-height)),calc(100% - var(--mark-skew) * 2 + .5px) var(--mark-height),calc(var(--mark-skew)) var(--mark-height);
+    background-position: 0 100%,bottom,100% 100%;
+    background-repeat: no-repeat;
+    color: inherit;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone
+}
+
+.rich-text a:visited {
+    --tw-text-opacity: 1;
+    color: rgb(0 84 55/var(--tw-text-opacity));
+    text-decoration-line: underline;
+    text-underline-offset: 4px
+}
+
 /* Custom elements: Sonnenblumen-Hintergrund */
 
 .sunflower-background {
@@ -180,6 +219,11 @@ footer .radial-main a:hover {
 
 .alert p {
     margin-bottom: 0;
+}
+
+/* Bootstrap: Navigation / Pagetree class="subpages" */
+nav.subpages.navbar-light .navbar-nav > .nav-item {
+    border-bottom: 4px solid #005437;
 }
 
 /* gruene_cms Calendar Plugin */
