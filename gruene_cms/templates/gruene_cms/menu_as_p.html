@@ -1,0 +1,10 @@
+{% load i18n menu_tags cache %}{% spaceless %}
+    {% for child in children %}
+        <p>
+            <a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+        </p>
+        {% if child.children %}
+            {% show_menu from_level to_level extra_inactive extra_active "gruene_cms/menu_as_p.html" "" "" child %}
+        {% endif %}
+    {% endfor %}
+{% endspaceless %}

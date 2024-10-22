@@ -655,3 +655,20 @@ class DivNode(CMSPlugin):
     enable_radial_bg_1 = models.BooleanField(default=False)
     enable_radial_bg_2 = models.BooleanField(default=False)
     enable_radial_bg_3 = models.BooleanField(default=False)
+
+
+class SimpleMenuNode(CMSPlugin):
+    include_home_page = models.BooleanField(default=False)
+    start_level = models.PositiveIntegerField(default=0, help_text=_('specify from which level the navigation should be rendered...'))
+    to_level = models.PositiveIntegerField(default=1, help_text=_('...and at which level it should stop'))
+    extra_inactive = models.PositiveIntegerField(default=0, help_text=_('specifies how many levels of navigation should be displayed if a node is not a direct ancestor or descendant of the current active node'))
+    extra_active = models.PositiveIntegerField(default=1, help_text=_('specifies how many levels of descendants of the currently active node should be displayed'))
+    extra_css_classes = models.CharField(max_length=255, null=True, blank=True)
+    render_template = models.CharField(max_length=40, choices=(
+        ('as_p', _('As paragraphs')),
+        ('as_ul_nested', _('As ul, nested')),
+        ('as_ul_flat', _('As ul, flat')),
+    ), default='as_p')
+    
+
+

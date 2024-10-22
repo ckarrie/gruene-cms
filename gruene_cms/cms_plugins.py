@@ -3,19 +3,14 @@ from cms.plugin_pool import plugin_pool
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .models import AggregatedDataNode, DivNode, \
-    GrueneCMSImageBackgroundNode, \
-    GrueneCMSAnimateTypingNode, \
-    LimitUserGroupNode, \
-    ChartJSNode, \
-    CalendarNode, NewsListNode, TaskNode, LocalFolderNode, LoginFormNode
+from . import models
 
 module_name = _('GruenenCMS')
 
 
 @plugin_pool.register_plugin
 class AggregatedDataNodePlugin(CMSPluginBase):
-    model = AggregatedDataNode
+    model = models.AggregatedDataNode
     name = _('Aggregated Data Node')
     allow_children = False
     cache = False
@@ -25,7 +20,7 @@ class AggregatedDataNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class GrueneCMSImageBackgroundNodePlugin(CMSPluginBase):
-    model = GrueneCMSImageBackgroundNode
+    model = models.GrueneCMSImageBackgroundNode
     name = _('Image as Background')
     allow_children = True
     cache = False
@@ -35,7 +30,7 @@ class GrueneCMSImageBackgroundNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class GrueneCMSAnimateTypingNodePlugin(CMSPluginBase):
-    model = GrueneCMSAnimateTypingNode
+    model = models.GrueneCMSAnimateTypingNode
     name = _('Animate Typing')
     text_enabled = True
     allow_children = False
@@ -64,7 +59,7 @@ class GrueneCMSAnimateTypingNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class LimitUserGroupNodePlugin(CMSPluginBase):
-    model = LimitUserGroupNode
+    model = models.LimitUserGroupNode
     name = _('Limit User/Group')
     allow_children = True
     cache = False
@@ -106,7 +101,7 @@ class LimitUserGroupNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class LoginFormNodePlugin(CMSPluginBase):
-    model = LoginFormNode
+    model = models.LoginFormNode
     name = _('Login Form')
     allow_children = True
     cache = False
@@ -116,7 +111,7 @@ class LoginFormNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class ChartJSNodePlugin(CMSPluginBase):
-    model = ChartJSNode
+    model = models.ChartJSNode
     name = _('Chart')
     allow_children = False
     cache = True
@@ -145,7 +140,7 @@ class ChartJSNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class CalendarNodePlugin(CMSPluginBase):
-    model = CalendarNode
+    model = models.CalendarNode
     name = _('Calendar')
     allow_children = False
     cache = False
@@ -175,7 +170,7 @@ class CalendarNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class NewsListNodePlugin(CMSPluginBase):
-    model = NewsListNode
+    model = models.NewsListNode
     name = _('News')
     allow_children = False
     cache = False
@@ -199,7 +194,7 @@ class NewsListNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class TaskNodePlugin(CMSPluginBase):
-    model = TaskNode
+    model = models.TaskNode
     name = _('Task')
     text_enabled = False
     allow_children = False
@@ -246,7 +241,7 @@ class TaskInlineNodePlugin(TaskNodePlugin):
 
 @plugin_pool.register_plugin
 class LocalFolderNodePlugin(CMSPluginBase):
-    model = LocalFolderNode
+    model = models.LocalFolderNode
     name = _('Local Folder')
     text_enabled = False
     allow_children = False
@@ -272,10 +267,31 @@ class LocalFolderNodePlugin(CMSPluginBase):
 
 @plugin_pool.register_plugin
 class DivNodePlugin(CMSPluginBase):
-    model = DivNode
+    model = models.DivNode
     name = _('Div Element')
     text_enabled = False
     allow_children = True
     cache = False
     module = module_name
     render_template = 'gruene_cms/plugins/div_node_plugin.html'
+
+
+@plugin_pool.register_plugin
+class SimpleMenuNodePlugin(CMSPluginBase):
+    model = models.SimpleMenuNode
+    name = _('Simple Menu')
+    allow_children = True
+    cache = False
+    module = module_name
+
+    def get_render_template(self, context, instance, placeholder):
+        render_templates = {
+            'as_p': 'gruene_cms/plugins/simplemenu_node_as_p.html',
+            'as_ul_nested': 'gruene_cms/plugins/simplemenu_node_as_ul_nested.html',
+            'as_ul_flat': 'gruene_cms/plugins/simplemenu_node_as_ul_flat.html',
+        }
+        return render_templates[instance.render_template]
+
+    def render(self, context, instance, placeholder):
+        context = super(SimpleMenuNodePlugin, self).render(context, instance, placeholder)
+        return context
