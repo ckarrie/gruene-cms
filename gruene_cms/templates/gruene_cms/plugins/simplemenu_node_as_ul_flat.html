@@ -1,7 +1,7 @@
 {% load cms_tags %}
 {% load menu_tags %}
 {% with child_plugins=instance.child_plugin_instances %}
-<ul class="{{ instance.extra_css_classes|join:" " }}">
+<ul class="{{ instance.extra_css_classes|default:""|join:" " }}">
     {% if instance.include_home_page %}
         {% show_menu 0 0 0 0 "gruene_cms/menu_as_li_flat.html" %}
     {% endif %}

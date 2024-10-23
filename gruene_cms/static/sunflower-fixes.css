@@ -30,6 +30,11 @@ footer .radial-main a:hover {
     text-decoration-thickness: 4px;
 }
 
+/* Footer Header */
+.theme--default footer h3 {
+    font-family: 'GrueneType';
+}
+
 /* Radial Backgrounds, from https://www.gruene-bundestag.de/ footer */
 
 .radial-main {
@@ -286,6 +291,11 @@ nav.subpages.justify-content-center .navbar-collapse {
 
 .accordion-header:hover {
     opacity: 1;
+}
+
+/* Gruenen CMS Simple Menu */
+nav.subpages.navbar-light .navbar-nav > .nav-item.active {
+    border-bottom: 4px solid #0BA1DD;
 }
 
 /* Media Querys - overwriting existing styles */

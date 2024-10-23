@@ -668,6 +668,7 @@ class SimpleMenuNode(CMSPlugin):
         ('as_p', _('As paragraphs')),
         ('as_ul_nested', _('As ul, nested')),
         ('as_ul_flat', _('As ul, flat')),
+        ('as_nav_subpages', _('As nav, subpages, horizontal')),
     ), default='as_p')
     
 

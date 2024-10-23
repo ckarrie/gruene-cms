@@ -289,6 +289,7 @@ class SimpleMenuNodePlugin(CMSPluginBase):
             'as_p': 'gruene_cms/plugins/simplemenu_node_as_p.html',
             'as_ul_nested': 'gruene_cms/plugins/simplemenu_node_as_ul_nested.html',
             'as_ul_flat': 'gruene_cms/plugins/simplemenu_node_as_ul_flat.html',
+            'as_nav_subpages': 'gruene_cms/plugins/simplemenu_node_as_nav_subpages.html',
         }
         return render_templates[instance.render_template]
 

@@ -1,0 +1,19 @@
+{% load cms_tags %}
+{% load menu_tags %}
+{% with child_plugins=instance.child_plugin_instances %}
+    <nav class="subpages justify-content-center navbar-light navbar {{ instance.extra_css_classes|default:""|join:" " }}">
+        <ul class="navbar-nav d-flex flex-row">
+            {% if instance.include_home_page %}
+                {% show_menu 0 0 0 0 "gruene_cms/menu_as_li_navbar.html" %}
+            {% endif %}
+            {% show_menu instance.start_level instance.to_level instance.extra_inactive instance.extra_active "gruene_cms/menu_as_li_navbar.html" %}
+            {% if child_plugins %}
+                {% for plugin in child_plugins %}
+                    <li class="nav-item ">
+                        {% render_plugin plugin %}
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </nav>
+{% endwith %}
