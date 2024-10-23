@@ -463,7 +463,8 @@ class NewsListNode(CMSPlugin):
     render_template = models.CharField(max_length=20, choices=(
         ('tiles', "Tiles, Image and Summary"),
         ('table', "Table, Image and Summary"),
-        ('card_v1', "Cards, Variant 1"),
+        ('card_v1', "Cards, Variant 1, two cols"),
+        ('card_v2', "Cards, Variant 2, one col"),
         ('full', "Full"),
     ), default='tiles')
     max_entries = models.PositiveIntegerField(default=10)
