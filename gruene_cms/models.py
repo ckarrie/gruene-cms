@@ -289,17 +289,19 @@ class NewsFeedReader(models.Model):
                     feed_entry_summary = feed_entry.get('summary')
                     
                     # extract image
-                    try:
-                        feed_entry_content = feed_entry.get('content')[0].value
-                        #feed_entry_content = f'<html><body><div>{feed_entry_content}</div></body></html>'
-                        bs_parsed = BeautifulSoup(feed_entry_content, 'html.parser')
-                        img_elem = bs_parsed.find_all('img')[0]
-                        if feed_entry_content:
-                            img_src = img_elem['src']
-                            if img_src:
-                                newsfeedreader_external_image_url = img_src
-                    except (IndexError, KeyError):
-                        newsfeedreader_external_image_url = None                    
+                    feed_entry_content = feed_entry.get('content')
+                    if feed_entry_content:
+                        try:
+                            feed_entry_content = feed_entry_content[0].value
+                            #feed_entry_content = f'<html><body><div>{feed_entry_content}</div></body></html>'
+                            bs_parsed = BeautifulSoup(feed_entry_content, 'html.parser')
+                            img_elem = bs_parsed.find_all('img')[0]
+                            if feed_entry_content:
+                                img_src = img_elem['src']
+                                if img_src:
+                                    newsfeedreader_external_image_url = img_src
+                        except (IndexError, KeyError):
+                            newsfeedreader_external_image_url = None                    
 
                     if isinstance(feed_entry_summary, (tuple, list)):
                         feed_entry_summary = feed_entry_summary[0]
