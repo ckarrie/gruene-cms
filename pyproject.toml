@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gruene"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
   { name="Christian Karrié", email="ckarrie@gmail.com" },
 ]
@@ -24,6 +24,7 @@ dependencies = [
   'django-markdownify',
   'pygments',
   'odfpy',
+  'beautifulsoup4',
 ]
 
 [project.urls]

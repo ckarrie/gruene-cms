@@ -180,6 +180,7 @@ class NewsListNodePlugin(CMSPluginBase):
         render_templates = {
             'tiles': 'gruene_cms/plugins/news_tiles_node.html',
             'table': 'gruene_cms/plugins/news_table_node.html',
+            'card_v1': 'gruene_cms/plugins/news_card_v1_node.html',
             'full': 'gruene_cms/plugins/news_full_node.html',
         }
         return render_templates[instance.render_template]

@@ -1,0 +1,29 @@
+<div class="container-full news-item mb-5">
+    <div class="row g-5">
+        {% for item in news_items %}
+            <div class="col col-lg-6 col-sm-12">
+                <div class="card">
+                    <img src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" title="{{ item.first_image_alt_text }}" class="card-img-top img-fluid" />
+                    <div class="card-header">
+                        <h{{ instance.title_h }} class="news-title">{{ item.title }}</h{{ instance.title_h }}>
+                    </div>
+                    <div class="card-body">
+                        <!--alternative hier der titel-->
+                        {% if item.subtitle %}
+                            <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
+                        {% endif %}
+                        <div class="news-summary">{{ item.summary }}</div>
+                    </div>
+                    <div class="card-footer">
+                        <p class="mb-0">
+                            <a class="btn btn-primary" href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen</a>
+                        </p>
+                    </div>
+                    <div class="card-img-overlay">
+                        <p class="text-white">Am See</p>        
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

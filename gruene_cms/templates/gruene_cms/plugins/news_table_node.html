@@ -1,11 +1,15 @@
 <div class="row news-table news-item {{ instance.extra_row_classes|default:"" }}">
   {% for item in news_items %}
     <div class="col {{ instance.extra_col_classes|default:"" }}">
+      
+      
       <h{{ instance.title_h }} class="news-title">
           <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
+            <img class="rounded-4 float-end ms-2 mb-2" style="max-width: 50%;" src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" title="{{ item.first_image_alt_text }}" />
             {{ item.title }}
           </a>
         </h{{ instance.title_h }}>
+        
         {% if instance.show_date or instance.show_feed_title %}
           <p class="news-meta {{ instance.extra_meta_classes|default:"" }}">
             {% if instance.show_date %}<strong>{{ item.published_from|date:"d.m." }}</strong>{% endif %}
@@ -16,7 +20,10 @@
         {% if item.subtitle %}
           <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
         {% endif %}
-        <div class="news-summary">{{ item.summary }}</div>
+        <div class="news-summary">
+          
+          {{ item.summary }}
+        </div>
     </div>
     {% if instance.show_newsitem_separator and not forloop.last %}
         <hr class="newsitem-separator">

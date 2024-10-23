@@ -19,6 +19,7 @@ from djangocms_text_ckeditor.models import AbstractText
 from filer.fields.image import FilerImageField
 from filer.models import Folder as FilerFolder, File as FilerFile, Image as FilerImage
 from lxml import etree
+from bs4 import BeautifulSoup
 
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
@@ -286,6 +287,20 @@ class NewsFeedReader(models.Model):
                 if not existing_newsitem.exists():
                     feed_entry_title = feed_entry.get('title')
                     feed_entry_summary = feed_entry.get('summary')
+                    
+                    # extract image
+                    try:
+                        feed_entry_content = feed_entry.get('content')[0].value
+                        #feed_entry_content = f'<html><body><div>{feed_entry_content}</div></body></html>'
+                        bs_parsed = BeautifulSoup(feed_entry_content, 'html.parser')
+                        img_elem = bs_parsed.find_all('img')[0]
+                        if feed_entry_content:
+                            img_src = img_elem['src']
+                            if img_src:
+                                newsfeedreader_external_image_url = img_src
+                    except (IndexError, KeyError):
+                        newsfeedreader_external_image_url = None                    
+
                     if isinstance(feed_entry_summary, (tuple, list)):
                         feed_entry_summary = feed_entry_summary[0]
                     feed_entry_published_parsed = feed_entry.get('published_parsed')
@@ -296,12 +311,13 @@ class NewsFeedReader(models.Model):
                     news_item_slug = slugify(feed_entry_title)[:50]
                     news_item = NewsItem(
                         title=feed_entry_title,
+                        slug=news_item_slug,
                         summary=f'<p>{feed_entry_summary}</p>',
                         keywords=feed_entry_keyswords,
                         published_from=published_from,
                         newsfeedreader_source=self,
                         newsfeedreader_external_link=feed_entry_link,
-                        slug=news_item_slug,
+                        newsfeedreader_external_image_url=newsfeedreader_external_image_url
                     )
 
                     news_item.save()
@@ -342,6 +358,7 @@ class NewsItem(models.Model):
     # For NewsReader
     newsfeedreader_source = models.ForeignKey(NewsFeedReader, null=True, blank=True, on_delete=models.CASCADE)
     newsfeedreader_external_link = models.URLField(null=True, blank=True)
+    newsfeedreader_external_image_url = models.URLField(null=True, blank=True)
 
     @property
     def is_public(self):
@@ -373,6 +390,10 @@ class NewsItem(models.Model):
         if news_image:
             url = news_image.image.url
             alt_text = news_image.title
+            is_cat_img = False
+        elif self.newsfeedreader_external_image_url:
+            url = self.newsfeedreader_external_image_url
+            alt_text = self.title
             is_cat_img = False
         else:
             category = self.categories.filter(logo__isnull=False).first()
@@ -439,6 +460,7 @@ class NewsListNode(CMSPlugin):
     render_template = models.CharField(max_length=20, choices=(
         ('tiles', "Tiles, Image and Summary"),
         ('table', "Table, Image and Summary"),
+        ('card_v1', "Cards, Variant 1"),
         ('full', "Full"),
     ), default='tiles')
     max_entries = models.PositiveIntegerField(default=10)
