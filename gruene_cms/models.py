@@ -290,6 +290,7 @@ class NewsFeedReader(models.Model):
                     
                     # extract image
                     feed_entry_content = feed_entry.get('content')
+                    newsfeedreader_external_image_url = None
                     if feed_entry_content:
                         try:
                             feed_entry_content = feed_entry_content[0].value
