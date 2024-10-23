@@ -5,7 +5,7 @@
       
       <h{{ instance.title_h }} class="news-title">
           <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
-            <img class="rounded-4 float-end ms-2 mb-2" style="max-width: 50%;" src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" title="{{ item.first_image_alt_text }}" />
+            <img class="rounded-4 float-end ms-2 mb-2" style="max-width: 35%;" src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" title="{{ item.first_image_alt_text }}" />
             {{ item.title }}
           </a>
         </h{{ instance.title_h }}>
