@@ -108,6 +108,17 @@ footer .radial-main a:hover {
     vertical-align: top;
 }
 
+.decoration-primary a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.decoration-primary a:active, .decoration-primary a:hover {
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: #6eb22a;
+}
+
 /* Custom elements: Edding-Marker */
 /* Highlighted class, see https://afd-verbot.jetzt/de/abgeordnetentool for example */
 .highlighted {
