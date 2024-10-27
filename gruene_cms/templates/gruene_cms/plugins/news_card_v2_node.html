@@ -1,7 +1,7 @@
 <div class="container-full news-item mb-5">
     <div class="row g-5" data-masonry='{"percentPosition": true }'>
         {% for item in news_items %}
-            <div class="col col-sm-12 col-xl-6">
+            <div class="col {{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12 col-xl-6" }}">
                 <div class="card shadow-lg">
                     <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
                       <img class="card-img-top img-fluid" src="{{ item.first_image_url }}" alt="{{ item.first_image_alt_text }}" title="{{ item.first_image_alt_text }}">
@@ -39,13 +39,13 @@
                               <a class="btn btn-outline-primary" href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen</a>
                             {% endcomment %}
                             <a class="continue-reading pt-0" href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank" title="Weiterlesen unter {{ item.newsfeedreader_external_link }} " {% endif %}>
-                              Weiterlesen {% if item.link_is_external %} <i class="fa fa-external-link-square ps-2"></i> {% endif %}
+                              Weiter&shy;lesen {% if item.link_is_external %} <i class="fa fa-external-link-square ps-2"></i> {% endif %}
                             </a>
                           </div>
                           <div class="col-sm-12 col-lg-6 align-content-center">
                             <span class="text-muted small float-end">
                               {% if instance.show_date and instance.show_feed_title %}<span class="meta-seperator"> </span>{% endif %}
-                              {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.username }}</i>{% endif %}
+                              {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.first_name }}</i>{% endif %}
                               {% if instance.show_date %}<strong>{{ item.published_from|date:"d.m.Y" }}</strong>{% endif %}
                             </span>
                           </div>
