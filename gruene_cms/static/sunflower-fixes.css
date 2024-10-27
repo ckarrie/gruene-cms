@@ -95,6 +95,14 @@ footer .radial-main a:hover {
     transform: skewX(-12deg) translateY(-50%);
 }
 
+.decoration-primary.w-200:before {
+    width: 200% !important;
+}
+
+.decoration-primary.w-105:before {
+    width: 105% !important;
+}
+
 .decoration-primary {
     position: relative;
     z-index: 0;
