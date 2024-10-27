@@ -478,7 +478,7 @@ class NewsListNode(CMSPlugin):
     ))
     extra_row_classes = models.CharField(
         max_length=255, null=True, blank=True,
-        help_text=_('Example: "mb-3"')
+        help_text=_('Example: "mb-3" or "g-5"')
     )
     extra_col_classes = models.CharField(
         max_length=255, null=True, blank=True,
@@ -489,6 +489,7 @@ class NewsListNode(CMSPlugin):
     show_feed_title = models.BooleanField(default=False)
     show_newsitem_separator = models.BooleanField(default=False)
     extra_meta_classes = models.CharField(max_length=255, null=True, blank=True)
+    enable_masonry = models.BooleanField(default=True)
 
     def __str__(self):
         return f'News {self.pk}'

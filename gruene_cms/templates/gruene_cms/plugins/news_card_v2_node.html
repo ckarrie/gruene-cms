@@ -1,5 +1,5 @@
 <div class="container-full news-item mb-5">
-    <div class="row g-5" data-masonry='{"percentPosition": true }'>
+    <div class="row {{ instance.extra_row_classes|default:"these-are-default-classes g-5" }}" {% if instance.enable_masonry %}data-masonry='{"percentPosition": true }'{% endif %}>
         {% for item in news_items %}
             <div class="col {{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12 col-xl-6" }}">
                 <div class="card shadow-lg">

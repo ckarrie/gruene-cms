@@ -95,14 +95,6 @@ footer .radial-main a:hover {
     transform: skewX(-12deg) translateY(-50%);
 }
 
-.decoration-primary.w-200:before {
-    width: 200% !important;
-}
-
-.decoration-primary.w-105:before {
-    width: 105% !important;
-}
-
 .decoration-primary {
     position: relative;
     z-index: 0;
@@ -317,6 +309,12 @@ nav.subpages.navbar-light .navbar-nav > .nav-item.active {
     border-bottom: 4px solid #0BA1DD;
 }
 
+/* missing bootstrap styles */
+
+.font-weight-light {
+    font-weight: 100 !important;
+}
+
 /* Media Querys - overwriting existing styles */
 
 
@@ -387,6 +385,14 @@ nav.subpages.navbar-light .navbar-nav > .nav-item.active {
     .radial-bg-3 {
         left: -27%;
         top: -27%;
+    }
+
+    .decoration-primary.w-200:before {
+    width: 200% !important;
+    }
+
+    .decoration-primary.w-105:before {
+        width: 105% !important;
     }
 }
 
