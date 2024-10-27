@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <!--alternative hier der titel-->
                         {% if item.subtitle %}
-                            <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
+                            <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle|striptags }}</h{{ instance.subtitle_h }}>
                         {% endif %}
                         <div class="news-summary">{{ item.summary }}</div>
                     </div>

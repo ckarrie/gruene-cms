@@ -1,5 +1,7 @@
 # gruene-cms
 
+[TOC]
+
 ## Installation Grundsystem
 ```shell
 cd ~/venvs

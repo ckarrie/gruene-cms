@@ -11,7 +11,7 @@
           </a>
         </h{{ instance.title_h }}>
         {% if item.subtitle %}
-          <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle }}</h{{ instance.subtitle_h }}>
+          <h{{ instance.subtitle_h }} class="news-subtitle">{{ item.subtitle|striptags }}</h{{ instance.subtitle_h }}>
         {% endif %}
         <div class="news-summary">{{ item.summary }}</div>
         {% if user.is_authenticated %}

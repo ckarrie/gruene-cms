@@ -597,7 +597,7 @@ class TaskNode(CMSPlugin):
 
     def get_task_items(self, user=None):
         tasks = TaskItem.objects.all()
-        if self.limit_own_tasks and user:
+        if self.limit_own_tasks and user.is_authenticated:
             tasks = tasks.filter(assigned_to_users=user)
         if self.categories.exists():
             tasks = tasks.filter(category__in=self.categories.all())
@@ -617,15 +617,23 @@ def get_local_webdav_path(subfolder=None):
 
 
 class WebDAVClient(models.Model):
+    title = models.CharField(max_length=255, null=True, blank=True)
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     webdav_hostname = models.CharField(max_length=255)
     webdav_login = models.CharField(max_length=50)
     webdav_app_password = models.CharField(max_length=255)
     webdav_path = models.CharField(max_length=255, null=True, blank=True, help_text='URL to replace: /remote.php/dav/files/KarrieCh/')
     entry_path = models.CharField(max_length=255, null=True, blank=True, help_text='i.e. 02_Kommunikation/02_Presse')
+    entry_path_title = models.CharField(max_length=255, null=True, blank=True)
     local_path = models.FilePathField(null=True, blank=True, path=get_local_webdav_path, allow_files=False, allow_folders=True)
     access_groups = models.ManyToManyField("auth.Group", blank=True)
     enable_for_auto_update = models.BooleanField(default=False, help_text=_('If checked, folders will be synced automatically'))
+    force_mimetype = models.CharField(max_length=255, null=True, blank=True, choices=(
+        (None, _('Use file extensions')),
+        ('application/csv', _('.csv')),
+        ('text/x-vcard', _('.vcf')),
+        ('text/x-vcalendar', _('.vcs')),
+    ))
 
     def save(self, *args, **kwargs):
         super(WebDAVClient, self).save(*args, **kwargs)
@@ -640,6 +648,7 @@ class WebDAVClient(models.Model):
 
     def get_tree_items(self):
         tree_level = 0
+
         def path_to_dict(path, sub_level):
             d = OrderedDict()
             d['name'] = os.path.basename(path)
@@ -663,6 +672,8 @@ class WebDAVClient(models.Model):
         return tree
 
     def __str__(self):
+        if self.title:
+            return f'{self.webdav_hostname} {self.title}'
         if self.entry_path:
             return f'{self.webdav_hostname} {self.entry_path}'
         return self.webdav_hostname
