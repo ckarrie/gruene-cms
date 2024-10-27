@@ -11,22 +11,22 @@
         {% endif %}
       {% endblock %}
     </title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="icon" href="{% static 'sunflower-v2.2.0/assets/img/sunflower.svg' %}" type="image/svg+xml" sizes="any" />
-    <link rel="icon" href="{% static 'sunflower-v2.2.0/assets/img/favicon-48x48.png' %}" type="image/png" sizes="48x48" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{% static 'sunflower-v2.2.0/assets/img/sunflower.svg' %}" type="image/svg+xml" sizes="any">
+    <link rel="icon" href="{% static 'sunflower-v2.2.0/assets/img/favicon-48x48.png' %}" type="image/png" sizes="48x48">
     <style>
-  @font-face{font-family:"PT Sans";font-style:normal;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.ttf') format('truetype');font-stretch:normal;}
-  @font-face{font-family:"PT Sans";font-style:italic;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.ttf') format('truetype');font-stretch:normal;}
-  @font-face{font-family:"PT Sans";font-style:normal;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.ttf') format('truetype');font-stretch:normal;}
-  @font-face{font-family:"PT Sans";font-style:italic;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.ttf') format('truetype');font-stretch:normal;}
-  @font-face{font-family:GruenType;font-style:auto;font-weight:900;font-display:block;src:url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.ttf') format('truetype');font-stretch:normal;}
-  @font-face{font-family:"Questa Slab";font-style: normal;font-weight: normal;src:url('/static/fonts/Questa_Slab_Regular_25.woff') format('woff');}
-</style>
-    <link rel="stylesheet" href="{% static 'sunflower-v2.2.0/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}" />
-    <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}" />
+      @font-face{font-family:"PT Sans";font-style:normal;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-regular.ttf') format('truetype');font-stretch:normal;}
+      @font-face{font-family:"PT Sans";font-style:italic;font-weight:400;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-italic.ttf') format('truetype');font-stretch:normal;}
+      @font-face{font-family:"PT Sans";font-style:normal;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700.ttf') format('truetype');font-stretch:normal;}
+      @font-face{font-family:"PT Sans";font-style:italic;font-weight:700;font-display:fallback;src:url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/pt-sans-v17-latin_latin-ext-700italic.ttf') format('truetype');font-stretch:normal;}
+      @font-face{font-family:GruenType;font-style:auto;font-weight:900;font-display:block;src:url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.woff2') format('woff2'), url('/static/sunflower-v2.2.0/assets/fonts/GrueneType-BlackCondensedItalic.ttf') format('truetype');font-stretch:normal;}
+      @font-face{font-family:"Questa Slab";font-style: normal;font-weight: normal;src:url('/static/fonts/Questa_Slab_Regular_25.woff') format('woff');}
+    </style>
+    <link rel="stylesheet" href="{% static 'sunflower-v2.2.0/style.css' %}">
+    <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}">
+    <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}">
     {% render_block 'css' %}
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/masonry-4.2.2.min.js' %}"></script>
@@ -35,30 +35,30 @@
     <script src="{% static 'js/chartjs-4.2.1/chart.umd.min.js' %}"></script>
 
     <!-- SEO -->
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="description" content="{% page_attribute 'meta_description' %}" />
-    <link rel="canonical" href="{{ request.META.HTTP_HOST }}" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="description" content="{% page_attribute 'meta_description' %}">
+    <link rel="canonical" href="{{ request.META.HTTP_HOST }}">
 
     <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="{% page_attribute 'page_title' %}" />
-    <meta property="og:description" content="{% page_attribute 'meta_description' %}" />
-    <meta property="og:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}" />
-    <meta property="og:locale" content="de_DE" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="{% page_attribute 'page_title' request.current_page.get_root %}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% page_attribute 'page_title' %}">
+    <meta property="og:description" content="{% page_attribute 'meta_description' %}">
+    <meta property="og:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{% page_attribute 'page_title' request.current_page.get_root %}">
 
     <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="twitter:domain" content="https://{{ request.META.HTTP_HOST }}" />
-    <meta property="twitter:url" content="{{ request.build_absolute_uri }}" />
-    <meta name="twitter:title" content="{% page_attribute 'page_title' %}" />
-    <meta name="twitter:description" content="{% page_attribute 'meta_description' %}" />
-    <meta name="twitter:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="https://{{ request.META.HTTP_HOST }}">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:title" content="{% page_attribute 'page_title' %}">
+    <meta name="twitter:description" content="{% page_attribute 'meta_description' %}">
+    <meta name="twitter:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
 
     <!-- TODO -->
-    <meta property="article:modified_time" content="2024-09-09T08:03:28+00:00" />
+    <meta property="article:modified_time" content="2024-09-09T08:03:28+00:00">
   </head>
   <body class="home page-template-default page">
     {% cms_toolbar %}
