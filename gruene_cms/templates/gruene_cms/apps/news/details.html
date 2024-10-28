@@ -39,22 +39,20 @@
         {% endif %}
         {% if object.content_rendered %}
           <div class="pb-5">
-
-            {% if object.get_related_objects.calendar_items %}
-              <div class="card shadow-lg col-sm-12 col-lg-6 mb-3">
-                <div class="card-header bg-primary">
-                  <h2 class="card-title small text-white mb-0">Kalender</h2>
+            {% with calendar_items=object.get_related_objects.calendar_items %}
+              {% if calendar_items %}
+                <div class="card shadow-lg col-sm-12 col-lg-6 mb-3">
+                  <div class="card-header bg-primary">
+                    <h2 class="card-title small text-white mb-0">Kalender</h2>
+                  </div>
+                  <div class="card-body">
+                    {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=calendar_items %}
+                    <p class="small text-muted mb-0"><a href="{% url "gruene_cms_news:download_ics" slug=object.slug %}"><i class="fa fa-download"></i> Download ICS</a></p>
+                  </div>
                 </div>
-                <div class="card-body">
-                  {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=object.get_related_objects.calendar_items %}
-                  <p class="small text-muted">Weitere Termine unter Aktuelles</p>
-                </div>
-              </div>
-            {% endif %}
-
+              {% endif %}
+            {% endwith %}
             {{ object.content_rendered|safe }}
-
-
           </div>
         {% endif %}
 
@@ -63,6 +61,30 @@
 
     <div class="row g-5 py-5 mt-1">
       <span class="highlighted grashalm text-right">&nbsp;</span>
+
+      <div class="col col-6 col-sm-6 mt-5 mb-1">
+        {% if prev_object %}
+          <p class="questa_slab fs-5"><a href="{% url 'gruene_cms_news:detail' slug=prev_object.slug %}">&laquo; {{ prev_object }}</a>
+          <br>
+           vom {{ prev_object.published_from|date:"SHORT_DATE_FORMAT" }}
+          </p>
+        {% endif %}
+      </div>
+      <div class="col col-6 col-sm-6 mt-0 mb-1 text-end">
+        {% if next_object %}
+           <p class="questa_slab fs-5"><a href="{% url 'gruene_cms_news:detail' slug=next_object.slug %}">{{ next_object }} &raquo;</a>
+           <br>
+           vom {{ next_object.published_from|date:"SHORT_DATE_FORMAT" }}
+           </p>
+        {% endif %}
+      </div>
+
+      <span class="highlighted grashalm text-right">&nbsp;</span>
+
+    </div>
+    <div class="row g-5 py-5 mt-1">
+
+
 
       {% for cat_id, qs in object.get_related_objects.items %}
         {% if qs %}

@@ -6,6 +6,7 @@ from cms.utils import get_language_from_request
 
 # from https://docs.django-cms.org/en/latest/how_to/12-namespaced_apphooks.html#apphook-configurations
 
+
 def get_app_instance(request):
     namespace, config = "", None
     if getattr(request, "current_page", None) and request.current_page.application_urls:
