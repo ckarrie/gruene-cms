@@ -13,7 +13,9 @@ class NewsDetailView(AppHookConfigMixin, generic.DetailView):
     template_name = 'gruene_cms/apps/news/details.html'
 
     def get_queryset(self):
-        qs = super(NewsDetailView, self).get_queryset().filter()
+        qs = super(NewsDetailView, self).get_queryset().filter(
+            newsfeedreader_source__isnull=True
+        )
         if not self.request.user.is_staff:
             qs = qs.filter(published_from__lte=timezone.now())
         return qs
@@ -27,7 +29,8 @@ class NewsDetailView(AppHookConfigMixin, generic.DetailView):
         ).order_by('-published_from').first()
 
         ctx['next_object'] = qs.filter(
-            published_from__gt=self.object.published_from
+            published_from__gt=self.object.published_from,
+            #newsfeedreader_source__isnull=True
         ).order_by('published_from').first()
         return ctx
 

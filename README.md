@@ -11,6 +11,7 @@ source bin/activate
 pip install --upgrade pip
 pip install psycopg2-binary
 pip install django-cms
+pip install icalendar
 ```
 
 ## Installation grunen-cms
