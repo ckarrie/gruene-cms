@@ -34,6 +34,19 @@ DATATYPE_CHOICES = (
     ('int', 'Int'),
     ('text', 'Text'),
 )
+
+NEWS_COL_CONFIG_CHOICES = (
+    (None, _('All same width')),
+    ("4", _('All 4 cols')),
+    ("6", _('All 6 cols')),
+    ("12", _('All 12 cols')),
+    ("12,6", _('First 12, others 6 cols')),
+    ("12,8,4,6", _('First 12, second 8, third 4, others 6 cols')),
+    ("12,4,8,6", _('First 12, second 4, third 8, others 6 cols')),
+    ("12,9,3,6", _('First 12, second 9, third 3, others 6 cols')),
+    ("12,4,4,4,6", _('First 12, second 4 (until fourth), others 6 cols')),
+)
+
 DEBUG_NEWS = True
 
 
@@ -491,17 +504,8 @@ class NewsListNode(CMSPlugin):
     show_category_image = models.BooleanField(default=False)
     extra_meta_classes = models.CharField(max_length=255, null=True, blank=True)
     enable_masonry = models.BooleanField(default=True)
-    col_config = models.CharField(max_length=15, null=True, blank=True, choices=(
-        (None, _('All same width')),
-        ("4", _('All 4 cols')),
-        ("6", _('All 6 cols')),
-        ("12", _('All 12 cols')),
-        ("12,6", _('First 12, others 6 cols')),
-        ("12,8,4,6", _('First 12, second 8, third 4, others 6 cols')),
-        ("12,4,8,6", _('First 12, second 4, third 8, others 6 cols')),
-        ("12,9,3,6", _('First 12, second 9, third 3, others 6 cols')),
-        ("12,4,4,4,6", _('First 12, second 4 (until fourth), others 6 cols')),
-    ))
+    col_lg_config = models.CharField(max_length=15, null=True, blank=True, choices=NEWS_COL_CONFIG_CHOICES)
+    col_xl_config = models.CharField(max_length=15, null=True, blank=True, choices=NEWS_COL_CONFIG_CHOICES)
 
     def __str__(self):
         return f'News {self.pk}'
@@ -511,12 +515,31 @@ class NewsListNode(CMSPlugin):
         return self.title_h + 1
 
     @property
-    def col_sizer_others(self):
-        if self.col_config:
-            col_config_splitted = [int(x) for x in self.col_config.split(',')]
+    def col_lg_others(self):
+        if self.col_lg_config:
+            col_config_splitted = [int(x) for x in self.col_lg_config.split(',')]
             col_config_others = col_config_splitted[-1]
             return col_config_others
         return 12
+
+    @property
+    def col_xl_others(self):
+        if self.col_xl_config:
+            col_config_splitted = [int(x) for x in self.col_xl_config.split(',')]
+            col_config_others = col_config_splitted[-1]
+            return col_config_others
+        return 12
+
+    def get_col_configs(self, default, col_config, news_items_count):
+        col_config_by_items = [default] * news_items_count
+        if col_config:
+            col_config_splitted = [int(x) for x in col_config.split(',')]
+            for i, x in enumerate(col_config_splitted):
+                try:
+                    col_config_by_items[i] = x
+                except IndexError:
+                    pass
+        return col_config_by_items
 
     def get_news_items(self):
         categories = list(self.categories.all())
@@ -527,14 +550,9 @@ class NewsListNode(CMSPlugin):
             news_items = news_items[:self.max_entries]
 
         news_items_count = news_items.count()
-        col_config_by_items = [self.col_sizer_others] * news_items_count
-        if self.col_config:
-            col_config_splitted = [int(x) for x in self.col_config.split(',')]
-            for i, x in enumerate(col_config_splitted):
-                try:
-                    col_config_by_items[i] = x
-                except IndexError:
-                    pass
+
+        col_lg_config_by_items = self.get_col_configs(self.col_lg_others, self.col_lg_config, news_items_count)
+        col_xl_config_by_items = self.get_col_configs(self.col_xl_others, self.col_xl_config, news_items_count)
 
         item_index = 0
 
@@ -544,7 +562,8 @@ class NewsListNode(CMSPlugin):
             news_item.first_image_alt_text = first_image['alt_text']
             news_item.first_image_is_cat_img = first_image['is_cat_img']
             news_item.show_first_image = True
-            news_item.item_col_config = col_config_by_items[item_index]
+            news_item.item_col_lg_config = col_lg_config_by_items[item_index]
+            news_item.item_col_xl_config = col_xl_config_by_items[item_index]
             item_index += 1
 
             if news_item.newsfeedreader_external_link:
