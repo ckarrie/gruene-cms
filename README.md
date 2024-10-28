@@ -109,3 +109,64 @@ Add it to `gruenen_v1.html` Template
         alias /home/ckw/venvs/gruene_venv/media; 
    }
 - sudo service nginx restart
+
+## Caching
+
+Infos: 
+- [Caching in Django](https://docs.djangoproject.com/en/dev/topics/cache/)
+- [Caching in djangoCMS](https://docs.django-cms.org/en/4.1.3/how_to/05-caching.html)
+
+```shell
+sudo apt-get install memcached
+pip install pymemcache
+```
+
+Add to settings.py
+
+```python
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
+    }
+}
+
+MIDDLEWARE=[
+    'django.middleware.cache.UpdateCacheMiddleware',  # as first
+    ...
+    'django.middleware.cache.FetchFromCacheMiddleware',  # as last
+]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        #"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
+}
+
+```
+
+- aktiviere ManifestStaticFilesStorage wenn alle Files vorhanden
+
+```shell
+nano /etc/memcached.conf
+sudo service memcached restart
+python3 rlp_kandel/manage.py collectstatic --noinput
+```
+
+```
+-m 1024
+#-m 64
+```
+
+- Caching für `static`-Location in nginx aktivieren
+
+```
+location /static/ {
+  alias /home/ubuntu/app/staticfiles/;
+  expires 365d;
+}
+```

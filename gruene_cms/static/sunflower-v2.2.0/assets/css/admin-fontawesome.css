@@ -6382,7 +6382,7 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: block;
-	src: url("../webfonts/fa-brands-400.woff2") format("woff2"), url("../webfonts/fa-brands-400.ttf") format("truetype"); }
+	src: url("../vndr/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2") format("woff2"), url("../vndr/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf") format("truetype"); }
 
   .fab,
   .fa-brands {
