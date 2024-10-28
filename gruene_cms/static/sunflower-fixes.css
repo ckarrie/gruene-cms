@@ -358,6 +358,10 @@ nav.subpages.navbar-light .navbar-nav > .nav-item.active {
         left: -7%;
         top: -25%;
     }
+
+    .meta-seperator {
+        padding-left: 0.5rem;
+    }
 }
 
 /* Large	lg	≥992px */
