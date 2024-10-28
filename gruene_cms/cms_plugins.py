@@ -1,4 +1,4 @@
-from cms.plugin_base import CMSPluginBase
+from cms.plugin_base import CMSPluginBase, PluginMenuItem
 from cms.plugin_pool import plugin_pool
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -118,6 +118,10 @@ class ChartJSNodePlugin(CMSPluginBase):
     module = module_name
     render_template = 'gruene_cms/plugins/chartjs_node.html'
 
+    def get_cache_expiration(self, request, instance, placeholder):
+        # 10 Minuten in Sekunden
+        return 60*10
+
     def render(self, context, instance, placeholder):
         context = super(ChartJSNodePlugin, self).render(context, instance, placeholder)
         dataset = []
@@ -143,8 +147,12 @@ class CalendarNodePlugin(CMSPluginBase):
     model = models.CalendarNode
     name = _('Calendar')
     allow_children = False
-    cache = False
+    cache = True
     module = module_name
+
+    def get_cache_expiration(self, request, instance, placeholder):
+        # 10 Minuten in Sekunden
+        return 60*10
 
     def get_render_template(self, context, instance, placeholder):
         render_templates = {
@@ -173,8 +181,12 @@ class NewsListNodePlugin(CMSPluginBase):
     model = models.NewsListNode
     name = _('News')
     allow_children = False
-    cache = False
+    cache = True
     module = module_name
+
+    def get_cache_expiration(self, request, instance, placeholder):
+        now = timezone.now()
+        return now + timezone.timedelta(minutes=10)
 
     def get_render_template(self, context, instance, placeholder):
         render_templates = {
@@ -298,3 +310,4 @@ class SimpleMenuNodePlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super(SimpleMenuNodePlugin, self).render(context, instance, placeholder)
         return context
+
