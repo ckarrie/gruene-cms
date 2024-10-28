@@ -1,7 +1,9 @@
 <div class="container-full news-item mb-5">
     <div class="row {{ instance.extra_row_classes|default:"these-are-default-classes g-5" }}" {% if instance.enable_masonry %}data-masonry='{"percentPosition": true, "itemSelector": ".col", "columnWidth": ".sizer" }'{% endif %}>
-        {# Use col-xl-1 for the sizer + position: absolute style, was col-xl-{{ col_sizer_others }} previously #}
-        <div class="sizer col-xl-1" style="box-sizing: border-box; position: absolute;"></div>
+        {% if instance.enable_masonry %}
+          {# Use col-xl-1 for the sizer + position: absolute style, was col-xl-{{ col_sizer_others }} previously #}
+          <div class="sizer col-xl-1" style="box-sizing: border-box; position: absolute;"></div>
+        {% endif %}
         {% for item in news_items %}
             <div class="col col-xl-{{ item.item_col_config }} {{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12" }}">
                 <div class="card shadow-lg">
