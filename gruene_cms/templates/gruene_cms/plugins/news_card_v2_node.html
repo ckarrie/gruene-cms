@@ -1,7 +1,9 @@
 <div class="container-full news-item mb-5">
-    <div class="row {{ instance.extra_row_classes|default:"these-are-default-classes g-5" }}" {% if instance.enable_masonry %}data-masonry='{"percentPosition": true }'{% endif %}>
+    <div class="row {{ instance.extra_row_classes|default:"these-are-default-classes g-5" }}" {% if instance.enable_masonry %}data-masonry='{"percentPosition": true, "itemSelector": ".col", "columnWidth": ".sizer" }'{% endif %}>
+        {# Use col-xl-1 for the sizer + position: absolute style, was col-xl-{{ col_sizer_others }} previously #}
+        <div class="sizer col-xl-1" style="box-sizing: border-box; position: absolute;"></div>
         {% for item in news_items %}
-            <div class="col {{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12 col-xl-6" }}">
+            <div class="col col-xl-{{ item.item_col_config }} {{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12" }}">
                 <div class="card shadow-lg">
                     {% if item.show_first_image %}
                       <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
@@ -25,7 +27,7 @@
                         <!--alternative hier der titel-->
                         {% endcomment %}
                         <a href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>
-                          <h{{ instance.title_h }} class="news-title">{{ item.title }}</h{{ instance.title_h }}>
+                          <h{{ instance.title_h }} class="news-title">{{ item.item_col_config }} {{ item.title }}</h{{ instance.title_h }}>
                         </a>
 
                         {% if item.subtitle %}
@@ -59,7 +61,7 @@
             </div>
         {% endfor %}
         {% if instance.news_page %}
-          <div class="col {{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12 col-xl-6" }} text-center">
+          <div class="col col-sm-12 text-center">
             <a class="continue-reading" href="{{ instance.news_page.get_absolute_url }}">Weitere Nachrichten...</a>
           </div>
         {% endif %}
