@@ -34,7 +34,7 @@
                     <div class="card-footer">
                       <div class="container-fluid px-0">
                         <div class="row">
-                          <div class="col-sm-12 col-lg-6">
+                          <div class="{{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12 col-xl-6" }}">
                             {% comment %}
                               <a class="btn btn-outline-primary" href="{% if item.detail_link %}{{ item.detail_link }}{% else %}{{ item.link_to_url }}{% endif %}" {% if item.link_is_external %}target="_blank"{% endif %}>Weiterlesen</a>
                             {% endcomment %}
@@ -42,7 +42,7 @@
                               Weiter&shy;lesen {% if item.link_is_external %} <i class="fa fa-external-link-square ps-2"></i> {% endif %}
                             </a>
                           </div>
-                          <div class="col-sm-12 col-lg-6 align-content-center">
+                          <div class="{{ instance.extra_col_classes|default:"these-are-default-classes col-sm-12 col-xl-6" }} align-content-center">
                             <span class="text-muted small float-end">
                               {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.first_name }}</i>{% endif %}
                               {% if instance.show_date and instance.show_feed_title %}<span class="meta-seperator"> </span>{% endif %}
