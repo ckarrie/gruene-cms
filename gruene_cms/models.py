@@ -718,9 +718,9 @@ class WebDAVClient(models.Model):
     enable_for_auto_update = models.BooleanField(default=False, help_text=_('If checked, folders will be synced automatically'))
     force_mimetype = models.CharField(max_length=255, null=True, blank=True, choices=(
         (None, _('Use file extensions')),
-        ('application/csv', _('.csv')),
-        ('text/x-vcard', _('.vcf')),
-        ('text/x-vcalendar', _('.vcs')),
+        ('application/csv',  _('.csv | Comma separated')),
+        ('text/x-vcard',     _('.vcf | Contacts')),
+        ('text/x-vcalendar', _('.vcs | Calendar')),
     ))
 
     def save(self, *args, **kwargs):
@@ -754,7 +754,7 @@ class WebDAVClient(models.Model):
             return d
 
         tree = path_to_dict(self.local_path, sub_level=tree_level + 1)
-        tree['name'] = '/wolke'
+        tree['name'] = self.entry_path_title or '/wolke'
         tree['level'] = tree_level
 
         return tree

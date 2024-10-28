@@ -69,7 +69,7 @@ class TaskCommentAdmin(admin.ModelAdmin):
 
 # webdav
 class WebDAVClientAdmin(admin.ModelAdmin):
-    list_display = ['user', 'webdav_hostname', 'entry_path', 'local_path']
+    list_display = ['user', 'title', 'webdav_hostname', 'entry_path', 'entry_path_title', 'local_path']
     actions = ['sync_folder', 'create_filer_objects']
 
     def sync_folder(self, request, queryset):

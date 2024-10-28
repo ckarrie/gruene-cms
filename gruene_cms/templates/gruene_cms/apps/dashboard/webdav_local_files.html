@@ -12,7 +12,11 @@
     <div class="row ">
       <div class="col col-12 ">
         <div class="d-md-flex shadow p-3 mb-5 bg-body-tertiary rounded">
-            <div class="me-auto"><h2 class="text-truncate mb-0">{{ requested_file }}</h2></div>
+            <div class="me-auto">
+              <h2 class="text-truncate mb-0">
+                {{ requested_file }}
+              </h2>
+            </div>
             <div class="">
               <p class="mb-0">
 
@@ -41,7 +45,7 @@
 
       </div>
 
-      {% if is_image or is_embed or html_content %}
+      {% if is_image or is_embed or html_content or contacts %}
 
         <div class="col-xxl-9 col col-lg-12 overflow-auto">
           {% if is_image %}
@@ -57,10 +61,59 @@
               {{ html_content|safe }}
             {% endif %}
           {% endif %}
+          {% if contacts %}
+            <h3>Kontakte</h3>
+            <div class="container-fluid">
+              <div class="row g-4">
+                {% for c in contacts %}
+                  <div class="col col-sm-12 col-lg-4 col-xl-4">
+                    <div class="card mb-3" style="max-width: 540px;">
+                      <div class="row g-0">
+                        <div class="col-md-4">
+                          <img src="{{ c.photo.value|default:"/static/images/sunflower.svg" }}" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ c.fn.value }}</h5>
+                            <p class="card-text small">
+                              <i class="fa fa-phone"></i>
+                              {% for t in c.tel_list %}
+                                <a href="tel:{{ t.value }}">{{ t.value }}</a>
+                              {% endfor %}
+                            </p>
+                            <p class="card-text small">
+                              <i class="fa fa-address-card"></i>
+                              {% for t in c.adr_list %}
+                                <a href="tel:{{ t.value }}">{{ t.value }}</a>
+                              {% endfor %}
+                            </p>
+                            <p class="card-text small">
+                              <i class="fa fa-envelope"></i>
+                              {% for email in c.email_list %}
+                                <a href="mailto:{{ email.value }}">{{ email.value }}</a>
+                              {% endfor %}
+                            </p>
+                            <p class="card-text">
+                              <small class="text-muted">
+                                {% for c in c.categories.value %}
+                                  {{ c }}
+                                {% endfor %}
+                              </small>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% comment %}
+                    <p class="small"><code>{{ c }}</code></p>
+                    {% endcomment %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
         </div>
-
       {% endif %}
-
     </div>
   </div>
 

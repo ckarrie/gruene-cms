@@ -1,13 +1,14 @@
 import mimetypes
 import os
 
+import vobject
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views import generic
 from odf.odf2xhtml import ODF2XHTML
-
+import icalendar
 from gruene_cms import forms, models
 from gruene_cms.views.base import AppHookConfigMixin
 
@@ -73,12 +74,19 @@ class WebDAVViewLocalFileView(
         is_embed = False
         html_content = None
         is_markdown = False
+        calendar_events = []
+        contacts = []
         embeddable = [
             #'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             #'application/vnd.oasis.opendocument.spreadsheet',
             "application/pdf"
         ]
-        content_type = mimetypes.guess_type(full_path)[0]
+
+        if self.object.force_mimetype:
+            content_type = self.object.force_mimetype
+        else:
+            content_type = mimetypes.guess_type(full_path)[0]
+
         if content_type and content_type.startswith("image/"):
             is_image = True
         if content_type and "pdf" in content_type:
@@ -105,6 +113,17 @@ class WebDAVViewLocalFileView(
             # result = result.replace('<table>', '<table class="table">')
             html_content = result
 
+        if content_type == 'text/x-vcalendar':
+            with open(full_path) as f:
+                calendar = icalendar.Calendar.from_ical(f.read())
+                for event in calendar.walk('VEVENT'):
+                    calendar_events.append(event)
+
+        if content_type == 'text/x-vcard':
+            f = open(full_path).read()
+            for stack in vobject.readComponents(f):
+                contacts.append(stack)
+
         ctx.update(
             {
                 "requested_file": requested_file,
@@ -117,6 +136,8 @@ class WebDAVViewLocalFileView(
                 "tree_items": self.object.get_tree_items(),
                 "webdav_client_object": self.object,
                 "html_content": html_content,
+                "calendar_events": calendar_events,
+                "contacts": contacts,
             }
         )
         return ctx
