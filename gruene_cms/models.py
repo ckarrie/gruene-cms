@@ -488,6 +488,7 @@ class NewsListNode(CMSPlugin):
     show_date = models.BooleanField(default=False)
     show_feed_title = models.BooleanField(default=False)
     show_newsitem_separator = models.BooleanField(default=False)
+    show_category_image = models.BooleanField(default=False)
     extra_meta_classes = models.CharField(max_length=255, null=True, blank=True)
     enable_masonry = models.BooleanField(default=True)
 
@@ -511,6 +512,8 @@ class NewsListNode(CMSPlugin):
             news_item.first_image_url = first_image['url']
             news_item.first_image_alt_text = first_image['alt_text']
             news_item.first_image_is_cat_img = first_image['is_cat_img']
+            news_item.show_first_image = True
+
             if news_item.newsfeedreader_external_link:
                 news_item.link_to_url = news_item.newsfeedreader_external_link
                 news_item.link_is_external = True
@@ -521,6 +524,9 @@ class NewsListNode(CMSPlugin):
                 news_item.link_to_url = f'{news_page_url}{anchor}'
                 news_item.link_is_external = False
                 news_item.detail_link = reverse('gruene_cms_news:detail', kwargs={'slug': news_item.slug})
+
+            if news_item.first_image_is_cat_img and not self.show_category_image:
+                news_item.show_first_image = False
 
         return news_items
 

@@ -271,6 +271,19 @@ nav.subpages.justify-content-center .navbar-collapse {
     font-family: 'Questa Slab';
 }
 
+.news-bg-opacity {
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    /*
+    background-size: cover;
+    background-position: center;
+    */
+    background-size: 50%;
+    background-position: center right;
+
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
 /* gruene_cms WebDAV Plugin */
 
 .folder-list li.folder {
