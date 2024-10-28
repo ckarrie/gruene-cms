@@ -17,14 +17,20 @@
       <div class="col col-12">
         <h1 class="news-title text-primary text-center">{{ object.title }}</h1>
         {% if object.subtitle %}
-          <h2 class="news-subtitle text-secondary text-center">{{ object.subtitle }}</h2>
+          <h2 class="news-subtitle text-secondary text-center">{{ object.subtitle|striptags }}</h2>
         {% endif %}
-        <p class="text-primary text-center fw-bold questa_slab">
-          {{ object.published_from|date:"SHORT_DATE_FORMAT" }}
+        <p class="text-primary text-center questa_slab">
+          <span class="fw-bold">{{ object.published_from|date:"SHORT_DATE_FORMAT" }} |</span> <span class="small"> vor {{ object.published_from|timesince }}</span>
         </p>
-        <p class="text-primary text-center small questa_slab">
-            vor {{ object.published_from|timesince }}
-        </p>
+        <div class="keywords text-center">
+          <ul>
+            {% for kw in object.keywords_list %}
+              <li>
+                <a class="keyword" href="/SUCHEURL/?q={{ kw }}" rel="tag">{{ kw }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
         <div class="p-md-2 p-lg-3"></div>
         {% if object.summary %}
           <div class="news-summary">
@@ -32,16 +38,31 @@
           </div>
         {% endif %}
         {% if object.content_rendered %}
-          <div class="news-content pb-5">
+          <div class="pb-5">
+
+            {% if object.get_related_objects.calendar_items %}
+              <div class="card shadow-lg col-sm-12 col-lg-6 mb-3">
+                <div class="card-header bg-primary">
+                  <h2 class="card-title small text-white mb-0">Kalender</h2>
+                </div>
+                <div class="card-body">
+                  {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=object.get_related_objects.calendar_items %}
+                  <p class="small text-muted">Weitere Termine unter Aktuelles</p>
+                </div>
+              </div>
+            {% endif %}
+
             {{ object.content_rendered|safe }}
+
+
           </div>
         {% endif %}
 
       </div>
     </div>
 
-    <div class="row g-5 py-5">
-        <span class="highlighted grashalm text-right">&nbsp;</span>
+    <div class="row g-5 py-5 mt-1">
+      <span class="highlighted grashalm text-right">&nbsp;</span>
 
       {% for cat_id, qs in object.get_related_objects.items %}
         {% if qs %}
@@ -101,6 +122,20 @@
                   <h2 class="card-title small mb-0">
                     <span class="highlighted grashalm">Schlagworte</span>
                   </h2>
+
+                  <p><code>{{ app_config }}</code></p>
+
+                    <p class="small">
+                      {% if prev_object %}
+                        <a href="{% url 'gruene_cms_news:detail' slug=prev_object.slug %}">&laquo; {{ prev_object }}</a> {{ prev_object.published_from|date:"SHORT_DATE_FORMAT" }}
+                      {% endif %}
+                      |
+                      {% if next_object %}
+                         {{ next_object.published_from|date:"SHORT_DATE_FORMAT" }} <a href="{% url 'gruene_cms_news:detail' slug=next_object.slug %}">{{ next_object }} &raquo;</a>
+                      {% endif %}
+                    </p>
+
+
                 </div>
                 <div class="card-body">
                   <div class="alert shadow-sm alert-warning small">In die Suche integrieren</div>
@@ -112,17 +147,6 @@
                           <a class="keyword" href="/SUCHEURL/?q={{ kw }}" rel="tag">{{ kw }}</a>
                         </li>
                       {% endfor %}
-                      {% comment %}
-                            <li>
-                              <a class="keyword" href="/themen/frauen" rel="tag">Frauen</a>
-                            </li>
-                            <li>
-                              <a class="keyword" href="/themen/pflege" rel="tag">Pflege</a>
-                            </li>
-                            <li>
-                              <a class="keyword" href="/themen/soziales" rel="tag">Soziales</a>
-                            </li>
-                      {% endcomment %}
                     </ul>
                   </div>
                 </div>

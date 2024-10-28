@@ -43,6 +43,8 @@ class AppHookConfigMixin:
         ctx = super().get_context_data(**kwargs)
         ctx.update({
             'current_page': self.cms_page,
+            'app_config': self.config,
+            'app_namespace': self.namespace
         })
         return ctx
 
