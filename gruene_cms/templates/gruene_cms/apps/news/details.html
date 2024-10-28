@@ -37,13 +37,6 @@
           </div>
         {% endif %}
 
-        {% for cat_id, qs in object.get_related_objects.items %}
-          {% if cat_id == "calendar_items" and qs %}
-            <h2></h2>
-            {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
-          {% endif %}
-        {% endfor %}
-
       </div>
     </div>
 
@@ -53,7 +46,7 @@
       {% for cat_id, qs in object.get_related_objects.items %}
         {% if qs %}
           <div class="col col-sm-12 col-lg-6">
-            <div class="card shadow-lg">
+            <div class="card shadow-sm">
               {% if cat_id == "calendar_items" %}
                 <div class="card-header">
                   <h2 class="card-title small mb-0">
@@ -64,7 +57,7 @@
                   {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
                 </div>
                 <div class="card-footer">
-                  <a href="">Alle Termine</a>
+                  <a href="/URLZUALLENTERMINEN/">Alle Termine</a>
                 </div>
               {% endif %}
 
@@ -99,11 +92,7 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden-focusable">Weiter</span>
                     </button>
-
                   </div>
-
-
-
                 </div>
               {% endif %}
 
