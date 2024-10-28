@@ -35,6 +35,43 @@ footer .radial-main a:hover {
     font-family: 'GrueneType';
 }
 
+/* Keywords from Bundestag */
+.keywords {
+    font-family: 'Questa Slab';
+
+}
+.keywords ul {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    margin-right: -.7rem;
+    margin-top: -1rem;
+    padding: 0;
+}
+
+.keywords ul li {
+    display: inline-block;
+}
+
+.keywords a, .keywords span {
+    font-family: 'Questa Slab';
+    font-size: 1.1rem;
+    line-height: .9;
+    font-weight: 400;
+    text-decoration: none;
+    background: #f2f2f2;
+    border: 1px solid transparent;
+    border-radius: 2rem;
+    color: #067836;
+    display: inline-block;
+    padding: .5em .8em;
+}
+
+.keywords a:focus, .keywords a:hover {
+    border: 1px solid #cc134e;
+}
+
 /* Radial Backgrounds, from https://www.gruene-bundestag.de/ footer */
 
 .radial-main {
@@ -140,7 +177,7 @@ footer .radial-main a:hover {
     background: #FFF17A; /* Hier eine GRÜNE Farbe */
 }
 
-.highlighted.tanne {
+.highlighted.tanne, .highlighted.himmel {
     color: #F5F1E9;
 }
 
@@ -162,6 +199,7 @@ footer .radial-main a:hover {
 
 .highlighted.himmel:after {
 	background: #0BA1DD;
+
 }
 
 .highlighted.sonne:after {

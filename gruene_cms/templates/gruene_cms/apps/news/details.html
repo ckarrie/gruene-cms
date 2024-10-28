@@ -37,8 +37,113 @@
           </div>
         {% endif %}
 
+        {% for cat_id, qs in object.get_related_objects.items %}
+          {% if cat_id == "calendar_items" and qs %}
+            <h2></h2>
+            {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
+          {% endif %}
+        {% endfor %}
 
       </div>
     </div>
+
+    <div class="row g-5 py-5">
+        <span class="highlighted grashalm text-right">&nbsp;</span>
+
+      {% for cat_id, qs in object.get_related_objects.items %}
+        {% if qs %}
+          <div class="col col-sm-12 col-lg-6">
+            <div class="card shadow-lg">
+              {% if cat_id == "calendar_items" %}
+                <div class="card-header">
+                  <h2 class="card-title small mb-0">
+                    Verlinkte <span class="highlighted grashalm">Termine</span>
+                  </h2>
+                </div>
+                <div class="card-body">
+                  {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
+                </div>
+                <div class="card-footer">
+                  <a href="">Alle Termine</a>
+                </div>
+              {% endif %}
+
+              {% if cat_id == "images" %}
+                <div class="card-header">
+                  <h2 class="card-title small mb-0">
+                    Bilder-<span class="highlighted grashalm">Galerie</span>
+                  </h2>
+                </div>
+                <div class="card-body p-0">
+                  <div class="carousel slide" data-bs-interval="5000" data-bs-keyboard="true" data-bs-pause="hover" data-bs-ride="false" data-bs-wrap="true" id="carousel-{{ object.pk }}">
+                    <div class="carousel-indicators">
+                        {% for img in qs %}
+                          <button type="button" data-bs-target="#carousel-{{ object.pk }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true"></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                      {% for img in qs %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                          <img class="d-block w-100" src="{{ img.url }}" alt="{{ img.alt_text }}">
+                          <div class="carousel-caption d-none d-md-block">
+                            <p>{{ img.alt_text }}</p>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" data-bs-target="#carousel-{{ object.pk }}" type="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden-focusable">Zurück</span>
+                    </button>
+                    <button class="carousel-control-next" data-bs-target="#carousel-{{ object.pk }}" type="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden-focusable">Weiter</span>
+                    </button>
+
+                  </div>
+
+
+
+                </div>
+              {% endif %}
+
+              {% if cat_id == "keywords" %}
+                <div class="card-header">
+                  <h2 class="card-title small mb-0">
+                    <span class="highlighted grashalm">Schlagworte</span>
+                  </h2>
+                </div>
+                <div class="card-body">
+                  <div class="alert shadow-sm alert-warning small">In die Suche integrieren</div>
+                  <div class="keywords">
+
+                    <ul>
+                      {% for kw in object.keywords_list %}
+                        <li>
+                          <a class="keyword" href="/SUCHEURL/?q={{ kw }}" rel="tag">{{ kw }}</a>
+                        </li>
+                      {% endfor %}
+                      {% comment %}
+                            <li>
+                              <a class="keyword" href="/themen/frauen" rel="tag">Frauen</a>
+                            </li>
+                            <li>
+                              <a class="keyword" href="/themen/pflege" rel="tag">Pflege</a>
+                            </li>
+                            <li>
+                              <a class="keyword" href="/themen/soziales" rel="tag">Soziales</a>
+                            </li>
+                      {% endcomment %}
+                    </ul>
+                  </div>
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
   </div>
 {% endblock %}

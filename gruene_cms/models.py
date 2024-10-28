@@ -380,6 +380,10 @@ class NewsItem(models.Model):
     def is_public(self):
         return True
 
+    @property
+    def keywords_list(self):
+        return [x.strip() for x in self.keywords.split(',')]
+
     def __str__(self):
         return self.title
 
@@ -397,6 +401,30 @@ class NewsItem(models.Model):
             if DEBUG_NEWS:
                 print("End render content")
         super(NewsItem, self).save(*args, **kwargs)
+
+    def get_all_images(self):
+        images = [
+            self.get_first_image()
+        ]
+        ni_qs = self.newsimage_set.order_by('position')
+        if ni_qs.count() > 1:
+            for news_image in ni_qs[1:]:
+                images.append({
+                    'url': news_image.image.url,
+                    'alt_text': news_image.title,
+                    'is_cat_img': False
+                })
+        return images
+
+    def get_related_objects(self):
+        links = OrderedDict()
+        links['calendar_items'] = self.calendaritem_set.all().order_by('-dt_from')
+        #links['external'] = []
+        #links['categories'] = []
+        links['keywords'] = self.keywords_list
+        links['images'] = self.get_all_images()
+
+        return links
 
     def get_first_image(self):
         news_image = self.newsimage_set.order_by('position').first()
