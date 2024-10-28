@@ -120,6 +120,8 @@ class ChartJSNodePlugin(CMSPluginBase):
 
     def get_cache_expiration(self, request, instance, placeholder):
         # 10 Minuten in Sekunden
+        if request.user.is_staff:
+            return 60*1
         return 60*10
 
     def render(self, context, instance, placeholder):
@@ -152,6 +154,8 @@ class CalendarNodePlugin(CMSPluginBase):
 
     def get_cache_expiration(self, request, instance, placeholder):
         # 10 Minuten in Sekunden
+        if request.user.is_staff:
+            return None
         return 60*10
 
     def get_render_template(self, context, instance, placeholder):
@@ -185,8 +189,9 @@ class NewsListNodePlugin(CMSPluginBase):
     module = module_name
 
     def get_cache_expiration(self, request, instance, placeholder):
-        now = timezone.now()
-        return now + timezone.timedelta(minutes=10)
+        if request.user.is_staff:
+            return None
+        return timezone.now() + timezone.timedelta(minutes=10)
 
     def get_render_template(self, context, instance, placeholder):
         render_templates = {
