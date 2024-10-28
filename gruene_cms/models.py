@@ -272,6 +272,7 @@ class Category(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField()
     logo = FilerImageField(null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    is_public = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title

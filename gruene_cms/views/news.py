@@ -14,10 +14,12 @@ class NewsDetailView(AppHookConfigMixin, generic.DetailView):
 
     def get_queryset(self):
         qs = super(NewsDetailView, self).get_queryset().filter(
-            newsfeedreader_source__isnull=True
+            newsfeedreader_source__isnull=True,
+            categories__is_public=True
         )
         if not self.request.user.is_staff:
             qs = qs.filter(published_from__lte=timezone.now())
+        qs = qs.distinct()
         return qs
 
     def get_context_data(self, **kwargs):
