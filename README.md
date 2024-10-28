@@ -12,6 +12,7 @@ pip install --upgrade pip
 pip install psycopg2-binary
 pip install django-cms
 pip install icalendar
+pip install vobject
 ```
 
 ## Installation grunen-cms

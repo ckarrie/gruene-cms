@@ -14,7 +14,7 @@
         <div class="d-md-flex shadow p-3 mb-5 bg-body-tertiary rounded">
             <div class="me-auto">
               <h2 class="text-truncate mb-0">
-                {{ requested_file }}
+                {{ object.title|default:requested_file }}
               </h2>
             </div>
             <div class="">
@@ -39,7 +39,7 @@
     <div class="row-cols-1 row g-5 row-cols-xxl-4 row-cols-md-12 row-cols-lg-2 row-cols-sm-1 row-cols-xl-2">
       <div class="col-xxl-3 col col-lg-12 overflow-auto">
 
-        <h3>{{ object.entry_path }}</h3>
+        <h3>{{ object.entry_path_title|default:object.entry_path }}</h3>
         {% include 'gruene_cms/plugins/local_folder_node.html' with hide_expand_hint=True show_root_node=False tree_items=tree_items current_item=requested_file extra_css_classes='folder-list small' %}
 
 
@@ -63,7 +63,7 @@
           {% endif %}
           {% if contacts %}
             <h3>Kontakte</h3>
-            <div class="container-fluid">
+            <div class="container-full">
               <div class="row g-4">
                 {% for c in contacts %}
                   <div class="col col-sm-12 col-lg-4 col-xl-4">

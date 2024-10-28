@@ -26,6 +26,7 @@ dependencies = [
   'odfpy',
   'beautifulsoup4',
   'icalendar',
+  'vobject',
 ]
 
 [project.urls]
