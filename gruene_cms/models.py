@@ -20,6 +20,8 @@ from filer.fields.image import FilerImageField
 from filer.models import Folder as FilerFolder, File as FilerFile, Image as FilerImage
 from lxml import etree
 from bs4 import BeautifulSoup
+import metadata_parser
+
 
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
@@ -290,6 +292,7 @@ class NewsFeedReader(models.Model):
         return self.title
 
     def fetch_feed(self):
+
         feed = feedparser.parse(self.url)
         got_updates = False
         for feed_entry in feed.entries:
@@ -301,6 +304,10 @@ class NewsFeedReader(models.Model):
                 if not existing_newsitem.exists():
                     feed_entry_title = feed_entry.get('title')
                     feed_entry_summary = feed_entry.get('summary')
+
+                    # RSS
+                    if not feed_entry_summary:
+                        feed_entry_summary = feed_entry.get('description')
                     
                     # extract image
                     feed_entry_content = feed_entry.get('content')
@@ -316,7 +323,11 @@ class NewsFeedReader(models.Model):
                                 if img_src:
                                     newsfeedreader_external_image_url = img_src
                         except (IndexError, KeyError):
-                            newsfeedreader_external_image_url = None                    
+                            newsfeedreader_external_image_url = None
+
+                    if not newsfeedreader_external_image_url:
+                        page = metadata_parser.MetadataParser(url=feed_entry_link)
+                        newsfeedreader_external_image_url = page.get_metadata_link('image')
 
                     if isinstance(feed_entry_summary, (tuple, list)):
                         feed_entry_summary = feed_entry_summary[0]
