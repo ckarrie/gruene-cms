@@ -86,3 +86,20 @@ MARKDOWNIFY = {
     },
 }
 ```
+
+## Setup GruenenCMS
+
+```shell
+python gruene_web/manage.py migrate
+python gruene_web/manage.py gruenecms_setup
+python gruene_web/manage.py runserver
+```
+
+if `gruenecms_setup` fails:
+
+```shell
+rm gruene_web/db.sqlite3 
+python gruene_web/manage.py migrate
+python gruene_web/manage.py gruenecms_setup
+```
+

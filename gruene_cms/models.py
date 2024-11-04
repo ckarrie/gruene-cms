@@ -368,8 +368,8 @@ class NewsItem(models.Model):
     content_rendered = models.TextField(null=True, blank=True, editable=DEBUG_NEWS)
     published_from = models.DateTimeField()
     published_until = models.DateTimeField(null=True, blank=True)
-    insert_images = models.CharField(max_length=255, default='inside-hr', choices=(
-        ('inside-hr', _('Inside HRs')),
+    insert_images = models.CharField(max_length=255, default='replace-marker', choices=(
+        #('inside-hr', _('Inside HRs')),
         ('replace-marker', _('Replace Marker')),
     ))
     # For NewsReader
@@ -456,47 +456,44 @@ class NewsItem(models.Model):
     def _render_content(self):
         body = self.content
         news_images = list(self.newsimage_set.all().order_by('position'))
-        body = body.replace('<hr>', '<hr />')
-        body = f'<?xml version="1.0"?><div class="news-content">{body}</div>'
-        tree = etree.ElementTree(etree.fromstring(body))
-        root = tree.getroot()
+        soup = BeautifulSoup(body, 'html.parser')
         current_image_index = 0
 
         def create_img_tag(index):
             try:
                 _news_image = news_images[index]
-                _img_tag = etree.Element('img', attrib={
+                _img_tag = soup.new_tag('img', attrs={
                     'src': _news_image.image.url,
                     'alt': _news_image.title,
                     'title': _news_image.title,
                     'class': 'news-image float-md-end imgshadow mt-sm-5 mb-sm-5 ms-md-5 rounded-3 img-fluid'
                 })
                 return _img_tag
+
             except IndexError:
                 return None
 
         if self.insert_images == 'inside-hr':
-            for hr_tag in root.iter('hr'):
+            for hr_tag in soup.find_all('hr'):
                 img_tag = create_img_tag(current_image_index)
                 if DEBUG_NEWS:
                     print("render img_tag", hr_tag, img_tag)
                 if img_tag:
                     hr_tag.addnext(img_tag)
-                    root.remove(hr_tag)
+                    soup.remove(hr_tag)
                     current_image_index += 1
 
         elif self.insert_images == 'replace-marker':
-            marker_tags = root.xpath("//span[@class='marker']")
+            marker_tags = soup.find_all("span", {'class': "marker"})
             for marker_tag in marker_tags:
                 img_tag = create_img_tag(current_image_index)
                 if DEBUG_NEWS:
                     print("render img_tag", marker_tag, img_tag)
                 if img_tag is not None:
-                    marker_tag.getparent().replace(marker_tag, img_tag)
+                    marker_tag.replace_with(img_tag)
                     current_image_index += 1
 
-        body = etree.tostring(root).decode()
-        #print("rendered body", body)
+        body = str(soup)
         return body
 
 
@@ -694,14 +691,134 @@ class TaskNode(CMSPlugin):
         return tasks.order_by('created_at')
 
 
-def get_local_webdav_path(subfolder=None):
+
+def get_local_path(base_path, subfolder=None):
+    app_dir = settings.BASE_DIR / 'gruenecms_local'
     if subfolder:
-        path = os.path.join(settings.BASE_DIR, 'webdav', subfolder)
+        path = os.path.join(app_dir, base_path, subfolder)
     else:
-        path = os.path.join(settings.BASE_DIR, 'webdav')
+        path = os.path.join(app_dir, base_path)
     if not os.path.exists(path):
         os.makedirs(path)
     return path
+
+
+def get_local_webdav_path(basefolder=None, subfolder=None):
+    return get_local_path('webdav', subfolder=subfolder)
+
+def get_local_addressbook_path(subfolder=None):
+    return get_local_path('addressbooks', subfolder=subfolder)
+
+def get_local_contacts_path(subfolder=None):
+    return get_local_path('contacts', subfolder=subfolder)
+
+
+class NextCloudAccount(models.Model):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    nextcloud_username = models.CharField(max_length=50)
+    nextcloud_app_password = models.CharField(max_length=255)
+    nextcloud_url = models.CharField(
+        max_length=255,
+        help_text=_('Without tailing slash'),
+        default="https://wolke.netzbegruenung.de"
+    )
+
+    @property
+    def local_webdav_path(self):
+        return get_local_webdav_path(subfolder=str(self.pk))
+
+    @property
+    def local_addressbook_path(self):
+        return get_local_addressbook_path(subfolder=str(self.pk))
+
+    @property
+    def local_contacts_path(self):
+        return get_local_contacts_path(subfolder=str(self.pk))
+
+    def get_scope_url(self, scope):
+        dav = f'{self.nextcloud_url}/remote.php/dav'
+        scope_url = {
+            'files': f'{dav}/files/{self.nextcloud_username}',
+            'addressbooks': f'{dav}/addressbooks/users/{self.nextcloud_username}',
+            "calendars": f'{dav}/calendars/{self.nextcloud_username}'
+        }[scope]
+        return scope_url
+
+    def get_webdavclient(self, scope):
+        scope_url = self.get_scope_url(scope=scope)
+        from webdav3.client import Client
+        webdav_hostname = f'{scope_url}'
+        options = {
+            'webdav_hostname': webdav_hostname,
+            'webdav_login': self.nextcloud_username,
+            'webdav_password': self.nextcloud_app_password
+        }
+        client = Client(options)
+        return client
+
+    def list_file_shares(self):
+        client = self.get_webdavclient(scope='files')
+        return client.list()
+
+    def list_addressbooks(self):
+        client = self.get_webdavclient(scope='addressbooks')
+        folder_list = client.list()
+        remove_from_list = [
+            f'{self.nextcloud_username}/',
+            'z-server-generated--system/'
+        ]
+        for r in remove_from_list:
+            if r in folder_list:
+                folder_list.remove(r)
+        return [slug.replace('/', '') for slug in folder_list]
+
+    def download_via_requests(self, url, to_path):
+        import requests
+        from requests.auth import HTTPBasicAuth
+        request = requests.get(url, auth=HTTPBasicAuth(self.nextcloud_username, self.nextcloud_app_password))
+        open(to_path, 'wb').write(request.content)
+
+    def download_addressbook(self, slug="contacts"):
+        scope_url = self.get_scope_url(scope="addressbooks")
+        url = f'{scope_url}/{slug}/?export'
+        to_path = f'{self.local_addressbook_path}/{slug}.vcf'
+        self.download_via_requests(url, to_path)
+
+    def list_calendars(self):
+        client = self.get_webdavclient(scope='calendars')
+        folder_list = client.list()
+        remove_from_list = [
+            f'{self.nextcloud_username}/',
+            f'aufgaben/',
+            f'inbox/',
+            f'outbox/',
+            f'trashbin/',
+        ]
+        for r in remove_from_list:
+            if r in folder_list:
+                folder_list.remove(r)
+        return [slug.replace('/', '') for slug in folder_list]
+
+    def download_calendar(self, slug='personal'):
+        scope_url = self.get_scope_url(scope="calendars")
+        url = f'{scope_url}/{slug}/?export'
+        to_path = f'{self.local_contacts_path}/{slug}.ics'
+        self.download_via_requests(url, to_path)
+
+    def create_calendaritems(self, files):
+        import icalendar
+        for full_path in files:
+            with open(full_path) as f:
+                calendar = icalendar.Calendar.from_ical(f.read())
+                for event in calendar.walk('VEVENT'):
+                    calendar_events.append(event)
+
+
+class NextCloudCalendar(models.Model):
+    account = models.ForeignKey(NextCloudAccount, on_delete=models.CASCADE)
+    calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
+    calendar_slug = models.CharField(max_length=255)
+
 
 
 class WebDAVClient(models.Model):
@@ -732,7 +849,8 @@ class WebDAVClient(models.Model):
         from webdav3.client import Client
         options = {'webdav_hostname': self.webdav_hostname, 'webdav_login': self.webdav_login, 'webdav_password': self.webdav_app_password}
         client = Client(options)
-        client.download_sync(remote_path=self.entry_path, local_path=self.local_path)
+        remote_path = self.entry_path or ""
+        client.download_sync(remote_path=remote_path, local_path=self.local_path)
 
     def get_tree_items(self):
         tree_level = 0

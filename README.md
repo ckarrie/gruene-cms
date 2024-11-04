@@ -171,3 +171,19 @@ location /static/ {
   expires 365d;
 }
 ```
+
+# Dev
+
+If setup with `gruenencms_setup` (see [docs/setup.md](docs/setup.md)), use:
+
+```shell
+cd ~/workspace/venvs/gruene_venv
+source bin/activate
+python gruene_web/manage.py runserver 127.0.0.1:9100
+```
+
+Open Webbrowser:  [127.0.0.1:9100](http://127.0.0.1:9100)
+
+Login with:
+- username: `changeme`
+- password: `changeme!`

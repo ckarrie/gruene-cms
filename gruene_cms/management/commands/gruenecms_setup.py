@@ -23,11 +23,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # set current threads user
-        user = User.objects.create_superuser(
-            username='changeme',
-            email='change@me.com',
-            password='changeme!'
-        )
+        user = User.objects.filter(username='changeme').first()
+        if not user:
+            user = User.objects.create_superuser(
+                username='changeme',
+                email='change@me.com',
+                password='changeme!'
+            )
 
         self.stdout.write(
             self.style.NOTICE(f'Using user {user}')
@@ -52,10 +54,12 @@ class Command(BaseCommand):
             position="last-child"
         )
 
+        # co = cms.models.contentmodels.EmptyPageContent
         co = home_page.get_content_obj(language=LANG, fallback=False, force_reload=True)
         print("co", co)
-        v_home = Version.objects.get_for_content(home_page)
-        v_home.publish(user=user)
+        # fails: KeyError: _cms_extension().versionables_by_content[_to_model(model_or_obj)]
+        #v_home = Version.objects.get_for_content(co)
+        #v_home.publish(user=user)
 
         self.stdout.write(
             self.style.SUCCESS(f'Created Page {home_page.get_page_title()} id={home_page.pk}')
@@ -116,6 +120,7 @@ class Command(BaseCommand):
             self.style.SUCCESS(f'Created Page {dashboard_page.get_page_title()} id={dashboard_page.pk}')
         )
 
-        cms_api.add_plugin("content")
+        # TODO:
+        #cms_api.add_plugin("content")
 
 
