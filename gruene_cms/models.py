@@ -325,9 +325,16 @@ class NewsFeedReader(models.Model):
                         except (IndexError, KeyError):
                             newsfeedreader_external_image_url = None
 
+                    # RSS: add missing
+                    # Image from Page <meta property="og:image"> and 
+                    # Summary from <meta property="og:description">
                     if not newsfeedreader_external_image_url:
-                        page = metadata_parser.MetadataParser(url=feed_entry_link)
+                        page = metadata_parser.MetadataParser(url=feed_entry_link, search_head_only=True)
                         newsfeedreader_external_image_url = page.get_metadata_link('image')
+                        if not feed_entry_summary:
+                            page_metadata_descriptions = page.parsed_result.get_metadatas('description')
+                            if page_metadata_descriptions:
+                                feed_entry_summary = page_metadata_descriptions[0]
 
                     if isinstance(feed_entry_summary, (tuple, list)):
                         feed_entry_summary = feed_entry_summary[0]
