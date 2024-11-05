@@ -45,7 +45,7 @@ class NewsImageAdmin(admin.ModelAdmin):
 
 
 class NewsFeedReaderAdmin(admin.ModelAdmin):
-    list_display = ['title', 'url', 'category', 'last_updated', 'author_user']
+    list_display = ['title', 'url', 'category', 'last_updated', 'author_user', 'enable_for_auto_update', 'active_auto_update']
     actions = ['fetch_feeds']
 
     def fetch_feeds(self, request, queryset):

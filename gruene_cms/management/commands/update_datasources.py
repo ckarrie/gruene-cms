@@ -18,7 +18,13 @@ class Command(BaseCommand):
         # news feed
         nf_qs = NewsFeedReader.objects.filter(enable_for_auto_update=True)
         for nf in nf_qs:
-            nf.fetch_feed()
+            if nf.active_auto_update:
+                self.stdout.write(
+                    self.style.Info(f' - Skipping Update for {nf} NewsFeedReader, already active')
+                )
+                continue
+            else:
+                nf.fetch_feed()
         self.stdout.write(
             self.style.SUCCESS(f'Updated {nf_qs.count()} NewsFeedReaders')
         )

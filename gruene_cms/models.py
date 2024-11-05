@@ -287,12 +287,17 @@ class NewsFeedReader(models.Model):
     last_updated = models.DateTimeField(null=True, blank=True)
     author_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
     enable_for_auto_update = models.BooleanField(default=False, help_text=_('If checked, news will be synced automatically'))
+    active_auto_update = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
     def fetch_feed(self):
+        # Enter Lock
+        self.active_auto_update = False
+        self.save(update_fields=['active_auto_update'])
 
+        # Parse Feed
         feed = feedparser.parse(self.url)
         got_updates = False
         for feed_entry in feed.entries:
@@ -326,7 +331,7 @@ class NewsFeedReader(models.Model):
                             newsfeedreader_external_image_url = None
 
                     # RSS: add missing
-                    # Image from Page <meta property="og:image"> and 
+                    # Image from Page <meta property="og:image"> and
                     # Summary from <meta property="og:description">
                     if not newsfeedreader_external_image_url:
                         page = metadata_parser.MetadataParser(url=feed_entry_link, search_head_only=True)
@@ -362,6 +367,10 @@ class NewsFeedReader(models.Model):
         if got_updates:
             self.last_updated = timezone.now()
             self.save(update_fields=['last_updated'])
+
+        # Release Lock
+        self.active_auto_update = False
+        self.save(update_fields=['active_auto_update'])
 
 
 class NewsImage(models.Model):
