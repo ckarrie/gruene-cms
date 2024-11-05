@@ -14,7 +14,17 @@
           <p class="news-meta {{ instance.extra_meta_classes|default:"" }}">
             {% if instance.show_date %}<strong>{{ item.published_from|date:"d.m." }}</strong>{% endif %}
               {% if instance.show_date and instance.show_feed_title %}<span class="meta-seperator"> </span>{% endif %}
-            {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.username }}</i>{% endif %}
+            {% if instance.show_feed_title %}
+              {% if item.newsfeedreader_source.category.url %}
+                <a href="{{ item.newsfeedreader_source.category.url }}" target="_blank">
+              {% endif %}
+              <i>
+                {{ item.newsfeedreader_source.title|default:item.authors.first.username }}
+              </i>
+              {% if item.newsfeedreader_source.category.url %}
+                </a>>
+              {% endif %}
+            {% endif %}
           </p>
         {% endif %}
         {% if item.subtitle %}

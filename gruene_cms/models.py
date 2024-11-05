@@ -273,6 +273,7 @@ class CalendarNode(CMSPlugin):
 class Category(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField()
+    url = models.URLField(null=True, blank=True)
     logo = FilerImageField(null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     is_public = models.BooleanField(default=True)
 
