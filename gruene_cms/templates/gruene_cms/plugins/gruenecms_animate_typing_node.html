@@ -10,10 +10,10 @@
     data-cursor-speed="{{ instance.cursor_speed|unlocalize }}"
 >{{ instance.animated_text }}</span>
 {% elif instance.animation == "wordsrotator" %}
-  <span id="wordsrotator-{{ instance.pk }}"></span>
+  <span id="wordsrotator-{{ instance.pk|unlocalize }}"></span>
   <script>
   $(function(){
-    $("#wordsrotator-{{ instance.pk }}").wordsrotator({
+    $("#wordsrotator-{{ instance.pk|unlocalize }}").wordsrotator({
         stopOnHover: {% if instance.wordsrotator_stoponhover %}true{% else %}false{% endif %},
         words: {{ instance.get_word_list|safe }},
         animationIn: "{{ instance.wordsrotator_animation_in|default:"rollIn" }}",
