@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="{% static 'sunflower-v2.2.0/style.css' %}">
     <link rel="stylesheet" href="{% static 'sunflower-fixes.css' %}">
     <link rel="stylesheet" href="{% static 'codehilite_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'animate.css' %}">
+    <link rel="stylesheet" href="{% static 'jquery.wordrotator.css' %}">
     {% render_block 'css' %}
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/masonry-4.2.2.min.js' %}"></script>
@@ -218,14 +220,15 @@
     </footer>
     {% render_block 'js' %}
     <script src="{% static 'js/jquery.animateTyping.js' %}"></script>
+    <script src="{% static 'js/jquery.wordrotator.js' %}"></script>
     <script>
 	$(function () {
   		$('[data-toggle="tooltip"]').tooltip();
 		
-		$('.level-3').hide();
-		$('.level-2.folder').click(function() {
-		    $(this).find('.level-3').slideToggle();
-		});
+      $('.level-3').hide();
+      $('.level-2.folder').click(function() {
+          $(this).find('.level-3').slideToggle();
+      });
 		
 	});
 	</script>

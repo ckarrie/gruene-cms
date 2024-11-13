@@ -160,18 +160,26 @@ class GrueneCMSImageBackgroundNode(CMSPlugin):
 
 
 class GrueneCMSAnimateTypingNode(CMSPlugin):
-    animated_text = models.CharField(max_length=500, help_text='Separated by |. i.e. "bla1|bla2|bla3|"')
+    animated_text = models.CharField(max_length=500, help_text='Separated by |. i.e. "bla1|bla2|bla3"')
+    animation = models.CharField(max_length=20, choices=(
+        ('animatetyping', 'Animate Typing'),
+        #('textroll', 'Text roll'),
+        ('wordsrotator', 'Wordsrotator'),
+        ('rotatingtext', "Rachel Smith's rotatingtext"),
+    ), default='animatetyping')
     enable_animation = models.BooleanField(default=True)
     type_speed = models.PositiveIntegerField(default=200, help_text='Type speed in ms')
     type_delay = models.PositiveIntegerField(default=1200, help_text='Type delay in ms')
     remove_speed = models.PositiveIntegerField(default=30, help_text='Remove speed in ms')
     remove_delay = models.PositiveIntegerField(default=1500, help_text='Remove delay in ms')
     cursor_speed = models.PositiveIntegerField(default=500, help_text='Cursor speed in ms')
+    wordsrotator_stoponhover = models.BooleanField(default=False)
+    wordsrotator_speed = models.PositiveIntegerField(default=1000)
+    wordsrotator_animation_in = models.CharField(max_length=255, null=True, blank=True, help_text='See <a href="https://animate.style/">https://animate.style/</a> for options')
+    wordsrotator_animation_out = models.CharField(max_length=255, null=True, blank=True, help_text='See <a href="https://animate.style/">https://animate.style/</a> for options')
 
-    def save(self, *args, **kwargs):
-        if self.animated_text and not self.animated_text.endswith('|'):
-            self.animated_text = f'{self.animated_text}|'
-        super(GrueneCMSAnimateTypingNode, self).save(*args, **kwargs)
+    def get_word_list(self):
+        return self.animated_text.split('|')
 
 
 class LimitUserGroupNode(CMSPlugin):

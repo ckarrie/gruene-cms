@@ -40,10 +40,10 @@ class GrueneCMSAnimateTypingNodePlugin(CMSPluginBase):
     fieldsets = [
         (None, {
             'fields': (
-                ('animated_text',),
+                ('animated_text', 'animation'),
             )
         }),
-        (_('Advanced settings'), {
+        (_('AnimateTyping settings'), {
             'classes': ('collapse',),
             'fields': (
                 'enable_animation',
@@ -52,6 +52,15 @@ class GrueneCMSAnimateTypingNodePlugin(CMSPluginBase):
                 'remove_speed',
                 'remove_delay',
                 'cursor_speed',
+            )
+        }),
+        (_('Wordsrotator settings'), {
+            'classes': ('collapse',),
+            'fields': (
+                'wordsrotator_stoponhover',
+                'wordsrotator_speed',
+                'wordsrotator_animation_in',
+                'wordsrotator_animation_out',
             )
         }),
     ]
