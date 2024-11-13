@@ -317,6 +317,20 @@ nav.subpages.justify-content-center .navbar-collapse {
     transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Blauer Kreis Störer */
+.circle {
+    width:500px;
+    height:500px;
+    border-radius:250px;
+    font-size:50px;
+    color:#fff;
+    line-height:500px;
+    text-align:center;
+    background:#0BA1DD;
+    font-family: GrueneType;
+    transform: rotate(-7deg);
+    display: block
+}
 
 /* gruene_cms Calendar Plugin */
 

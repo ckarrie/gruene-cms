@@ -17,7 +17,7 @@
         stopOnHover: {% if instance.wordsrotator_stoponhover %}true{% else %}false{% endif %},
         words: {{ instance.get_word_list|safe }},
         animationIn: "{{ instance.wordsrotator_animation_in|default:"rollIn" }}",
-        animationOut: "{{ instance.wordsrotator_animation_in|default:"rollOut" }}",
+        animationOut: "{{ instance.wordsrotator_animation_out|default:"rollOut" }}",
         speed: {{ instance.wordsrotator_speed|unlocalize }}
     });
   });
