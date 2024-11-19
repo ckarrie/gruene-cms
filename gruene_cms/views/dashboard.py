@@ -1,16 +1,27 @@
 import mimetypes
 import os
+import re
 
 import vobject
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
 from odf.odf2xhtml import ODF2XHTML
 import icalendar
 from gruene_cms import forms, models
 from gruene_cms.views.base import AppHookConfigMixin
+
+
+def _get_folders(d):
+    folders = []
+    for ti in d.get('content', []):
+        if ti['type'] == 'folder':
+            folders.append((ti['path'], ti['path']))
+            folders.extend(_get_folders(ti))
+    return folders
 
 
 class AuthenticatedOnlyMixin(LoginRequiredMixin):
@@ -70,6 +81,7 @@ class WebDAVViewLocalFileView(
         requested_file = self.request.GET.get("path")
         full_path = os.path.join(self.object.local_path + "/", requested_file[1:])
         file_exists = os.path.isfile(full_path)
+        is_dir = os.path.isdir(full_path)
         is_image = False
         is_embed = False
         html_content = None
@@ -124,6 +136,17 @@ class WebDAVViewLocalFileView(
             for stack in vobject.readComponents(f):
                 contacts.append(stack)
 
+        tree_items = self.object.get_tree_items()
+        folders = _get_folders(tree_items)
+        if is_dir:
+            current_folder = requested_file
+        else:
+            current_folder = os.path.dirname(requested_file)
+
+        upload_form = forms.WebDAVUploadForm(possible_locations_dirs=folders, initial={
+            'location_dir':  current_folder
+        })
+
         ctx.update(
             {
                 "requested_file": requested_file,
@@ -132,12 +155,14 @@ class WebDAVViewLocalFileView(
                 "is_image": is_image,
                 "is_embed": is_embed,
                 "is_markdown": is_markdown,
+                "is_dir": is_dir,
                 "content_type": content_type,
-                "tree_items": self.object.get_tree_items(),
+                "tree_items": tree_items,
                 "webdav_client_object": self.object,
                 "html_content": html_content,
                 "calendar_events": calendar_events,
                 "contacts": contacts,
+                "upload_form": upload_form
             }
         )
         return ctx
@@ -159,3 +184,62 @@ class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
             response["Content-Disposition"] = f'attachment; filename="{filename}"'
             return response
         return HttpResponse()
+
+
+class WebDAVUploadView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.FormView):
+    form_class = forms.WebDAVUploadForm
+    template_name = 'gruene_cms/apps/dashboard/webdav_upload_file.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(WebDAVUploadView, self).get_form_kwargs()
+        webdav_obj = models.WebDAVClient.objects.get(pk=self.kwargs.get('pk'))
+        kwargs.update({'possible_locations_dirs': _get_folders(webdav_obj.get_tree_items())})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        ctx = super(WebDAVUploadView, self).get_context_data(**kwargs)
+        ctx.update({
+            'webdav_obj': models.WebDAVClient.objects.get(pk=self.kwargs.get('pk'))
+        })
+        return ctx
+
+    def form_valid(self, form):
+        webdav_obj = models.WebDAVClient.objects.filter(pk=self.kwargs.get('pk')).first()
+        if not webdav_obj:
+            form.add_error(None, "WebDAV nicht gefunden")
+            return self.form_invalid(form=form)
+
+        cd = form.cleaned_data
+        file_obj = cd.get('upload_file')
+        file_name = file_obj.name
+        location_dir_without_leading_slash = re.sub("^/|/$", "", cd['location_dir'])
+        location_dir_new_without_leading_slash = re.sub("^/|/$", "", cd['location_dir_new'])
+
+        if cd['location_dir_new']:
+            full_path_new_dir = os.path.join(webdav_obj.local_path, location_dir_without_leading_slash, location_dir_new_without_leading_slash)
+            if not os.path.exists(full_path_new_dir):
+                os.makedirs(full_path_new_dir, exist_ok=True)
+            full_path_new_file = os.path.join(webdav_obj.local_path, location_dir_without_leading_slash, location_dir_new_without_leading_slash, file_name)
+        else:
+            full_path_new_file = os.path.join(webdav_obj.local_path, location_dir_without_leading_slash, file_name)
+
+        if os.path.exists(full_path_new_file):
+            if cd['backup_existing_file']:
+                dt = timezone.now().strftime('%Y-%m-%d-%H-%m-%S')
+                backup_file_name = f'backup-{dt}-{file_name}'
+                full_path_backup_file = os.path.join(webdav_obj.local_path, location_dir_without_leading_slash, backup_file_name)
+                os.rename(full_path_new_file, full_path_backup_file)
+            else:
+                os.remove(full_path_new_file)
+
+        with open(full_path_new_file, 'wb+') as disc_file_obj:
+            for chunk in file_obj.chunks():
+                disc_file_obj.write(chunk)
+
+        relative_full_path_new_file = full_path_new_file.replace(webdav_obj.local_path, "")
+        url = reverse('gruene_cms_dashboard:webdav_view_local_file', kwargs={'pk': self.kwargs.get('pk')}) + f'?path={relative_full_path_new_file}'
+        return HttpResponseRedirect(url)
+
+    def get_success_url(self):
+        url = reverse('gruene_cms_dashboard:webdav_view_local_file', kwargs={'pk': self.kwargs.get('pk')}) + '?path=/'
+        return url

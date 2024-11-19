@@ -24,10 +24,14 @@
 
                 {% if file_exists %}
                   <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">Download</a>
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">Upload</a>
+
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    Upload / + Ordner
+                  </button>
                 {% else %}
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">Upload</a>
-                  <a class="btn btn-outline-primary" href="{% url 'gruene_cms_dashboard:webdav_serve_local_file' object.pk %}?path={{ requested_file }}">+ Ordner</a>
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    Upload / + Ordner
+                  </button>
                 {% endif %}
 
 
@@ -41,7 +45,6 @@
 
         <h3>{{ object.entry_path_title|default:object.entry_path }}</h3>
         {% include 'gruene_cms/plugins/local_folder_node.html' with hide_expand_hint=True show_root_node=False tree_items=tree_items current_item=requested_file extra_css_classes='folder-list small' %}
-
 
       </div>
 
@@ -130,7 +133,27 @@
     </div>
   </div>
 
-  
+<form action="{% url 'gruene_cms_dashboard:webdav_upload_file' object.pk %}" enctype="multipart/form-data" method="post">
+  <div class="modal fade" id="uploadModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadModalLabel">Upload</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+            {% bootstrap_form upload_form layout='floating' %}
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          {% bootstrap_button button_type="submit" content="Speichern" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
 {% endblock %}
 {% block js_end %}

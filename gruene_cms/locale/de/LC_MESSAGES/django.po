@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 17:31+0200\n"
+"POT-Creation-Date: 2024-11-19 19:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,67 +17,176 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: cms_plugins.py:15
+
+#: cms_plugins.py:8
 msgid "GruenenCMS"
 msgstr "GRÜNEN CMS"
 
-#: cms_plugins.py:21
+#: cms_plugins.py:14
 msgid "Aggregated Data Node"
 msgstr "Datenpunkt (zusammengefasst)"
 
-#: cms_plugins.py:31
+#: cms_plugins.py:24
 msgid "Image as Background"
 msgstr "Hintergrundbild"
 
-#: cms_plugins.py:41
+#: cms_plugins.py:34
 msgid "Animate Typing"
 msgstr ""
 
-#: cms_plugins.py:53
-msgid "Advanced settings"
+#: cms_plugins.py:46
+#, fuzzy
+#| msgid "Advanced settings"
+msgid "AnimateTyping settings"
 msgstr "Erweiterte Einstellungen"
 
-#: cms_plugins.py:70
+#: cms_plugins.py:57
+msgid "Wordsrotator settings"
+msgstr "Einstellungen Wordsrotator"
+
+#: cms_plugins.py:72
 msgid "Limit User/Group"
 msgstr "Limitierung Benutzer/Gruppe"
 
-#: cms_plugins.py:100
-msgid "Limit User"
-msgstr "Limitierung Benutzer"
+#: cms_plugins.py:114
+msgid "Login Form"
+msgstr "Anmeldeformular"
 
-#: cms_plugins.py:110
+#: cms_plugins.py:124
 msgid "Chart"
-msgstr ""
+msgstr "Chart / Diagramm"
 
-#: cms_plugins.py:139
+#: cms_plugins.py:159
 msgid "Calendar"
 msgstr "Kalender"
 
-#: cms_plugins.py:169
+#: cms_plugins.py:195
 msgid "News"
-msgstr ""
+msgstr "News / Aktuelles"
 
-#: cms_plugins.py:193
+#: cms_plugins.py:226
 msgid "Task"
 msgstr "Aufgabe"
 
-#: cms_plugins.py:204
+#: cms_plugins.py:237
 msgid "Filters"
 msgstr "Filter"
 
-#: models.py:326
-msgid "Inside HRs"
-msgstr "Innerhab HR-Tags"
+#: cms_plugins.py:273
+msgid "Local Folder"
+msgstr "WebDAV lokaler Ordner"
 
-#: models.py:327
+#: cms_plugins.py:299
+msgid "Div Element"
+msgstr "div-Element"
+
+#: cms_plugins.py:310
+msgid "Simple Menu"
+msgstr "Einfaches Menü"
+
+#: forms.py:12 forms.py:25 models.py:690
+msgid "Assign Task to"
+msgstr "Aufgabe zuordnen zu"
+
+#: forms.py:31 models.py:692
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: forms.py:37 models.py:697
+msgid "Task Priority"
+msgstr "Aufgabenpriorität"
+
+#: forms.py:46
+msgid "max 100 chars"
+msgstr "Maximal 100 Zeichen"
+
+#: forms.py:54
+msgid "File"
+msgstr "Datei"
+
+#: forms.py:56
+msgid "/ (root folder)"
+msgstr "/ (Hauptordner)"
+
+#: forms.py:57
+msgid "storage location"
+msgstr "Speicherort"
+
+#: forms.py:61
+msgid ""
+"Name of a new sub storage location. Keep empty to save the file in the "
+"selected storage location."
+msgstr ""
+"Name des neuen Unterordners unterhalb des ausgewählten Speicherorts. "
+"Feld leer lassen, falls kein neuer Ordner erstellt werden soll."
+
+#: forms.py:62
+msgid "New sub storage location"
+msgstr "Neuen Unterordner anlegen"
+
+#: forms.py:68
+msgid "Backup"
+msgstr "Sicherheitskopie"
+
+#: forms.py:69
+msgid "Backups existing file if the same file exists"
+msgstr "Erstellt eine Sicherheitskopie, falls die gleiche Datei bereits existiert"
+
+#: models.py:41
+msgid "All same width"
+msgstr "Alle mit gleicher Breite"
+
+#: models.py:42
+msgid "All 4 cols"
+msgstr "Alle 4 Spalten"
+
+#: models.py:43
+msgid "All 6 cols"
+msgstr "Alle 6 Spalten"
+
+#: models.py:44
+msgid "All 12 cols"
+msgstr "Alle 12 Spalten"
+
+#: models.py:45
+msgid "First 12, others 6 cols"
+msgstr ""
+
+#: models.py:46
+msgid "First 12, second 8, third 4, others 6 cols"
+msgstr ""
+
+#: models.py:47
+msgid "First 12, second 4, third 8, others 6 cols"
+msgstr ""
+
+#: models.py:48
+msgid "First 12, second 9, third 3, others 6 cols"
+msgstr ""
+
+#: models.py:49
+msgid "First 12, second 4 (until fourth), others 6 cols"
+msgstr ""
+
+#: models.py:61
+msgid "If checked, data source will be downloaded automatically"
+msgstr "Falls ausgewählt, werden die Datenquellen automatisch heruntergeladen"
+
+#: models.py:310
+msgid "If checked, news will be synced automatically"
+msgstr "Falls ausgewählt, werden die News automatisch synchronisiert"
+
+#: models.py:421
 msgid "Replace Marker"
 msgstr "Ersetze .marker"
 
-#: models.py:442
-msgid "Example: \"mb-3\""
+#: models.py:568
+#, fuzzy
+#| msgid "Example: \"mb-3\""
+msgid "Example: \"mb-3\" or \"g-5\""
 msgstr "z.B. \"mb-3\""
 
-#: models.py:446
+#: models.py:572
 msgid ""
 "Example: \"col-12\" or \"col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-"
 "xxl-12\" for two-col for small screens"
@@ -85,42 +194,97 @@ msgstr ""
 "z.B.: \"col-12\" oder \"col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-"
 "xxl-12\" für zweispaltige kleine Bildschirme"
 
-#: models.py:489
+#: models.py:666
 msgid "instance namespace"
 msgstr "Namespace Instanz"
 
-#: models.py:495
+#: models.py:672
 msgid "paginate size"
 msgstr "Elemente pro Seite"
 
-#: models.py:511
+#: models.py:688
 msgid "Category"
 msgstr "Kategorie"
 
-#: models.py:512
+#: models.py:689
 msgid "Task Summary"
 msgstr "Beschreibung Aufgabe"
 
-#: models.py:513
-msgid "Assign Task to"
-msgstr "Aufgabe zuordnen zu"
-
-#: models.py:515
-msgid "Progress"
-msgstr "Fortschritt"
-
-#: models.py:517
+#: models.py:694
 msgid "Normal"
 msgstr "Normal"
 
-#: models.py:518
+#: models.py:695
 msgid "Warning"
 msgstr "Warnung"
 
-#: models.py:519
+#: models.py:696
 msgid "Danger"
 msgstr "Dringend"
 
-#: models.py:520
-msgid "Task Priority"
-msgstr "Aufgabenpriorität"
+#: models.py:770
+msgid "Without tailing slash"
+msgstr "Ohne endenden Schrägstrich (/)"
+
+#: models.py:883
+msgid "If checked, folders will be synced automatically"
+msgstr "Falls ausgewählt, werden die Ordner automatisch synchronisiert"
+
+#: models.py:885
+msgid "Use file extensions"
+msgstr "Dateiendungen verwenden"
+
+#: models.py:886
+msgid ".csv | Comma separated"
+msgstr ".csv | CSV erzwingen"
+
+#: models.py:887
+msgid ".vcf | Contacts"
+msgstr ".vcf | Kontakte erzwingen"
+
+#: models.py:888
+#| msgid "Calendar"
+msgid ".vcs | Calendar"
+msgstr ".vcs | Kalender erzwingen"
+
+#: models.py:960
+msgid "specify from which level the navigation should be rendered..."
+msgstr ""
+
+#: models.py:961
+msgid "...and at which level it should stop"
+msgstr ""
+
+#: models.py:962
+msgid ""
+"specifies how many levels of navigation should be displayed if a node is not "
+"a direct ancestor or descendant of the current active node"
+msgstr ""
+
+#: models.py:963
+msgid ""
+"specifies how many levels of descendants of the currently active node should "
+"be displayed"
+msgstr ""
+
+#: models.py:966
+msgid "As paragraphs"
+msgstr "Als Absatz"
+
+#: models.py:967
+msgid "As ul, nested"
+msgstr "Als ul, verschachtelt"
+
+#: models.py:968
+msgid "As ul, flat"
+msgstr "Als ul, flach"
+
+#: models.py:969
+msgid "As nav, subpages, horizontal"
+msgstr "Als nav-Element, mit Unterseiten, horizontal"
+
+#~ msgid "Limit User"
+#~ msgstr "Limitierung Benutzer"
+
+#~ msgid "Inside HRs"
+#~ msgstr "Innerhab HR-Tags"

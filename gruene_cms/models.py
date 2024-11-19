@@ -900,6 +900,13 @@ class WebDAVClient(models.Model):
         remote_path = self.entry_path or ""
         client.download_sync(remote_path=remote_path, local_path=self.local_path)
 
+    def upload_sync_folder(self):
+        from webdav3.client import Client
+        options = {'webdav_hostname': self.webdav_hostname, 'webdav_login': self.webdav_login, 'webdav_password': self.webdav_app_password}
+        client = Client(options)
+        remote_path = self.entry_path or ""
+        client.upload_sync(remote_path=remote_path, local_path=self.local_path)
+
     def get_tree_items(self):
         tree_level = 0
 

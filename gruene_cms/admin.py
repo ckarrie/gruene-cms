@@ -83,11 +83,15 @@ class TaskCommentAdmin(admin.ModelAdmin):
 # webdav
 class WebDAVClientAdmin(admin.ModelAdmin):
     list_display = ['user', 'title', 'webdav_hostname', 'entry_path', 'entry_path_title', 'local_path']
-    actions = ['sync_folder', 'create_filer_objects']
+    actions = ['sync_folder', 'upload_sync_folder', 'create_filer_objects']
 
     def sync_folder(self, request, queryset):
         for obj in queryset:
             obj.sync_folder()
+
+    def upload_sync_folder(self, request, queryset):
+        for obj in queryset:
+            obj.upload_sync_folder()
 
     def create_filer_objects(self, request, queryset):
         for obj in queryset:

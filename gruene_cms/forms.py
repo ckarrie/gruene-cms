@@ -43,9 +43,39 @@ class TaskUpdateForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    q = forms.CharField(max_length=100, help_text=_('Maximal 100 Zeichen'))
+    q = forms.CharField(max_length=100, help_text=_('max 100 chars'))
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
         self.fields['q'].widget.attrs.update({'class': 'form-control form-control-lg'})
+
+
+class WebDAVUploadForm(forms.Form):
+    upload_file = forms.FileField(label=_('File'))
+    location_dir = forms.ChoiceField(choices=[
+        ['/', _('/ (root folder)')]
+    ], label=_('storage location'))
+    location_dir_new = forms.CharField(
+        max_length=50,
+        required=False,
+        help_text=_('Name of a new sub storage location. Keep empty to save the file in the selected storage location.'),
+        label=_('New sub storage location')
+
+    )
+    backup_existing_file = forms.BooleanField(
+        initial=False,
+        required=False,
+        label=_('Backup'),
+        help_text=_('Backups existing file if the same file exists')
+    )
+
+    def __init__(self, *args, **kwargs):
+        possible_locations_dirs = kwargs.pop('possible_locations_dirs', None)
+        print("possible_locations_dirs", possible_locations_dirs)
+        super(WebDAVUploadForm, self).__init__(*args, **kwargs)
+        print("self.fields['location_dir'].choices", self.fields['location_dir'].choices)
+        if isinstance(possible_locations_dirs, list):
+            self.fields['location_dir'].choices += possible_locations_dirs
+
+
 
