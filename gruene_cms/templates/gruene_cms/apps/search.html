@@ -13,19 +13,20 @@
     <div class="row">
       <div class="col col-12">
         <h2 class="pb-5">Suche</h2>
-        <form action="" method="post">
+        <form action="" method="post" id="search">
           {% csrf_token %}
-          <div class="row g-3 align-items-center">
+          <div class="row g-3 align-items-baseline">
             <div class="col-auto">
               <label for="id_q" class="col-form-label">Suche nach</label>
             </div>
             <div class="col-8">
               {{ form.q }}
-            </div>
-            <div class="col-auto">
               <span id="id_q_helptext" class="form-text">
                 {{ form.q.help_text }}
               </span>
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary">Suchen</button>
             </div>
           </div>
         </form>
@@ -45,12 +46,59 @@
 
           {% if news_qs.exists %}
             <h3 class="">News</h3>
-            {% include 'gruene_cms/plugins/news_card_v2_node.html' with news_items=news_qs %}
+            {% include 'gruene_cms/plugins/news_card_v2_node.html' with news_items=news_qs instance=news_instance %}
           {% endif %}
 
         </div>
       </div>
     </div>
+  {% else %}
+    {% if is_post %}
+      <div class="container pt-5">
+        <div class="row">
+          <div class="col col-12">
+            <div class="alert alert-secondary" role="alert">
+              Leider keine Treffer.
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   {% endif %}
+
+  <div class="container pt-5 pb-5">
+    <div class="row">
+      <div class="col col-12">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h2 class="card-title small mb-0">
+              News Schlagworte
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="keywords mt-3">
+              <ul>
+                {% for kw in news_keywords %}
+                  <li  class="m-1">
+                    <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      $(document).ready(function() {
+          $('.post-to-search').click(function(e) {
+              e.preventDefault();
+              $('#search input[name="q"]').val($(this).attr('data-search'));
+              $('#search').submit();
+          });
+      });
+    </script>
 
 {% endblock %}

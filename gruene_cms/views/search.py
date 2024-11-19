@@ -19,6 +19,7 @@ class SearchView(AppHookConfigMixin, generic.FormView):
         form = ctx['form']
         if form.is_valid():
             q = form.cleaned_data.get('q')
+
             news_qs = NewsItem.objects.filter(
                 Q(title__icontains=q) |
                 Q(subtitle__icontains=q) |
@@ -28,13 +29,15 @@ class SearchView(AppHookConfigMixin, generic.FormView):
                 categories__is_public=True
             )
 
-            news_qs = news_qs.order_by('-published_from').distinct()
+            news_qs = news_qs.order_by('-published_from').distinct()[:10]
 
             for news in news_qs:
                 if news.newsfeedreader_external_link:
                     news.detail_link = news.newsfeedreader_external_link
                 else:
                     news.detail_link = reverse('gruene_cms_news:detail', kwargs={'slug': news.slug})
+                news.item_col_lg_config = '12'
+                news.item_col_xl_config = '6'
 
             cal_qs = CalendarItem.objects.filter(
                 title__icontains=q
@@ -52,8 +55,31 @@ class SearchView(AppHookConfigMixin, generic.FormView):
                 'has_results': any([
                     news_qs.exists(),
                     cal_qs.exists(),
-                ])
+                ]),
+
+                'news_instance': {
+                    'title_h': 3,
+                    'title_subtitle_h': 4,
+                    'enable_masonry': False,
+                    'show_feed_title': True,
+                    'show_date': True
+                }
             })
+
+        news_keywords_qs = NewsItem.objects.filter(
+            categories__is_public=True
+        ).values_list('keywords', flat=True)
+
+        news_keywords = []
+        for nkw in news_keywords_qs:
+            for kw in nkw.split(','):
+                if kw not in news_keywords:
+                    news_keywords.append(kw)
+
+        ctx.update({
+            'news_keywords': news_keywords,
+            'is_post': self.request.method.lower() == 'post'
+        })
 
         return ctx
 

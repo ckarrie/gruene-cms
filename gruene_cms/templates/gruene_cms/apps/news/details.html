@@ -145,6 +145,8 @@
                     <span class="highlighted grashalm">Schlagworte</span>
                   </h2>
 
+                  {% comment %}
+
                   <p><code>{{ app_config }}</code></p>
 
                     <p class="small">
@@ -157,16 +159,16 @@
                       {% endif %}
                     </p>
 
+                  {% endcomment %}
+
 
                 </div>
                 <div class="card-body">
-                  <div class="alert shadow-sm alert-warning small">In die Suche integrieren</div>
                   <div class="keywords">
-
                     <ul>
                       {% for kw in object.keywords_list %}
                         <li>
-                          <a class="keyword" href="/SUCHEURL/?q={{ kw }}" rel="tag">{{ kw }}</a>
+                          <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
                         </li>
                       {% endfor %}
                     </ul>
@@ -179,6 +181,22 @@
         {% endif %}
       {% endfor %}
     </div>
+
+    <form id="search-form" action="{% url 'gruene_cms_search:search' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="q">
+    </form>
+
+    <script>
+      $(document).ready(function() {
+          $('.post-to-search').click(function(e) {
+              e.preventDefault();
+              $('#search-form input[name="q"]').val($(this).attr('data-search'));
+              $('#search-form').submit();
+          });
+      });
+    </script>
+
 
   </div>
 {% endblock %}
