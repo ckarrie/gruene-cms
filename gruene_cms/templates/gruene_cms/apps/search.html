@@ -40,8 +40,10 @@
         <div class="col col-12">
           <h2 class="pb-5">Ergebnisse</h2>
           {% if cal_qs.exists %}
-            <h3 class="">Kalender</h3>
-            {% include 'gruene_cms/plugins/calendar_node_table_2.html' with calendar_items=cal_qs %}
+            <div class="pb-5">
+              <h3 class="">Kalender</h3>
+              {% include 'gruene_cms/plugins/calendar_node_table_2.html' with calendar_items=cal_qs %}
+            </div>
           {% endif %}
 
           {% if news_qs.exists %}

@@ -354,6 +354,12 @@ nav.subpages.justify-content-center .navbar-collapse {
     font-size: small;
 }
 
+/* remove first image from news-summary (Deutschlandfunk) and some brs */
+
+.news-summary > p > img, .news-summary > p > br {
+    display: none;
+}
+
 .theme--default h2.news-subtitle {
     font-family: 'Questa Slab';
 }
