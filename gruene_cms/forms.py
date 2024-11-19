@@ -41,3 +41,11 @@ class TaskUpdateForm(forms.ModelForm):
         model = TaskItem
         fields = ["category", "summary", "assigned_to_users", "progress", "priority"]
 
+
+class SearchForm(forms.Form):
+    q = forms.CharField(max_length=100, help_text=_('Maximal 100 Zeichen'))
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.fields['q'].widget.attrs.update({'class': 'form-control form-control-lg'})
+

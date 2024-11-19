@@ -1,0 +1,56 @@
+{% extends "gruene_v1.html" %}
+{% load cms_tags menu_tags sekizai_tags static i18n %}
+{% block page_subtitle %}
+  <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
+  {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+  <!-- {% page_attribute "page_title" %} -->
+{% endblock %}
+
+{% block content %}
+
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col col-12">
+        <h2 class="pb-5">Suche</h2>
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="row g-3 align-items-center">
+            <div class="col-auto">
+              <label for="id_q" class="col-form-label">Suche nach</label>
+            </div>
+            <div class="col-8">
+              {{ form.q }}
+            </div>
+            <div class="col-auto">
+              <span id="id_q_helptext" class="form-text">
+                {{ form.q.help_text }}
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% if has_results %}
+    <div class="container pt-5">
+      <div class="row">
+        <div class="col col-12">
+          <h2 class="pb-5">Ergebnisse</h2>
+          {% if cal_qs.exists %}
+            <h3 class="">Kalender</h3>
+            {% include 'gruene_cms/plugins/calendar_node_table_2.html' with calendar_items=cal_qs %}
+          {% endif %}
+
+          {% if news_qs.exists %}
+            <h3 class="">News</h3>
+            {% include 'gruene_cms/plugins/news_card_v2_node.html' with news_items=news_qs %}
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock %}
