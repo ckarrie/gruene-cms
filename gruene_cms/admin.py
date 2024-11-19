@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.templatetags.tz import localtime
 
 from . import models
@@ -88,6 +88,12 @@ class WebDAVClientAdmin(admin.ModelAdmin):
     def sync_folder(self, request, queryset):
         for obj in queryset:
             obj.sync_folder()
+            #pull_updated = obj.webdav_pull()
+            #if pull_updated:
+            #    self.message_user(request, "Pull updated", messages.SUCCESS)
+            #push_updated = obj.webdav_push()
+            #if push_updated:
+            #    self.message_user(request, "Push updated", messages.SUCCESS)
 
     def upload_sync_folder(self, request, queryset):
         for obj in queryset:

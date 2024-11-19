@@ -71,9 +71,9 @@ class WebDAVUploadForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         possible_locations_dirs = kwargs.pop('possible_locations_dirs', None)
-        print("possible_locations_dirs", possible_locations_dirs)
+        #print("possible_locations_dirs", possible_locations_dirs)
         super(WebDAVUploadForm, self).__init__(*args, **kwargs)
-        print("self.fields['location_dir'].choices", self.fields['location_dir'].choices)
+        #print("self.fields['location_dir'].choices", self.fields['location_dir'].choices)
         if isinstance(possible_locations_dirs, list):
             self.fields['location_dir'].choices += possible_locations_dirs
 

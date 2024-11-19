@@ -21,8 +21,12 @@ pip install metadata_parser
 ```shell
 cd ~/src/
 git clone https://github.com/ckarrie/gruene-cms
+git clone https://github.com/ezhov-evgeny/webdav-client-python-3
 pip install -e gruene-cms
+pip install -e webdav-client-python-3
 ```
+
+!We need the github version of [webdavclient3](https://pypi.org/project/webdavclient3/) because pip is broken!
 
 ## Pro Instanz
 siehe [docs/setup.md](docs/setup.md) für ein Bespiel der `settings.py`
