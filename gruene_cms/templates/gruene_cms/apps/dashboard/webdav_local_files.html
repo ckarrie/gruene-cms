@@ -52,10 +52,10 @@
 
         <div class="col-xxl-9 col col-lg-12 overflow-auto">
           {% if is_image %}
-            <img src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}">
+            <img src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' webdav_client_object.pk %}?path={{ requested_file }}">
           {% endif %}
           {% if is_embed %}
-            <embed src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' 1 %}?path={{ requested_file }}" type="{{ content_type }}" width="100%" height="1000">
+            <embed src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' webdav_client_object.pk %}?path={{ requested_file }}" type="{{ content_type }}" width="100%" height="1000">
           {% endif %}
           {% if html_content %}
             {% if is_markdown %}
