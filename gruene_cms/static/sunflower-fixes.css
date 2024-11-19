@@ -360,6 +360,11 @@ nav.subpages.justify-content-center .navbar-collapse {
     display: none;
 }
 
+input#id_q, input[name="q"] {
+    font-family: 'GrueneType';
+    padding: 0.5rem;
+}
+
 .theme--default h2.news-subtitle {
     font-family: 'Questa Slab';
 }

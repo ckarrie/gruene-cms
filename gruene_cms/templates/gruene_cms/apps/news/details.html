@@ -26,7 +26,7 @@
           <ul>
             {% for kw in object.keywords_list %}
               <li>
-                <a class="keyword" href="/SUCHEURL/?q={{ kw }}" rel="tag">{{ kw }}</a>
+                <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
               </li>
             {% endfor %}
           </ul>
@@ -99,9 +99,11 @@
                 <div class="card-body">
                   {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
                 </div>
+                {% comment %}
                 <div class="card-footer">
                   <a href="/URLZUALLENTERMINEN/">Alle Termine</a>
                 </div>
+                {% endcomment %}
               {% endif %}
 
               {% if cat_id == "images" %}
