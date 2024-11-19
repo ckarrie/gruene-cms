@@ -84,23 +84,26 @@
                   <a title="English" href="/en/" class="nav-link">EN</a>
                 </li>
                 <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-                  <a title="GRÜNEN Rheinland-Pfalz" href="https://gruene-rlp.de" class="nav-link" target="_blank">GRÜNEN RLP</a>
+                  <a title="GRÜNE Rheinland-Pfalz" href="https://gruene-rlp.de" class="nav-link" target="_blank">GRUENE-RLP.de</a>
+                </li>
+                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
+                  <a title="GRÜNE.de" href="https://gruene.de" class="nav-link" target="_blank">GRUENE.de</a>
                 </li>
                 {% if user.is_authenticated %}
                   <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
                     <a title="Dashboard" href="/de/mitglieder-dashboard/" class="nav-link">Dashboard</a>
                   </li>
                   <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-                    <a title="Benutzer abmelden" href="{% url 'admin:logout' %}?next=/" class="nav-link">Abmelden</a>
+                    <form action="{% url 'admin:logout' %}?next=/" method="post">
+                      {% csrf_token %}
+                      <button title="Benutzer abmelden" class="nav-link" type="submit" style="padding-top: 8px;">Abmelden</button>
+                    </form>
                   </li>
                 {% else %}
                   <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
                     <a title="Login" href="?toolbar_on" class="nav-link">Anmelden</a>
                   </li>
                 {% endif %}
-                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1916" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-                  <a title="Quellcode" href="https://github.com/ckarrie/gruene-cms" class="nav-link" target="_blank">Quellcode</a>
-                </li>
               </ul>
               <!-- 
             <form class="form-inline my-2 my-md-0 search d-flex" action="https://sunflower-theme.de">

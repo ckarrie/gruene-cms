@@ -332,6 +332,12 @@ nav.subpages.justify-content-center .navbar-collapse {
     display: block
 }
 
+/* djangoCMS branding */
+.cms-icon-logo:before, div.cms .cms-toolbar-item-logo a:before {
+    content: "GrünenCMS" !important;
+    font-family: 'GrueneType' !important;
+}
+
 /* gruene_cms Calendar Plugin */
 
 .calendarnode {
