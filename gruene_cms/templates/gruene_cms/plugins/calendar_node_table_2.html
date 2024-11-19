@@ -3,7 +3,7 @@
 <table class="table table-sm align-middle">
   <tbody>
   {% for item in calendar_items %}
-    <tr class="{% if item.dt_from.date == current_dt.date %}table-active {% elif item.dt_from.date < current_dt.date %}opacity-25{% endif %}">
+    <tr class="{% if item.is_active %}table-active {% elif item.is_past %}opacity-25{% endif %}">
       <th scope="row" class="w-25">
         {{ item.dt_from|date:"d.m." }} {% if item.dt_until %}- {{ item.dt_until|date:"d.m." }}{% endif %}
         <p class="small mb-0">

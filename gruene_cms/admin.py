@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.templatetags.tz import localtime
 
 from . import models
 
@@ -20,8 +21,19 @@ class CalendarAdmin(admin.ModelAdmin):
 
 
 class CalendarItemAdmin(admin.ModelAdmin):
-    list_display = ['title', 'calendar', 'subtitle', 'dt_from', 'dt_until', 'location']
+    autocomplete_fields = [
+        #'linked_page',
+        #'linked_news'
+    ]
+    list_display = ['title', 'calendar', 'subtitle', 'dt_from', 'dt_until', 'location', 'is_active', 'is_past']
     list_filter = ['calendar']
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        context['adminform'].form.fields['linked_page'].queryset = context['adminform'].form.fields['linked_page'].queryset.filter(pagecontent_set__isnull=False).distinct()
+        context['adminform'].form.fields['linked_news'].queryset = context['adminform'].form.fields['linked_news'].queryset.filter(newsfeedreader_source__isnull=True).order_by('-published_from').distinct()
+        context['adminform'].form.fields['linked_news'].label_from_instance = lambda obj: "%s %s" % (localtime(obj.published_from), obj.title)
+
+        return super(CalendarItemAdmin, self).render_change_form(request, context, *args, **kwargs)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -38,6 +50,7 @@ class NewsItemAdmin(admin.ModelAdmin):
     list_filter = ['newsfeedreader_source']
     inlines = [NewsImageInlineAdmin]
     prepopulated_fields = {"slug": ("title",)}
+    search_fields = ['title', 'subtitle']
 
 
 class NewsImageAdmin(admin.ModelAdmin):

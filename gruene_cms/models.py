@@ -231,6 +231,18 @@ class CalendarItem(models.Model):
     def __str__(self):
         return self.title
 
+    def is_active(self):
+        now = timezone.now()
+        if self.dt_until:
+            return (self.dt_until >= now) and (self.dt_from <= now)
+        return self.dt_from.date() == now.date()
+
+    def is_past(self):
+        now = timezone.now()
+        if self.dt_until:
+            return (self.dt_until.date() < now.date()) and (self.dt_from.date() < now.date())
+        return self.dt_from.date() < now.date()
+
 
 class CalendarNode(CMSPlugin):
     calendars = models.ManyToManyField(Calendar, related_name='calendar_calendarnode_set')
@@ -260,7 +272,7 @@ class CalendarNode(CMSPlugin):
             history_datetime = timezone.now() - timezone.timedelta(days=self.history_entries_days)
 
         calendar_items = calendar_items.filter(
-            dt_from__gte=history_datetime
+            models.Q(dt_from__gte=history_datetime) | models.Q(dt_until__gte=history_datetime)
         )
 
         calendar_items = calendar_items.order_by('dt_from').distinct()
