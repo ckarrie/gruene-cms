@@ -29,6 +29,8 @@ DATABASES = {
 }
 LANGUAGE_CODE = 'de'
 
+AUTHENTICATION_BACKENDS = ['gruene_cms.backends.CaseInsensitiveModelBackend']
+
 LANGUAGES = [
     ("de", _("German")),
     ("en", _("English")),
