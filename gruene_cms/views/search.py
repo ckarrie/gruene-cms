@@ -36,13 +36,17 @@ class SearchView(AppHookConfigMixin, generic.FormView):
                     news.detail_link = news.newsfeedreader_external_link
                 else:
                     news.detail_link = reverse('gruene_cms_news:detail', kwargs={'slug': news.slug})
+
+                # monkeypatch for template:
                 news.item_col_lg_config = '12'
                 news.item_col_xl_config = '6'
 
             cal_qs = CalendarItem.objects.filter(
-                title__icontains=q
-            )
+                Q(title__icontains=q) |
+                Q(location__icontains=q)
+            ).distinct()[:10]
 
+            # monkeypatch for template
             for cal in cal_qs:
                 if cal.linked_page:
                     cal.linked_url = cal.linked_page.get_absolute_url()
@@ -56,7 +60,7 @@ class SearchView(AppHookConfigMixin, generic.FormView):
                     news_qs.exists(),
                     cal_qs.exists(),
                 ]),
-
+                # monkeypatch for template:
                 'news_instance': {
                     'title_h': 3,
                     'title_subtitle_h': 4,

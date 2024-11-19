@@ -105,15 +105,15 @@
                   </li>
                 {% endif %}
               </ul>
-              <!-- 
-            <form class="form-inline my-2 my-md-0 search d-flex" action="https://sunflower-theme.de">
-							<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche"	value="">
-							<input type="submit" class="d-none" value="Suche" aria-label="Suche">
-						</form>
-						<button class="show-search me-3" title="zeige Suche" aria-label="zeige Suche">
-							<i class="fas fa-search"></i>
-						</button>
-						 -->
+
+              <form class="form-inline my-2 my-md-0 search d-flex" action="{% url 'gruene_cms_search:search' %}" method="post">
+                {% csrf_token %}
+                <input class="form-control form-control-sm topbar-search-q" name="q" type="text" placeholder="Suche" aria-label="Suche"	value="">
+                <input type="submit" class="d-none" value="Suche" aria-label="Suche">
+              </form>
+              <button class="show-search me-3" title="zeige Suche" aria-label="zeige Suche">
+                <i class="fas fa-search"></i>
+              </button>
               <button class="d-none show-contrast" title="Kontrast erhöhen" aria-label="Kontrast erhöhen"><i class="fab fa-accessible-icon"></i></button>
             </div>
           </div>
@@ -197,12 +197,13 @@
           <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-64" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64 nav-item"><a title="Kontakt" href="https://sunflower-theme.de/demo/kontakt/" class="nav-link">Kontakt</a></li>
            -->
           </ul>
-          <!-- 
-				<form class="form-inline my-2 mb-2 search d-block d-lg-none" action="https://sunflower-theme.de/demo">
-					<input class="form-control form-control-sm topbar-search-q" name="s" type="text" placeholder="Suche" aria-label="Suche" value="">
-					<input type="submit" class="d-none" value="Suche" aria-label="Suche">
-				</form>
-				 -->
+
+          <form class="form-inline my-2 mb-2 search d-block d-lg-none" action="{% url 'gruene_cms_search:search' %}" method="post">
+            {% csrf_token %}
+            <input class="form-control form-control-sm topbar-search-q" name="q" type="text" placeholder="Suche" aria-label="Suche" value="">
+            <input type="submit" class="d-none" value="Suche" aria-label="Suche">
+          </form>
+
         </div>
       </div>
     </nav>
@@ -231,6 +232,11 @@
       $('.level-3').hide();
       $('.level-2.folder').click(function() {
           $(this).find('.level-3').slideToggle();
+      });
+
+      $('.show-search').on('click', function () {
+        $('.topmenu .search input' ).toggleClass('active');
+        $('.topmenu .search input' ).focus();
       });
 		
 	});
