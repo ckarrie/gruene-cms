@@ -9,13 +9,13 @@
 
 {% block extra_header %}
   <!-- block extra_header news/details.html -->
-  <meta name="description" content="{{ object.summary|striptags }}">
+  <meta name="description" content="{% spaceless %}{{ object.summary|striptags }}{% endspaceless %}">
   <meta property="article:modified_time" content="{{ object.published_from|date:"c" }}">
   <meta property="og:title" content="{{ object.title }}">
-  <meta property="og:description" content="{{ object.summary|striptags }}">
+  <meta property="og:description" content="{% spaceless %}{{ object.summary|striptags }}{% endspaceless %}">
   <meta property="og:image" content="https://{{ request.META.HTTP_HOST }}{{ object.get_first_image.url }}">
   <meta name="twitter:title" content="{{ object.title }}">
-  <meta name="twitter:description" content="{{ object.summary|striptags }}">
+  <meta name="twitter:description" content="{% spaceless %}{{ object.summary|striptags }}{% endspaceless %}">
   <meta name="twitter:image" content="https://{{ request.META.HTTP_HOST }}{{ object.get_first_image.url }}">
 {% endblock %}
 
