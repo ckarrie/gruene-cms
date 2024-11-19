@@ -7,6 +7,18 @@
   <!-- {% page_attribute "page_title" %} -->
 {% endblock %}
 
+{% block extra_header %}
+  <!-- block extra_header news/details.html -->
+  <meta name="description" content="{{ object.summary|striptags }}">
+  <meta property="article:modified_time" content="{{ object.published_from|date:"c" }}">
+  <meta property="og:title" content="{{ object.title }}">
+  <meta property="og:description" content="{{ object.summary|striptags }}">
+  <meta property="og:image" content="https://{{ request.META.HTTP_HOST }}{{ object.get_first_image.url }}">
+  <meta name="twitter:title" content="{{ object.title }}">
+  <meta name="twitter:description" content="{{ object.summary|striptags }}">
+  <meta name="twitter:image" content="https://{{ request.META.HTTP_HOST }}{{ object.get_first_image.url }}">
+{% endblock %}
+
 {% block content %}
 
   <div class="container pt-5">
@@ -41,7 +53,7 @@
           <div class="pb-5">
             {% with calendar_items=object.get_related_objects.calendar_items %}
               {% if calendar_items %}
-                <div class="card shadow-lg col-sm-12 col-lg-6 mb-3">
+                <div class="card shadow col-sm-12 col-lg-6 mb-5 mt-5">
                   <div class="card-header bg-primary">
                     <h2 class="card-title small text-white mb-0">Kalender</h2>
                   </div>

@@ -42,15 +42,10 @@
 
     <!-- SEO -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="description" content="{% page_attribute 'meta_description' %}">
-    <link rel="canonical" href="{{ request.META.HTTP_HOST }}">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="{% page_attribute 'page_title' %}">
-    <meta property="og:description" content="{% page_attribute 'meta_description' %}">
-    <meta property="og:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
     <meta property="og:locale" content="de_DE">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{% page_attribute 'page_title' request.current_page.get_root %}">
@@ -59,12 +54,20 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="https://{{ request.META.HTTP_HOST }}">
     <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
-    <meta name="twitter:title" content="{% page_attribute 'page_title' %}">
-    <meta name="twitter:description" content="{% page_attribute 'meta_description' %}">
-    <meta name="twitter:image" content="{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
 
-    <!-- TODO -->
-    <meta property="article:modified_time" content="2024-09-09T08:03:28+00:00">
+
+    {% block extra_header %}
+      <!-- block extra_header -->
+      <meta name="description" content="{% page_attribute 'meta_description' %}">
+      <meta property="article:modified_time" content="{% now 'c' %}">
+      <meta property="og:title" content="{% page_attribute 'page_title' %}">
+      <meta property="og:description" content="{% page_attribute 'meta_description' %}">
+      <meta property="og:image" content="https://{{ request.META.HTTP_HOST }}{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
+      <meta name="twitter:title" content="{% page_attribute 'page_title' %}">
+      <meta name="twitter:description" content="{% page_attribute 'meta_description' %}">
+      <meta name="twitter:image" content="https://{{ request.META.HTTP_HOST }}{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
+    {% endblock %}
+
   </head>
   <body class="home page-template-default page">
     {% cms_toolbar %}
