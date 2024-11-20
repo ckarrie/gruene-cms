@@ -72,7 +72,8 @@
   <body class="home page-template-default page">
     {% cms_toolbar %}
 
-    <header id="masthead" class="site-header">
+    <header id="masthead" class="site-header radial-main">
+
       <nav class="navbar navbar-top d-none d-lg-block navbar-expand-lg navbar-dark p-0 topmenu" aria-label="Navigation Topmenü">
         <div class="container">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topmenu-container" aria-controls="topmenu-container" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -124,6 +125,8 @@
       </nav>
 
       <div class="container-fluid bloginfo bg-primary">
+        <div class="radial-bg-2"></div>
+        <div class="radial-bg-3"></div>
         <div class="container d-flex align-items-center">
           <div class="img-container sunflower-logo">
             <a href="/" rel="home" aria-current="page" title="{% page_attribute 'title' request.current_page.get_root %}"><img src="{% static 'images/sunflower.svg' %}" class="" alt="Sonnenblume - Logo"></a>
