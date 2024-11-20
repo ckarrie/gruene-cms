@@ -1,5 +1,6 @@
 from django.contrib import admin, messages
 from django.templatetags.tz import localtime
+from django.utils.translation import gettext_lazy as _
 
 from . import models
 
@@ -21,10 +22,6 @@ class CalendarAdmin(admin.ModelAdmin):
 
 
 class CalendarItemAdmin(admin.ModelAdmin):
-    autocomplete_fields = [
-        #'linked_page',
-        #'linked_news'
-    ]
     list_display = ['title', 'calendar', 'subtitle', 'dt_from', 'dt_until', 'location', 'is_active', 'is_past']
     list_filter = ['calendar']
 
@@ -61,9 +58,11 @@ class NewsFeedReaderAdmin(admin.ModelAdmin):
     list_display = ['title', 'url', 'category', 'last_updated', 'author_user', 'enable_for_auto_update', 'active_auto_update']
     actions = ['fetch_feeds']
 
+    @admin.action(description=_('Fetch selected feeds'))
     def fetch_feeds(self, request, queryset):
         for obj in queryset:
             obj.fetch_feed()
+            self.message_user(request, f"Feed updated for {obj.title}", messages.SUCCESS)
 
 
 class NewsPageConfigAdmin(admin.ModelAdmin):
@@ -83,22 +82,20 @@ class TaskCommentAdmin(admin.ModelAdmin):
 # webdav
 class WebDAVClientAdmin(admin.ModelAdmin):
     list_display = ['user', 'title', 'webdav_hostname', 'entry_path', 'entry_path_title', 'local_path']
-    actions = ['sync_folder', 'upload_sync_folder', 'create_filer_objects']
+    actions = ['sync_folder', 'webdav_download_sync', 'create_filer_objects']
 
     def sync_folder(self, request, queryset):
         for obj in queryset:
             obj.sync_folder()
-            #pull_updated = obj.webdav_pull()
-            #if pull_updated:
-            #    self.message_user(request, "Pull updated", messages.SUCCESS)
-            #push_updated = obj.webdav_push()
-            #if push_updated:
-            #    self.message_user(request, "Push updated", messages.SUCCESS)
+            self.message_user(request, f"Sync updated for {obj.title}", messages.SUCCESS)
 
-    def upload_sync_folder(self, request, queryset):
+    @admin.action(description=_("Download from WebDAV (overwrite local)"))
+    def webdav_download_sync(self, request, queryset):
         for obj in queryset:
-            obj.upload_sync_folder()
+            obj.webdav_download_sync()
+            self.message_user(request, f"Download finished for {obj.title}", messages.SUCCESS)
 
+    @admin.action(description=_("Create Filer objects (experimental - do not use!)"))
     def create_filer_objects(self, request, queryset):
         for obj in queryset:
             obj.create_filer_objects()

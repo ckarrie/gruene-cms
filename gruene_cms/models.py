@@ -86,6 +86,10 @@ class DataSource(models.Model):
     def __str__(self):
         return self.rest_api_url
 
+    class Meta:
+        verbose_name = _('Data source')
+        verbose_name_plural = _('Data sources')
+
 
 class AggregatedData(models.Model):
     name = models.CharField(max_length=255)
@@ -124,6 +128,10 @@ class AggregatedData(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('Data sources - aggregated data')
+        verbose_name_plural = _('Data sources - aggregated data')
+
 
 class AggregatedDataHistory(models.Model):
     value = models.FloatField()
@@ -133,11 +141,19 @@ class AggregatedDataHistory(models.Model):
     def __str__(self):
         return self.agg_datasource.name
 
+    class Meta:
+        verbose_name = _('Data sources - aggregated data history')
+        verbose_name_plural = _('Data sources - aggregated data histories')
+
 
 class AggregatedDataNode(CMSPlugin):
     agg_datasource = models.ForeignKey(AggregatedData, on_delete=models.SET_NULL, null=True)
     display_history = models.BooleanField(default=False)
     display_unit = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = _('Data sources - aggregated data node')
+        verbose_name_plural = _('Data sources - aggregated data nodes')
 
 
 class GrueneCMSImageBackgroundNode(CMSPlugin):
@@ -216,6 +232,10 @@ class Calendar(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = _('Calendar')
+        verbose_name_plural = _('Calendars')
+
 
 class CalendarItem(models.Model):
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
@@ -242,6 +262,10 @@ class CalendarItem(models.Model):
         if self.dt_until:
             return (self.dt_until.date() < now.date()) and (self.dt_from.date() < now.date())
         return self.dt_from.date() < now.date()
+
+    class Meta:
+        verbose_name = _('Calendar item')
+        verbose_name_plural = _('Calendar items')
 
 
 class CalendarNode(CMSPlugin):
@@ -299,6 +323,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = _('News category')
+        verbose_name_plural = _('News categories')
 
 
 class NewsFeedReader(models.Model):
@@ -393,6 +421,10 @@ class NewsFeedReader(models.Model):
         self.active_auto_update = False
         self.save(update_fields=['active_auto_update'])
 
+    class Meta:
+        verbose_name = _('Newsfeed reader')
+        verbose_name_plural = _('Newsfeed readers')
+
 
 class NewsImage(models.Model):
     item = models.ForeignKey("NewsItem", on_delete=models.CASCADE)
@@ -402,6 +434,10 @@ class NewsImage(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = _('News image')
+        verbose_name_plural = _('News images')
 
 
 class NewsItem(models.Model):
@@ -543,6 +579,10 @@ class NewsItem(models.Model):
 
         body = str(soup)
         return body
+
+    class Meta:
+        verbose_name = _('News item')
+        verbose_name_plural = _('News items')
 
 
 class NewsListNode(CMSPlugin):
@@ -904,15 +944,10 @@ class WebDAVClient(models.Model):
         remote_path = self.entry_path or ""
         client.sync(remote_directory=remote_path, local_directory=self.local_path)
 
-    def webdav_pull(self):
+    def webdav_download_sync(self):
         client = self.get_webdav_client()
         remote_path = self.entry_path or ""
-        return client.pull(remote_directory=remote_path + '/', local_directory=self.local_path)
-
-    def webdav_push(self):
-        client = self.get_webdav_client()
-        remote_path = self.entry_path or ""
-        return client.push(remote_directory=remote_path + '/', local_directory=self.local_path)
+        client.download_sync(remote_path=remote_path, local_path=self.local_path)
 
     def get_tree_items(self):
         tree_level = 0
