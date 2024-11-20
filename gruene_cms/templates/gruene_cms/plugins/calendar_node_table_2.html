@@ -5,13 +5,24 @@
   {% for item in calendar_items %}
     <tr class="{% if item.is_active %}table-active {% elif item.is_past %}opacity-25{% endif %}">
       <th scope="row" class="w-25">
-        {{ item.dt_from|date:"d.m." }} {% if item.dt_until %}- {{ item.dt_until|date:"d.m." }}{% endif %}
+        {% if item.dt_until and item.dt_from.date == item.dt_until.date %}
+          {{ item.dt_from|date:"d.m." }}
+        {% else %}
+          {{ item.dt_from|date:"d.m." }} {% if item.dt_until %}- {{ item.dt_until|date:"d.m." }}{% endif %}
+        {% endif %}
         <p class="small mb-0">
           {% if not item.full_day %}
             {% if item.dt_from|date:"i" != "00" %}
               {{ item.dt_from|date:"H:i" }}
             {% else %}
               {{ item.dt_from|date:"H" }}
+            {% endif %}
+            {% if item.dt_until %}
+              {% if item.dt_until|date:"i" != "00" %}
+                - {{ item.dt_until|date:"H:i" }}
+              {% else %}
+                - {{ item.dt_until|date:"H" }}
+              {% endif %}
             {% endif %}
             Uhr
           {% endif %}
