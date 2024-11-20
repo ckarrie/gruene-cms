@@ -23,11 +23,13 @@
         {% else %}
           {{ item.title }}
         {% endif %}
+
+        {% if item.calendar in labeled_calendars %} <span class="badge bg-primary rounded-pill float-end">{{ item.calendar.title }}</span>{% endif %}
+
         <p class="small mb-0">
           {{ item.location }}
           {% comment %}{% if item.dt_until %} | bis {{ item.dt_until|date:"d.m." }}{% endif %}{% endcomment %}
           {% if item.subtitle %} | {{ item.subtitle }}{% endif %}
-          {% if item.calendar in labeled_calendars %} | <span class="badge bg-primary rounded-pill">{{ item.calendar.title }}</span>{% endif %}
         </p>
       </td>
     </tr>
