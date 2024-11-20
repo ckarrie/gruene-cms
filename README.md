@@ -192,3 +192,13 @@ Open Webbrowser:  [127.0.0.1:9100](http://127.0.0.1:9100)
 Login with:
 - username: `changeme`
 - password: `changeme!`
+
+
+# Common errors
+## `NoReverseMatch`
+
+- Webseiten, die Plugins enthalten, müssen als Übersetzung vorliegen
+  - In der Toolbar auf Seiten/Pages gehen
+  - Sprache "English" auswählen
+  - Alle Seiten mit dem Puzzle-Icon prüfen, ob diese in Englisch erstellt wurden
+

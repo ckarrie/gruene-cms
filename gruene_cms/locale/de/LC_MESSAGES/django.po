@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-19 19:13+0100\n"
+"POT-Creation-Date: 2024-11-20 12:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:61
+msgid "Fetch selected feeds"
+msgstr "Ausgewählte Feeds aktualisieren"
+
+#: admin.py:92
+msgid "Download from WebDAV (overwrite local)"
+msgstr "Download von WebDAV (überschreibt lokale Änderungen)"
+
+#: admin.py:98
+msgid "Create Filer objects (experimental - do not use!)"
+msgstr "Filter-Objekte erstellen (experimentell - nicht benutzen!)"
 
 #: cms_plugins.py:8
 msgid "GruenenCMS"
@@ -32,13 +44,11 @@ msgstr "Hintergrundbild"
 
 #: cms_plugins.py:34
 msgid "Animate Typing"
-msgstr ""
+msgstr "AnimateTyping"
 
 #: cms_plugins.py:46
-#, fuzzy
-#| msgid "Advanced settings"
 msgid "AnimateTyping settings"
-msgstr "Erweiterte Einstellungen"
+msgstr "AnimateTyping Einstellungen"
 
 #: cms_plugins.py:57
 msgid "Wordsrotator settings"
@@ -56,11 +66,11 @@ msgstr "Anmeldeformular"
 msgid "Chart"
 msgstr "Chart / Diagramm"
 
-#: cms_plugins.py:159
+#: cms_plugins.py:159 models.py:236 templates/gruene_cms/apps/search.html:44
 msgid "Calendar"
 msgstr "Kalender"
 
-#: cms_plugins.py:195
+#: cms_plugins.py:195 templates/gruene_cms/apps/search.html:50
 msgid "News"
 msgstr "News / Aktuelles"
 
@@ -84,15 +94,15 @@ msgstr "div-Element"
 msgid "Simple Menu"
 msgstr "Einfaches Menü"
 
-#: forms.py:12 forms.py:25 models.py:690
+#: forms.py:12 forms.py:25 models.py:730
 msgid "Assign Task to"
 msgstr "Aufgabe zuordnen zu"
 
-#: forms.py:31 models.py:692
+#: forms.py:31 models.py:732
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: forms.py:37 models.py:697
+#: forms.py:37 models.py:737
 msgid "Task Priority"
 msgstr "Aufgabenpriorität"
 
@@ -117,8 +127,8 @@ msgid ""
 "Name of a new sub storage location. Keep empty to save the file in the "
 "selected storage location."
 msgstr ""
-"Name des neuen Unterordners unterhalb des ausgewählten Speicherorts. "
-"Feld leer lassen, falls kein neuer Ordner erstellt werden soll."
+"Name des neuen Unterordners unterhalb des ausgewählten Speicherorts. Feld "
+"leer lassen, falls kein neuer Ordner erstellt werden soll."
 
 #: forms.py:62
 msgid "New sub storage location"
@@ -130,7 +140,8 @@ msgstr "Sicherheitskopie"
 
 #: forms.py:69
 msgid "Backups existing file if the same file exists"
-msgstr "Erstellt eine Sicherheitskopie, falls die gleiche Datei bereits existiert"
+msgstr ""
+"Erstellt eine Sicherheitskopie, falls die gleiche Datei bereits existiert"
 
 #: models.py:41
 msgid "All same width"
@@ -172,21 +183,93 @@ msgstr ""
 msgid "If checked, data source will be downloaded automatically"
 msgstr "Falls ausgewählt, werden die Datenquellen automatisch heruntergeladen"
 
-#: models.py:310
+#: models.py:90
+msgid "Data source"
+msgstr "Datenquelle"
+
+#: models.py:91
+msgid "Data sources"
+msgstr "Datenquellen"
+
+#: models.py:132 models.py:133
+msgid "Data sources - aggregated data"
+msgstr "Datenquellen: zusammengefasste Daten"
+
+#: models.py:145
+msgid "Data sources - aggregated data history"
+msgstr "Datenquellen: zusammengefasste Daten (Verlauf)"
+
+#: models.py:146
+msgid "Data sources - aggregated data histories"
+msgstr "Datenquellen: zusammengefasste Daten (Verläufe)"
+
+#: models.py:155
+msgid "Data sources - aggregated data node"
+msgstr "Datenquellen: zusammengefasste Daten (Plugin)"
+
+#: models.py:156
+msgid "Data sources - aggregated data nodes"
+msgstr "Datenquellen: zusammengefasste Daten (Plugins)"
+
+#: models.py:237
+msgid "Calendars"
+msgstr "Kalender"
+
+#: models.py:267
+msgid "Calendar item"
+msgstr "Kalendereintrag"
+
+#: models.py:268
+msgid "Calendar items"
+msgstr "Kalendereinträge"
+
+#: models.py:328
+msgid "News category"
+msgstr "News-Kategorie"
+
+#: models.py:329
+msgid "News categories"
+msgstr "News-Kategorien"
+
+#: models.py:338
 msgid "If checked, news will be synced automatically"
 msgstr "Falls ausgewählt, werden die News automatisch synchronisiert"
 
-#: models.py:421
+#: models.py:425
+msgid "Newsfeed reader"
+msgstr "Newsfeed Reader"
+
+#: models.py:426
+msgid "Newsfeed readers"
+msgstr "Newsfeed Readers"
+
+#: models.py:439
+msgid "News image"
+msgstr "News Bild"
+
+#: models.py:440
+msgid "News images"
+msgstr "News Bilder"
+
+#: models.py:457
 msgid "Replace Marker"
 msgstr "Ersetze .marker"
 
-#: models.py:568
+#: models.py:584
+msgid "News item"
+msgstr "News-Artikel"
+
+#: models.py:585
+msgid "News items"
+msgstr "News-Artikel"
+
+#: models.py:608
 #, fuzzy
 #| msgid "Example: \"mb-3\""
 msgid "Example: \"mb-3\" or \"g-5\""
 msgstr "z.B. \"mb-3\""
 
-#: models.py:572
+#: models.py:612
 msgid ""
 "Example: \"col-12\" or \"col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-"
 "xxl-12\" for two-col for small screens"
@@ -194,94 +277,116 @@ msgstr ""
 "z.B.: \"col-12\" oder \"col-12 col-sm-6 col-md-6 col-lg-12 col-xl-12 col-"
 "xxl-12\" für zweispaltige kleine Bildschirme"
 
-#: models.py:666
+#: models.py:706
 msgid "instance namespace"
 msgstr "Namespace Instanz"
 
-#: models.py:672
+#: models.py:712
 msgid "paginate size"
 msgstr "Elemente pro Seite"
 
-#: models.py:688
+#: models.py:728
 msgid "Category"
 msgstr "Kategorie"
 
-#: models.py:689
+#: models.py:729
 msgid "Task Summary"
 msgstr "Beschreibung Aufgabe"
 
-#: models.py:694
+#: models.py:734
 msgid "Normal"
 msgstr "Normal"
 
-#: models.py:695
+#: models.py:735
 msgid "Warning"
 msgstr "Warnung"
 
-#: models.py:696
+#: models.py:736
 msgid "Danger"
 msgstr "Dringend"
 
-#: models.py:770
+#: models.py:810
 msgid "Without tailing slash"
 msgstr "Ohne endenden Schrägstrich (/)"
 
-#: models.py:883
+#: models.py:923
 msgid "If checked, folders will be synced automatically"
 msgstr "Falls ausgewählt, werden die Ordner automatisch synchronisiert"
 
-#: models.py:885
+#: models.py:925
 msgid "Use file extensions"
 msgstr "Dateiendungen verwenden"
 
-#: models.py:886
+#: models.py:926
 msgid ".csv | Comma separated"
 msgstr ".csv | CSV erzwingen"
 
-#: models.py:887
+#: models.py:927
 msgid ".vcf | Contacts"
 msgstr ".vcf | Kontakte erzwingen"
 
-#: models.py:888
-#| msgid "Calendar"
+#: models.py:928
 msgid ".vcs | Calendar"
 msgstr ".vcs | Kalender erzwingen"
 
-#: models.py:960
+#: models.py:1002
 msgid "specify from which level the navigation should be rendered..."
-msgstr ""
+msgstr "Legt fest, ab welchem Navigations-Level dargestellt wird..."
 
-#: models.py:961
+#: models.py:1003
 msgid "...and at which level it should stop"
-msgstr ""
+msgstr "...und bis zu welchem Level"
 
-#: models.py:962
+#: models.py:1004
 msgid ""
 "specifies how many levels of navigation should be displayed if a node is not "
 "a direct ancestor or descendant of the current active node"
 msgstr ""
+"Legt fest, wie viele Navigations-Ebenen dargestellt werden, falls ein Element kein "
+"direkter Vorfahre oder Nachfahre des aktuellen Elements ist"
 
-#: models.py:963
+#: models.py:1005
 msgid ""
 "specifies how many levels of descendants of the currently active node should "
 "be displayed"
 msgstr ""
 
-#: models.py:966
+#: models.py:1008
 msgid "As paragraphs"
 msgstr "Als Absatz"
 
-#: models.py:967
+#: models.py:1009
 msgid "As ul, nested"
 msgstr "Als ul, verschachtelt"
 
-#: models.py:968
+#: models.py:1010
 msgid "As ul, flat"
 msgstr "Als ul, flach"
 
-#: models.py:969
+#: models.py:1011
 msgid "As nav, subpages, horizontal"
 msgstr "Als nav-Element, mit Unterseiten, horizontal"
+
+#: templates/gruene_cms/apps/search.html:15
+#: templates/gruene_cms/apps/search.html:29
+msgid "Search"
+msgstr "Suche"
+
+#: templates/gruene_cms/apps/search.html:20
+msgid "Search for"
+msgstr "Suche nach"
+
+#: templates/gruene_cms/apps/search.html:41
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: templates/gruene_cms/apps/search.html:63
+msgid "No matches found."
+msgstr "Leider keine Treffer."
+
+#: templates/gruene_cms/apps/search.html:77
+msgid "Keywords"
+msgstr "Schlagworte"
 
 #~ msgid "Limit User"
 #~ msgstr "Limitierung Benutzer"

@@ -12,12 +12,12 @@
   <div class="container pt-5">
     <div class="row">
       <div class="col col-12">
-        <h2 class="pb-5">Suche</h2>
+        <h2 class="pb-5">{% trans "Search" %}</h2>
         <form action="" method="post" id="search">
           {% csrf_token %}
           <div class="row g-3 align-items-baseline">
             <div class="col-auto">
-              <label for="id_q" class="col-form-label">Suche nach</label>
+              <label for="id_q" class="col-form-label">{% trans "Search for" %}</label>
             </div>
             <div class="col-8">
               {{ form.q }}
@@ -26,7 +26,7 @@
               </span>
             </div>
             <div class="col-auto">
-              <button type="submit" class="btn btn-primary">Suchen</button>
+              <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
             </div>
           </div>
         </form>
@@ -38,16 +38,16 @@
     <div class="container pt-5">
       <div class="row">
         <div class="col col-12">
-          <h2 class="pb-5">Ergebnisse</h2>
+          <h2 class="pb-5">{% trans "Results" %}</h2>
           {% if cal_qs.exists %}
             <div class="pb-5">
-              <h3 class="">Kalender</h3>
+              <h3 class="">{% trans "Calendar" %}</h3>
               {% include 'gruene_cms/plugins/calendar_node_table_2.html' with calendar_items=cal_qs %}
             </div>
           {% endif %}
 
           {% if news_qs.exists %}
-            <h3 class="">News</h3>
+            <h3 class="">{% trans "News" %}</h3>
             {% include 'gruene_cms/plugins/news_card_v2_node.html' with news_items=news_qs instance=news_instance %}
           {% endif %}
 
@@ -60,7 +60,7 @@
         <div class="row">
           <div class="col col-12">
             <div class="alert alert-secondary" role="alert">
-              Leider keine Treffer.
+              {% trans "No matches found." %}
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="card shadow-sm">
           <div class="card-header">
             <h2 class="card-title small mb-0">
-              News Schlagworte
+              {% trans "Keywords" %}
             </h2>
           </div>
           <div class="card-body">

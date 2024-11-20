@@ -57,12 +57,9 @@ class SearchApphook(CMSApp):
 
     def get_urls(self, page=None, language=None, **kwargs):
         from django.conf.urls.i18n import i18n_patterns
-        #print("Hello SearchApphook.get_urls", page, language, kwargs)
         urls = [
             path('', search_views.SearchView.as_view(cms_page=page), name='search'),
         ]
-        #urls = i18n_patterns(*urls)
-        #print("SearchApphook.get_urls", urls)
 
         return urls
 
