@@ -596,7 +596,7 @@ class NewsListNode(CMSPlugin):
     ), default='tiles')
     max_entries = models.PositiveIntegerField(default=10)
     show_outdated = models.BooleanField(default=False)
-    news_page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
+    news_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True)
     title_h = models.IntegerField(default=3, choices=(
         (1, 'h1'),
         (2, 'h2'),
