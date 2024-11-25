@@ -1,4 +1,4 @@
-{% load cms_tags %}
+{% load cms_tags django_bootstrap5 i18n %}
 
 <table class="table table-sm align-middle">
   <tbody>
@@ -45,5 +45,37 @@
       </td>
     </tr>
   {% endfor %}
+
   </tbody>
 </table>
+
+{% if user.is_staff and add_calitem_form %}
+  <p class="text-end">
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#calModal{{ instance.pk|default:"0" }}">
+      <i class="fa fa-calendar-plus"></i> {% trans "Add calendar item" %}
+    </button>
+  </p>
+
+
+  <form action="{% url 'gruene_cms_dashboard:task_add' %}" method="post">
+    <div class="modal fade" id="calModal{{ instance.pk|default:"0" }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadModalLabel">Upload</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
+          </div>
+          <div class="modal-body">
+              {% csrf_token %}
+              {% bootstrap_form add_calitem_form layout='floating' %}
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            {% bootstrap_button button_type="submit" content="Speichern" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+{% endif %}

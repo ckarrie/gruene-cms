@@ -1,5 +1,5 @@
 from django import forms
-from gruene_cms.models import TaskItem
+from gruene_cms.models import TaskItem, CalendarItem
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -78,4 +78,22 @@ class WebDAVUploadForm(forms.Form):
             self.fields['location_dir'].choices += possible_locations_dirs
 
 
+class CreateCalendarItemModelForm(forms.ModelForm):
+    date = forms.DateField(label=_("Date"), help_text=_('Format: day.month.year'))
+    time = forms.TimeField(label=_('Time'), help_text=_('Format: hour:minute'))
+    duration = forms.TimeField(required=False, widget=forms.TimeInput, label=_('Duration'), help_text=_('Format: hour:minute'))
 
+    class Meta:
+        model = CalendarItem
+        fields = [
+            'date',
+            'time',
+            'calendar',
+            'title',
+            'subtitle',
+            'location',
+            'duration',
+            #'date',
+            #'hour',
+            #'duration',
+        ]

@@ -3,7 +3,7 @@ from cms.plugin_pool import plugin_pool
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from . import models
+from . import models, forms
 
 module_name = _('GruenenCMS')
 
@@ -180,10 +180,19 @@ class CalendarNodePlugin(CMSPluginBase):
         context = super(CalendarNodePlugin, self).render(context, instance, placeholder)
         calendar_items = instance.get_calendar_items()
         labeled_calendars = list(instance.labeled_calendars.all())
+        add_calitem_form = None
+        user = context['request'].user
+        if user.is_staff:
+            add_calitem_form = forms.CreateCalendarItemModelForm(initial={
+                'date': timezone.now().date(),
+                'time':  timezone.now().time().replace(minute=0, second=0, microsecond=0)
+            })
+
         context.update({
             'calendar_items': calendar_items,
             'labeled_calendars': labeled_calendars,
-            'current_dt': timezone.now()
+            'current_dt': timezone.now(),
+            'add_calitem_form': add_calitem_form
         })
 
         return context

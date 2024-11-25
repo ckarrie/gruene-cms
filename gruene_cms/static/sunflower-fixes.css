@@ -426,6 +426,11 @@ nav.subpages.navbar-light .navbar-nav > .nav-item.active {
     font-weight: 100 !important;
 }
 
+/* form */
+.form-floating > .form-control:focus ~ label::after, .form-floating > .form-control:not(:placeholder-shown) ~ label::after, .form-floating > .form-control-plaintext ~ label::after, .form-floating > .form-select ~ label::after {
+    background-color: inherit;
+}
+
 /* Media Querys - overwriting existing styles */
 
 
