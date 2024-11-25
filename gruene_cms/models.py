@@ -238,7 +238,7 @@ class Calendar(models.Model):
 
 
 class CalendarItem(models.Model):
-    calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
+    calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE, verbose_name=_('Calendar'))
     title = models.CharField(max_length=100, verbose_name=_('Title'))
     subtitle = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Subtitle'))
     dt_from = models.DateTimeField(verbose_name=_('Event begin'))

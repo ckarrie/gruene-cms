@@ -1,3 +1,4 @@
+import datetime
 import mimetypes
 import os
 import re
@@ -243,3 +244,54 @@ class WebDAVUploadView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.FormV
     def get_success_url(self):
         url = reverse('gruene_cms_dashboard:webdav_view_local_file', kwargs={'pk': self.kwargs.get('pk')}) + '?path=/'
         return url
+
+
+class CalendarItemCreateView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.CreateView):
+    form_class = forms.CreateCalendarItemModelForm
+    model = forms.CalendarItem
+    template_name = 'gruene_cms/apps/dashboard/calendaritem_form.html'
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+        #print(cd)
+        form_date = cd.get('date')
+        form_time = cd.get('time')
+        form_duration = cd.get('duration')
+
+        dt_until = None
+        dt_from = timezone.now().replace(
+            year=form_date.year,
+            month=form_date.month,
+            day=form_date.day,
+            hour=form_time.hour,
+            minute=form_time.minute,
+            second=0,
+            microsecond=0,
+            tzinfo=None
+        )
+        dt_from = timezone.make_aware(dt_from, timezone=timezone.get_current_timezone())
+
+        if form_duration:
+            dt_until = dt_from + datetime.timedelta(hours=form_duration.hour, minutes=form_duration.minute)
+
+        if dt_from < timezone.now():
+            form.add_error('date', 'Datum/Uhrzeit muss in der Zukunft liegen')
+            form.add_error('time', 'Datum/Uhrzeit muss in der Zukunft liegen')
+            return self.form_invalid(form=form)
+
+        cd.pop('date')
+        cd.pop('time')
+        cd.pop('duration')
+
+        new_calendaritem = form.save(commit=False)
+        new_calendaritem.dt_from = dt_from
+        new_calendaritem.dt_until = dt_until
+        new_calendaritem.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        next_param = self.request.GET.get('next')
+        if next_param:
+            return next_param
+        return '/'

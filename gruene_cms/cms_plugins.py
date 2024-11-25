@@ -183,9 +183,10 @@ class CalendarNodePlugin(CMSPluginBase):
         add_calitem_form = None
         user = context['request'].user
         if user.is_staff:
+            time_obj = timezone.make_naive(timezone.now(), timezone=timezone.get_current_timezone()).time().replace(minute=0, second=0, microsecond=0)
             add_calitem_form = forms.CreateCalendarItemModelForm(initial={
                 'date': timezone.now().date(),
-                'time':  timezone.now().time().replace(minute=0, second=0, microsecond=0)
+                'time': time_obj.strftime("%H:%M")
             })
 
         context.update({

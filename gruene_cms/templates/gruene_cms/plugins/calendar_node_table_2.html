@@ -57,13 +57,13 @@
   </p>
 
 
-  <form action="{% url 'gruene_cms_dashboard:task_add' %}" method="post">
-    <div class="modal fade" id="calModal{{ instance.pk|default:"0" }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <form action="{% url 'gruene_cms_dashboard:calendaritem_add' %}?next={{ request.path }}" method="post">
+    <div class="modal fade" id="calModal{{ instance.pk|default:"0" }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="calModal{{ instance.pk|default:"0" }}Label" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="uploadModalLabel">Upload</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schliessen"></button>
+            <h5 class="modal-title" id="calModal{{ instance.pk|default:"0" }}Label">{% trans "Add calendar item" %}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans "Close" %}"></button>
           </div>
           <div class="modal-body">
               {% csrf_token %}
@@ -71,7 +71,7 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
             {% bootstrap_button button_type="submit" content="Speichern" %}
           </div>
         </div>

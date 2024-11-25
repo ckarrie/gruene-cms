@@ -45,9 +45,12 @@ class DashboardApphook(CMSApp):
             path('tasks/add/', dashboard_views.TaskCreateView.as_view(cms_page=page), name="task_add"),
             path('tasks/<int:pk>/', dashboard_views.TaskEditView.as_view(cms_page=page), name="task_edit"),
             path('tasks/', dashboard_views.TaskListView.as_view(cms_page=page), name="task_list"),
+            # webdav
             path('webdav/<int:pk>/view_file/', dashboard_views.WebDAVViewLocalFileView.as_view(cms_page=page), name="webdav_view_local_file"),
             path('webdav/<int:pk>/serve_file/', dashboard_views.WebDAVServeLocalFileView.as_view(cms_page=page), name="webdav_serve_local_file"),
             path('webdav/<int:pk>/upload_file/', dashboard_views.WebDAVUploadView.as_view(cms_page=page), name="webdav_upload_file"),
+            # cal
+            path('cal/add/', dashboard_views.CalendarItemCreateView.as_view(cms_page=page), name="calendaritem_add"),
         ]
 
 
