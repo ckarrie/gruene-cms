@@ -50,8 +50,8 @@
 </table>
 
 {% if user.is_staff and add_calitem_form %}
-  <p class="text-end">
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#calModal{{ instance.pk|default:"0" }}">
+  <p class="text-end mb-0">
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#calModal{{ instance.pk|default:"0" }}">
       <i class="fa fa-calendar-plus"></i> {% trans "Add calendar item" %}
     </button>
   </p>
