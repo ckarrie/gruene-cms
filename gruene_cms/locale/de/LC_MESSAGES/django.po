@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-20 12:07+0100\n"
+"POT-Creation-Date: 2024-11-25 20:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,27 +70,27 @@ msgstr "Chart / Diagramm"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: cms_plugins.py:195 templates/gruene_cms/apps/search.html:50
+#: cms_plugins.py:205 templates/gruene_cms/apps/search.html:50
 msgid "News"
 msgstr "News / Aktuelles"
 
-#: cms_plugins.py:226
+#: cms_plugins.py:236
 msgid "Task"
 msgstr "Aufgabe"
 
-#: cms_plugins.py:237
+#: cms_plugins.py:247
 msgid "Filters"
 msgstr "Filter"
 
-#: cms_plugins.py:273
+#: cms_plugins.py:283
 msgid "Local Folder"
 msgstr "WebDAV lokaler Ordner"
 
-#: cms_plugins.py:299
+#: cms_plugins.py:309
 msgid "Div Element"
 msgstr "div-Element"
 
-#: cms_plugins.py:310
+#: cms_plugins.py:320
 msgid "Simple Menu"
 msgstr "Einfaches Menü"
 
@@ -142,6 +142,26 @@ msgstr "Sicherheitskopie"
 msgid "Backups existing file if the same file exists"
 msgstr ""
 "Erstellt eine Sicherheitskopie, falls die gleiche Datei bereits existiert"
+
+#: forms.py:82
+msgid "Date"
+msgstr "Datum"
+
+#: forms.py:82
+msgid "Format: day.month.year"
+msgstr "Format: Tag.Monat.Jahr"
+
+#: forms.py:83
+msgid "Time"
+msgstr "Uhrzeit"
+
+#: forms.py:83 forms.py:84
+msgid "Format: hour:minute"
+msgstr "Format: Stunde:Minute"
+
+#: forms.py:84
+msgid "Duration"
+msgstr "Dauer"
 
 #: models.py:41
 msgid "All same width"
@@ -214,6 +234,38 @@ msgstr "Datenquellen: zusammengefasste Daten (Plugins)"
 #: models.py:237
 msgid "Calendars"
 msgstr "Kalender"
+
+#: models.py:242
+msgid "Title"
+msgstr "Titel"
+
+#: models.py:243
+msgid "Subtitle"
+msgstr "Untertitel"
+
+#: models.py:244
+msgid "Event begin"
+msgstr "Terminbeginn"
+
+#: models.py:245
+msgid "Event end"
+msgstr "Terminende"
+
+#: models.py:246
+msgid "Full day"
+msgstr "Voller Tag"
+
+#: models.py:247
+msgid "Location"
+msgstr "Ort"
+
+#: models.py:248
+msgid "Linked page"
+msgstr "Verknüpfte Seite"
+
+#: models.py:249
+msgid "Linked News"
+msgstr "Verknüpfte Nachricht"
 
 #: models.py:267
 msgid "Calendar item"
@@ -342,8 +394,8 @@ msgid ""
 "specifies how many levels of navigation should be displayed if a node is not "
 "a direct ancestor or descendant of the current active node"
 msgstr ""
-"Legt fest, wie viele Navigations-Ebenen dargestellt werden, falls ein Element kein "
-"direkter Vorfahre oder Nachfahre des aktuellen Elements ist"
+"Legt fest, wie viele Navigations-Ebenen dargestellt werden, falls ein "
+"Element kein direkter Vorfahre oder Nachfahre des aktuellen Elements ist"
 
 #: models.py:1005
 msgid ""
@@ -387,6 +439,19 @@ msgstr "Leider keine Treffer."
 #: templates/gruene_cms/apps/search.html:77
 msgid "Keywords"
 msgstr "Schlagworte"
+
+#: templates/gruene_cms/plugins/calendar_node_table_2.html:56
+#: templates/gruene_cms/plugins/calendar_node_table_2.html:66
+msgid "Add calendar item"
+msgstr "Kalendereintrag hinzufügen"
+
+#: templates/gruene_cms/plugins/calendar_node_table_2.html:67
+msgid "Close"
+msgstr "Schließen"
+
+#: templates/gruene_cms/plugins/calendar_node_table_2.html:75
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #~ msgid "Limit User"
 #~ msgstr "Limitierung Benutzer"
