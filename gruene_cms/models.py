@@ -239,14 +239,14 @@ class Calendar(models.Model):
 
 class CalendarItem(models.Model):
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    subtitle = models.CharField(max_length=255, null=True, blank=True)
-    dt_from = models.DateTimeField()
-    dt_until = models.DateTimeField(null=True, blank=True)
-    full_day = models.BooleanField(default=False)
-    location = models.CharField(max_length=255)
-    linked_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True)
-    linked_news = models.ForeignKey('NewsItem', on_delete=models.SET_NULL, null=True, blank=True)
+    title = models.CharField(max_length=100, verbose_name=_('Title'))
+    subtitle = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Subtitle'))
+    dt_from = models.DateTimeField(verbose_name=_('Event begin'))
+    dt_until = models.DateTimeField(null=True, blank=True, verbose_name=_('Event end'))
+    full_day = models.BooleanField(default=False, verbose_name=_('Full day'))
+    location = models.CharField(max_length=255, verbose_name=_('Location'))
+    linked_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Linked page'))
+    linked_news = models.ForeignKey('NewsItem', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Linked News'))
 
     def __str__(self):
         return self.title
@@ -596,7 +596,7 @@ class NewsListNode(CMSPlugin):
     ), default='tiles')
     max_entries = models.PositiveIntegerField(default=10)
     show_outdated = models.BooleanField(default=False)
-    news_page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
+    news_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True)
     title_h = models.IntegerField(default=3, choices=(
         (1, 'h1'),
         (2, 'h2'),
