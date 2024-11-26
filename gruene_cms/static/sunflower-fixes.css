@@ -354,6 +354,10 @@ nav.subpages.justify-content-center .navbar-collapse {
     font-size: small;
 }
 
+.news-content-rendered ol > li {
+    padding-top: 1rem;
+}
+
 /* remove first image from news-summary (Deutschlandfunk) and some brs */
 
 .news-summary > p > img, .news-summary > p > br {
