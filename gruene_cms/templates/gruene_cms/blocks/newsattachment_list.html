@@ -1,0 +1,22 @@
+{% for att in newsattachments %}
+  <div class="row mb-2">
+    <div class="col col-1">
+      <a href="{{ att.url }}" target="_blank">
+        <img src="{{ att.icon_url }}" alt="{{ att.title }}" class=" w-100">
+      </a>
+    </div>
+    <div class="col col-8">
+      <p class="mb-0">
+        <a href="{{ att.url }}" target="_blank">
+          {{ att.title }}
+        </a>
+      </p>
+      {% if att.subtitle %}
+        <p class="small mb-0">{{ att.subtitle }}</p>
+      {% endif %}
+    </div>
+    <div class="col col-3">
+      <p class="mb-0"><a href="{{ att.url }}" target="_blank"><i class="fa fa-download"></i> {{ att.size|filesizeformat }}</a></p>
+    </div>
+  </div>
+{% endfor %}

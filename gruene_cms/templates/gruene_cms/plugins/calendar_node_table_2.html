@@ -56,7 +56,6 @@
     </button>
   </p>
 
-
   <form action="{% url 'gruene_cms_dashboard:calendaritem_add' %}?next={{ request.path }}" method="post">
     <div class="modal fade" id="calModal{{ instance.pk|default:"0" }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="calModal{{ instance.pk|default:"0" }}Label" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">

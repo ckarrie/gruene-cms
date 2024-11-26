@@ -20,197 +20,221 @@
 {% endblock %}
 
 {% block content %}
+  {% with news_related_objects=object.get_related_objects %}
 
-  <div class="container pt-5">
-    <nav>
+    <div class="container pt-5">
+      <nav>
 
-    </nav>
-    <div class="row">
-      <div class="col col-12">
-        <h1 class="news-title text-primary text-center">{{ object.title }}</h1>
-        {% if object.subtitle %}
-          <h2 class="news-subtitle text-secondary text-center">{{ object.subtitle|striptags }}</h2>
-        {% endif %}
-        <p class="text-primary text-center questa_slab">
-          <span class="fw-bold">{{ object.published_from|date:"SHORT_DATE_FORMAT" }} |</span> <span class="small"> vor {{ object.published_from|timesince }}</span>
-        </p>
-        <div class="keywords text-center">
-          <ul>
-            {% for kw in object.keywords_list %}
-              <li>
-                <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="p-md-2 p-lg-3"></div>
-        {% if object.summary %}
-          <div class="news-summary">
-            {{ object.summary }}
+      </nav>
+      <div class="row">
+        <div class="col col-12">
+          <h1 class="news-title text-primary text-center">{{ object.title }}</h1>
+          {% if object.subtitle %}
+            <h2 class="news-subtitle text-secondary text-center">{{ object.subtitle|striptags }}</h2>
+          {% endif %}
+          <p class="text-primary text-center questa_slab">
+            <span class="fw-bold">{{ object.published_from|date:"SHORT_DATE_FORMAT" }} |</span> <span class="small"> vor {{ object.published_from|timesince }}</span>
+          </p>
+          <div class="keywords text-center">
+            <ul>
+              {% for kw in object.keywords_list %}
+                <li>
+                  <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
+                </li>
+              {% endfor %}
+            </ul>
           </div>
-        {% endif %}
-        {% if object.content_rendered %}
-          <div class="pb-5">
-            {% with calendar_items=object.get_related_objects.calendar_items %}
-              {% if calendar_items %}
-                <div class="card shadow col-sm-12 col-lg-6 mb-5 mt-5">
-                  <div class="card-header bg-primary">
-                    <h2 class="card-title small text-white mb-0">Kalender</h2>
+          <div class="p-md-2 p-lg-3"></div>
+          {% if object.summary %}
+            <div class="news-summary">
+              {{ object.summary }}
+            </div>
+          {% endif %}
+          {% if object.content_rendered %}
+            <div class="pb-5">
+              {% with calendar_items=news_related_objects.calendar_items news_attachments=news_related_objects.attachments %}
+                {% if calendar_items %}
+                  <div class="card shadow col-sm-12 col-lg-6 mb-5 mt-5">
+                    <div class="card-header bg-primary">
+                      <h2 class="card-title small text-white mb-0"><i class="fa fa-calendar pe-2"></i>Kalender</h2>
+                    </div>
+                    <div class="card-body">
+                      {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=calendar_items %}
+                      <p class="small text-muted mb-0"><a href="{% url "gruene_cms_news:download_ics" slug=object.slug %}"><i class="fa fa-download"></i> Download ICS</a></p>
+                    </div>
+                  </div>
+                {% endif %}
+                {% if news_attachments %}
+                  <div class="card shadow col-sm-12 col-lg-6 mb-5 mt-5">
+                    <div class="card-header bg-primary">
+                      <h2 class="card-title small text-white mb-0"><i class="fa fa-download pe-2"></i> Downloads</h2>
+                    </div>
+                    <div class="card-body">
+                      {% include 'gruene_cms/blocks/newsattachment_list.html' with newsattachments=news_attachments %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endwith %}
+              {{ object.content_rendered|safe }}
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+      <div class="row g-5 py-5 mt-1">
+        <span class="highlighted grashalm text-right">&nbsp;</span>
+
+        <div class="col col-6 col-sm-6 mt-5 mb-1">
+          {% if prev_object %}
+            <p class="questa_slab fs-5"><a href="{% url 'gruene_cms_news:detail' slug=prev_object.slug %}">&laquo; {{ prev_object }}</a>
+            <br>
+             vom {{ prev_object.published_from|date:"SHORT_DATE_FORMAT" }}
+            </p>
+          {% endif %}
+        </div>
+        <div class="col col-6 col-sm-6 mt-0 mb-1 text-end">
+          {% if next_object %}
+             <p class="questa_slab fs-5"><a href="{% url 'gruene_cms_news:detail' slug=next_object.slug %}">{{ next_object }} &raquo;</a>
+             <br>
+             vom {{ next_object.published_from|date:"SHORT_DATE_FORMAT" }}
+             </p>
+          {% endif %}
+        </div>
+
+        <span class="highlighted grashalm text-right">&nbsp;</span>
+
+      </div>
+      <div class="row g-5 py-5 mt-1">
+
+
+
+        {% for cat_id, qs in news_related_objects.items %}
+          {% if qs %}
+            <div class="col col-sm-12 col-lg-6">
+              <div class="card shadow-sm">
+                {% if cat_id == "calendar_items" %}
+                  <div class="card-header">
+                    <h2 class="card-title small mb-0">
+                      Verlinkte <span class="highlighted grashalm">Termine</span>
+                    </h2>
                   </div>
                   <div class="card-body">
-                    {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=calendar_items %}
-                    <p class="small text-muted mb-0"><a href="{% url "gruene_cms_news:download_ics" slug=object.slug %}"><i class="fa fa-download"></i> Download ICS</a></p>
+                    {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
                   </div>
-                </div>
-              {% endif %}
-            {% endwith %}
-            {{ object.content_rendered|safe }}
-          </div>
-        {% endif %}
-
-      </div>
-    </div>
-
-    <div class="row g-5 py-5 mt-1">
-      <span class="highlighted grashalm text-right">&nbsp;</span>
-
-      <div class="col col-6 col-sm-6 mt-5 mb-1">
-        {% if prev_object %}
-          <p class="questa_slab fs-5"><a href="{% url 'gruene_cms_news:detail' slug=prev_object.slug %}">&laquo; {{ prev_object }}</a>
-          <br>
-           vom {{ prev_object.published_from|date:"SHORT_DATE_FORMAT" }}
-          </p>
-        {% endif %}
-      </div>
-      <div class="col col-6 col-sm-6 mt-0 mb-1 text-end">
-        {% if next_object %}
-           <p class="questa_slab fs-5"><a href="{% url 'gruene_cms_news:detail' slug=next_object.slug %}">{{ next_object }} &raquo;</a>
-           <br>
-           vom {{ next_object.published_from|date:"SHORT_DATE_FORMAT" }}
-           </p>
-        {% endif %}
-      </div>
-
-      <span class="highlighted grashalm text-right">&nbsp;</span>
-
-    </div>
-    <div class="row g-5 py-5 mt-1">
-
-
-
-      {% for cat_id, qs in object.get_related_objects.items %}
-        {% if qs %}
-          <div class="col col-sm-12 col-lg-6">
-            <div class="card shadow-sm">
-              {% if cat_id == "calendar_items" %}
-                <div class="card-header">
-                  <h2 class="card-title small mb-0">
-                    Verlinkte <span class="highlighted grashalm">Termine</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  {% include "gruene_cms/plugins/calendar_node_table_2.html" with calendar_items=qs %}
-                </div>
-                {% comment %}
-                <div class="card-footer">
-                  <a href="/URLZUALLENTERMINEN/">Alle Termine</a>
-                </div>
-                {% endcomment %}
-              {% endif %}
-
-              {% if cat_id == "images" %}
-                <div class="card-header">
-                  <h2 class="card-title small mb-0">
-                    Bilder-<span class="highlighted grashalm">Galerie</span>
-                  </h2>
-                </div>
-                <div class="card-body p-0">
-                  <div class="carousel slide" data-bs-interval="5000" data-bs-keyboard="true" data-bs-pause="hover" data-bs-ride="false" data-bs-wrap="true" id="carousel-{{ object.pk }}">
-                    <div class="carousel-indicators">
-                        {% for img in qs %}
-                          <button type="button" data-bs-target="#carousel-{{ object.pk }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true"></button>
-                        {% endfor %}
-                    </div>
-                    <div class="carousel-inner">
-                      {% for img in qs %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                          <img class="d-block w-100" src="{{ img.url }}" alt="{{ img.alt_text }}">
-                          <div class="carousel-caption d-none d-md-block">
-                            <p>{{ img.alt_text }}</p>
-                          </div>
-                        </div>
-                      {% endfor %}
-                    </div>
-                    <button class="carousel-control-prev" data-bs-target="#carousel-{{ object.pk }}" type="button" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden-focusable">Zurück</span>
-                    </button>
-                    <button class="carousel-control-next" data-bs-target="#carousel-{{ object.pk }}" type="button" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden-focusable">Weiter</span>
-                    </button>
-                  </div>
-                </div>
-              {% endif %}
-
-              {% if cat_id == "keywords" %}
-                <div class="card-header">
-                  <h2 class="card-title small mb-0">
-                    <span class="highlighted grashalm">Schlagworte</span>
-                  </h2>
-
                   {% comment %}
-
-                  <p><code>{{ app_config }}</code></p>
-
-                    <p class="small">
-                      {% if prev_object %}
-                        <a href="{% url 'gruene_cms_news:detail' slug=prev_object.slug %}">&laquo; {{ prev_object }}</a> {{ prev_object.published_from|date:"SHORT_DATE_FORMAT" }}
-                      {% endif %}
-                      |
-                      {% if next_object %}
-                         {{ next_object.published_from|date:"SHORT_DATE_FORMAT" }} <a href="{% url 'gruene_cms_news:detail' slug=next_object.slug %}">{{ next_object }} &raquo;</a>
-                      {% endif %}
-                    </p>
-
-                  {% endcomment %}
-
-
-                </div>
-                <div class="card-body">
-                  <div class="keywords">
-                    <ul>
-                      {% for kw in object.keywords_list %}
-                        <li>
-                          <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
-                        </li>
-                      {% endfor %}
-                    </ul>
+                  <div class="card-footer">
+                    <a href="/URLZUALLENTERMINEN/">Alle Termine</a>
                   </div>
-                </div>
-              {% endif %}
+                  {% endcomment %}
+                {% endif %}
 
+                {% if cat_id == "images" %}
+                  <div class="card-header">
+                    <h2 class="card-title small mb-0">
+                      Bilder-<span class="highlighted grashalm">Galerie</span>
+                    </h2>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="carousel slide" data-bs-interval="5000" data-bs-keyboard="true" data-bs-pause="hover" data-bs-ride="false" data-bs-wrap="true" id="carousel-{{ object.pk }}">
+                      <div class="carousel-indicators">
+                          {% for img in qs %}
+                            <button type="button" data-bs-target="#carousel-{{ object.pk }}" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true"></button>
+                          {% endfor %}
+                      </div>
+                      <div class="carousel-inner">
+                        {% for img in qs %}
+                          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img class="d-block w-100" src="{{ img.url }}" alt="{{ img.alt_text }}">
+                            <div class="carousel-caption d-none d-md-block">
+                              <p>{{ img.alt_text }}</p>
+                            </div>
+                          </div>
+                        {% endfor %}
+                      </div>
+                      <button class="carousel-control-prev" data-bs-target="#carousel-{{ object.pk }}" type="button" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden-focusable">Zurück</span>
+                      </button>
+                      <button class="carousel-control-next" data-bs-target="#carousel-{{ object.pk }}" type="button" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden-focusable">Weiter</span>
+                      </button>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if cat_id == "keywords" %}
+                  <div class="card-header">
+                    <h2 class="card-title small mb-0">
+                      <span class="highlighted grashalm">Schlagworte</span>
+                    </h2>
+
+                    {% comment %}
+
+                    <p><code>{{ app_config }}</code></p>
+
+                      <p class="small">
+                        {% if prev_object %}
+                          <a href="{% url 'gruene_cms_news:detail' slug=prev_object.slug %}">&laquo; {{ prev_object }}</a> {{ prev_object.published_from|date:"SHORT_DATE_FORMAT" }}
+                        {% endif %}
+                        |
+                        {% if next_object %}
+                           {{ next_object.published_from|date:"SHORT_DATE_FORMAT" }} <a href="{% url 'gruene_cms_news:detail' slug=next_object.slug %}">{{ next_object }} &raquo;</a>
+                        {% endif %}
+                      </p>
+
+                    {% endcomment %}
+
+
+                  </div>
+                  <div class="card-body">
+                    <div class="keywords">
+                      <ul>
+                        {% for kw in object.keywords_list %}
+                          <li>
+                            <a class="keyword post-to-search" href="#" rel="tag" data-search="{{ kw }}">{{ kw }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if cat_id == "attachments" %}
+                  <div class="card-header">
+                    <h2 class="card-title small mb-0">
+                      <span class="highlighted grashalm">Dateianhänge</span>
+                    </h2>
+                  </div>
+                  <div class="card-body">
+                    {% include 'gruene_cms/blocks/newsattachment_list.html' with newsattachments=qs %}
+                  </div>
+
+                {% endif %}
+
+              </div>
             </div>
-          </div>
-        {% endif %}
-      {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <form id="search-form" action="{% url 'gruene_cms_search:search' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="q">
+      </form>
+
+      <script>
+        $(document).ready(function() {
+            $('.post-to-search').click(function(e) {
+                e.preventDefault();
+                $('#search-form input[name="q"]').val($(this).attr('data-search'));
+                $('#search-form').submit();
+            });
+        });
+      </script>
+
+
     </div>
-
-    <form id="search-form" action="{% url 'gruene_cms_search:search' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="q">
-    </form>
-
-    <script>
-      $(document).ready(function() {
-          $('.post-to-search').click(function(e) {
-              e.preventDefault();
-              $('#search-form input[name="q"]').val($(this).attr('data-search'));
-              $('#search-form').submit();
-          });
-      });
-    </script>
-
-
-  </div>
+  {% endwith %}
 {% endblock %}

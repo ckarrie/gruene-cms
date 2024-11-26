@@ -10,12 +10,14 @@ from cms.models.pluginmodel import CMSPlugin
 from django.conf import settings
 from django.core.files import File
 from django.db import models
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from djangocms_text_ckeditor.fields import HTMLField
 from djangocms_text_ckeditor.models import AbstractText
+from filer.fields.file import FilerFileField
 from filer.fields.image import FilerImageField
 from filer.models import Folder as FilerFolder, File as FilerFile, Image as FilerImage
 from lxml import etree
@@ -440,6 +442,23 @@ class NewsImage(models.Model):
         verbose_name_plural = _('News images')
 
 
+class NewsAttachment(models.Model):
+    item = models.ForeignKey("NewsItem", on_delete=models.CASCADE)
+    filefield = FilerFileField(on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, null=True, blank=True)
+    subtitle = models.CharField(max_length=255, null=True, blank=True)
+    position = models.PositiveIntegerField(default=5)
+
+    def __str__(self):
+        if self.title:
+            return self.title
+        return str(self.filefield)
+
+    class Meta:
+        verbose_name = _('News attachment')
+        verbose_name_plural = _('News attachments')
+
+
 class NewsItem(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
@@ -501,6 +520,27 @@ class NewsItem(models.Model):
                 })
         return images
 
+    def get_all_attachments(self):
+        att = []
+        for na in self.newsattachment_set.order_by('position'):
+            mime_maintype = na.filefield.mime_maintype
+            mime_subtype = na.filefield.mime_subtype
+            if mime_maintype in ['audio', 'font', 'video']:
+                icon_url = staticfiles_storage.url(f'filer/icons/file-{mime_maintype}.svg')
+            elif mime_maintype == 'application' and mime_subtype in ['zip', 'pdf']:
+                icon_url = staticfiles_storage.url(f'filer/icons/file-{mime_subtype}.svg')
+            else:
+                icon_url = staticfiles_storage.url('filer/icons/file-unknown.svg')
+
+            att.append({
+                'url': na.filefield.url,
+                'title': str(na),
+                'subtitle': na.subtitle,
+                'size': na.filefield.size,
+                'icon_url': icon_url
+            })
+        return att
+
     def get_related_objects(self):
         links = OrderedDict()
         links['calendar_items'] = self.calendaritem_set.all().order_by('-dt_from')
@@ -508,6 +548,7 @@ class NewsItem(models.Model):
         #links['categories'] = []
         links['keywords'] = self.keywords_list
         links['images'] = self.get_all_images()
+        links['attachments'] = self.get_all_attachments()
 
         return links
 

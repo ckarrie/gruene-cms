@@ -42,10 +42,14 @@ class NewsImageInlineAdmin(admin.TabularInline):
     model = models.NewsImage
 
 
+class NewsAttachmentInlineAdmin(admin.TabularInline):
+    model = models.NewsAttachment
+
+
 class NewsItemAdmin(admin.ModelAdmin):
     list_display = ['title', 'published_from', 'newsfeedreader_source']
     list_filter = ['newsfeedreader_source']
-    inlines = [NewsImageInlineAdmin]
+    inlines = [NewsImageInlineAdmin, NewsAttachmentInlineAdmin]
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ['title', 'subtitle']
 
