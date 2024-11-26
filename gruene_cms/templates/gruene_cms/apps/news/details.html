@@ -35,7 +35,7 @@
           <p class="text-primary text-center questa_slab">
             <span class="fw-bold">{{ object.published_from|date:"SHORT_DATE_FORMAT" }} |</span> <span class="small"> vor {{ object.published_from|timesince }}</span>
           </p>
-          <div class="keywords text-center">
+          <div class="keywords text-center mt-4 mb-5">
             <ul>
               {% for kw in object.keywords_list %}
                 <li>
