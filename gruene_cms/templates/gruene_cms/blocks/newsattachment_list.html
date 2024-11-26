@@ -1,11 +1,40 @@
+<table class="table table-hover table-borderless mb-0 table-responsive table-sm">
+
+  <tbody>
+    {% for att in newsattachments %}
+      <tr>
+        <td class="">
+          <a href="{{ att.url }}" target="_blank">
+            <img src="{{ att.icon_url }}" alt="{{ att.title }}" class="img-fluid">
+          </a>
+        </td>
+        <td class="">
+          <p class="mb-0">
+            <a href="{{ att.url }}" target="_blank">
+              {{ att.title }}
+            </a>
+          </p>
+          {% if att.subtitle %}
+            <p class="small mb-0">{{ att.subtitle }}</p>
+          {% endif %}
+
+        </td>
+        <td class="">
+          <p class="mb-0"><a href="{{ att.url }}" target="_blank"><i class="fa fa-download"></i> {{ att.size|filesizeformat }}</a></p>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% comment %}
 {% for att in newsattachments %}
   <div class="row mb-2">
-    <div class="col col-1">
+    <div class="col col-lg-1 col-sm-2">
       <a href="{{ att.url }}" target="_blank">
-        <img src="{{ att.icon_url }}" alt="{{ att.title }}" class=" w-100">
+        <img src="{{ att.icon_url }}" alt="{{ att.title }}" class="img-fluid">
       </a>
     </div>
-    <div class="col col-8">
+    <div class="col col-lg-8 col-sm-8">
       <p class="mb-0">
         <a href="{{ att.url }}" target="_blank">
           {{ att.title }}
@@ -15,8 +44,9 @@
         <p class="small mb-0">{{ att.subtitle }}</p>
       {% endif %}
     </div>
-    <div class="col col-3">
+    <div class="col col-lg-3 col-sm-2">
       <p class="mb-0"><a href="{{ att.url }}" target="_blank"><i class="fa fa-download"></i> {{ att.size|filesizeformat }}</a></p>
     </div>
   </div>
 {% endfor %}
+{% endcomment %}
