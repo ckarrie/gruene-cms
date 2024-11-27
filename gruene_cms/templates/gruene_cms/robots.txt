@@ -1,0 +1,8 @@
+User-Agent: *
+{% for url in disallow_urls %}
+Disallow: {{ url }}
+{% endfor %}
+
+
+Host: {{ host }}
+{% if sitemap_url %}Sitemap: https://{{ host }}{{ sitemap_url }}{% endif %}

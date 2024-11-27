@@ -1,4 +1,5 @@
-# Beispiel der `settings.py`
+# Beispielkonfiguration
+## der `settings.py`
 
 ```shell
 djangocms gruene_web
@@ -11,6 +12,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = ['https://gruene.tld']
 
 INSTALLED_APPS = [
+    ...
+    'django.contrib.sitemaps',    
     ...
     'django_bootstrap5',
     'markdownify.apps.MarkdownifyConfig',
@@ -87,6 +90,36 @@ MARKDOWNIFY = {
         ]
     },
 }
+```
+
+## der `urls.py`
+
+```python
+from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
+from django.views.i18n import JavaScriptCatalog
+
+from django.contrib.sitemaps.views import sitemap
+from gruene_cms.views import seo
+
+urlpatterns = i18n_patterns(
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    path('admin/', admin.site.urls),
+    path('filer/', include('filer.urls')),
+    path('', include('cms.urls')),
+)
+
+urlpatterns += [
+    path('robots.txt', seo.RobotsTxtView.as_view(), name='seo_robotstxt'),
+    path('sitemap.xml', sitemap, {'sitemaps': {'cmspages': seo.GrueneCMSSitemap}}, name='seo_sitemapxml'),
+]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
 ## Setup GruenenCMS
