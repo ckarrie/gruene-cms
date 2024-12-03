@@ -36,6 +36,10 @@ class RobotsTxtView(TemplateView):
         return ctx
 
 
+class GoogleSearchConsoleView(TemplateView):
+    template_name = 'gruene_cms/google_search_console.html'
+
+
 class GrueneCMSSitemap(CMSSitemap):
     changefreq = 'daily'
 
