@@ -82,7 +82,7 @@
             <div class="d-flex">
               <ul id="topmenu" class="navbar-nav small">
                 <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-                  <a title="German" href="/de/" class="nav-link">DE</a>
+                  <a title="German" href="/" class="nav-link">DE</a>
                 </li>
                 <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
                   <a title="English" href="/en/" class="nav-link">EN</a>
@@ -95,7 +95,7 @@
                 </li>
                 {% if user.is_authenticated %}
                   <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-                    <a title="Dashboard" href="/de/mitglieder-dashboard/" class="nav-link">Dashboard</a>
+                    <a title="Dashboard" href="{% page_url "dashboard" %}" class="nav-link">Dashboard</a>
                   </li>
                   <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
                     <form action="{% url 'admin:logout' %}?next=/" method="post">

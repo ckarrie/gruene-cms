@@ -122,6 +122,39 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
+### Optional: Google Search Console
+
+- Property anlegen
+- Verifikation über URL auswählen
+- `urls.py` anpassen:
+
+```python
+urlpatterns += [
+    path('robots.txt', seo.RobotsTxtView.as_view(), name='seo_robotstxt'),
+    path('sitemap.xml', sitemap, {'sitemaps': {'cmspages': seo.GrueneCMSSitemap}}, name='seo_sitemapxml'),
+    # hinzufügen:
+    path('googleXXXXXXXXXXXXXXX.html', seo.GoogleSearchConsoleView.as_view()),
+]
+```
+
+- `googleXXXXXXXXXXXXXXX.html` mit dem angegebenen Dateinamen ersetzen, sowie Inhalt der `templates/gruene_cms/google_search_console.html` ersetzen.
+
+### `/de/`-urls unterbinden
+
+- `urls.py` anpassen:
+
+```python
+urlpatterns = i18n_patterns(
+    ...
+    path('', include('cms.urls')),
+    prefix_default_language=False
+)
+```
+
+- `gruene_v1.html` anpassen: 
+  - `/` anstelle von `/de/`
+
+
 ## Setup GruenenCMS
 
 ```shell
