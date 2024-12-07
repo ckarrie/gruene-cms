@@ -6,3 +6,4 @@ Disallow: {{ url }}
 
 Host: {{ host }}
 {% if sitemap_url %}Sitemap: https://{{ host }}{{ sitemap_url }}{% endif %}
+{% if news_sitemap_url %}Sitemap: https://{{ host }}{{ news_sitemap_url }}{% endif %}

@@ -20,9 +20,11 @@ class RobotsTxtView(TemplateView):
         languages = get_public_languages(site_id=site.pk)
         try:
             sitemap_url = reverse('seo_sitemapxml')
+            news_sitemap_url = reverse('seo_newssitemapxml')
         except NoReverseMatch:
             sitemap_url = ''
-            print("ERROR: missing seo_sitemapxml in root_urlconf, see docs/setup.md for an example")
+            news_sitemap_url = ''
+            print("ERROR: missing seo_sitemapxml/seo_newssitemapxml in root_urlconf, see docs/setup.md for an example")
 
         # internal pages
         disallow_urls = []
@@ -34,6 +36,7 @@ class RobotsTxtView(TemplateView):
         ctx.update({
             'host': site.domain,
             'sitemap_url': sitemap_url,
+            'news_sitemap_url': news_sitemap_url,
             'disallow_urls': disallow_urls
         })
         return ctx
