@@ -1,10 +1,13 @@
 from django.urls import reverse, NoReverseMatch
+from django.utils import timezone
 from django.views.generic.base import TemplateView
 from django.contrib.sites.models import Site
 from cms.sitemaps import CMSSitemap
 from cms.utils import get_current_site
 from cms.utils.i18n import get_public_languages
 from cms.models import PageContent, PageUrl
+from django.contrib.sitemaps import Sitemap
+from gruene_cms.models import NewsItem
 
 
 class RobotsTxtView(TemplateView):
@@ -42,5 +45,29 @@ class GoogleSearchConsoleView(TemplateView):
 
 class GrueneCMSSitemap(CMSSitemap):
     changefreq = 'daily'
+
+
+class NewsSitemap(Sitemap):
+    languages = ['de']
+    changefreq = 'daily'
+
+    def items(self):
+        now = timezone.now()
+        qs = NewsItem.objects.filter(
+            categories__is_public=True,
+            published_from__lte=now,
+            #published_until__gte=now,
+            newsfeedreader_external_link__isnull=True
+        )
+        return qs
+
+    def lastmod(self, obj):
+        return obj.published_from
+
+    def location(self, item):
+        return reverse('gruene_cms_news:detail', kwargs={'slug': item.slug})
+
+
+
 
 
