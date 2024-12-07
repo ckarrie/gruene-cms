@@ -61,7 +61,7 @@ class NewsSitemap(Sitemap):
             published_from__lte=now,
             #published_until__gte=now,
             newsfeedreader_external_link__isnull=True
-        )
+        ).order_by('-published_from')
         return qs
 
     def lastmod(self, obj):
