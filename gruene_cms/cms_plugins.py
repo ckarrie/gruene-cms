@@ -292,6 +292,7 @@ class LocalFolderNodePlugin(CMSPluginBase):
         context = super(LocalFolderNodePlugin, self).render(context, instance, placeholder)
         #user = context['request'].user
         tree_items = instance.webdav_client.get_tree_items(
+            entry_path=instance.entry_path,
             # include_root_node=instance.show_root_node
         )
         context.update({

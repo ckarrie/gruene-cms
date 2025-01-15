@@ -990,7 +990,8 @@ class WebDAVClient(models.Model):
         remote_path = self.entry_path or ""
         client.download_sync(remote_path=remote_path, local_path=self.local_path)
 
-    def get_tree_items(self):
+    def get_tree_items(self, entry_path=None):
+        local_path = self.local_path
         tree_level = 0
 
         def path_to_dict(path, sub_level):
@@ -1009,7 +1010,10 @@ class WebDAVClient(models.Model):
                     d['type'] = "image"
             return d
 
-        tree = path_to_dict(self.local_path, sub_level=tree_level + 1)
+        if entry_path:
+            local_path = os.path.join(local_path, entry_path)
+
+        tree = path_to_dict(local_path, sub_level=tree_level + 1)
         tree['name'] = self.entry_path_title or '/wolke'
         tree['level'] = tree_level
 
@@ -1028,6 +1032,7 @@ class LocalFolderNode(CMSPlugin):
     is_public = models.BooleanField(default=False)
     show_root_node = models.BooleanField(default=False)
     extra_css_classes = models.CharField(max_length=255, default='folder-list small')
+    entry_path = models.CharField(max_length=255, null=True, blank=True, help_text='i.e. 06_Sitzungsprotokolle/Steinweiler')
 
 
 class DivNode(CMSPlugin):
