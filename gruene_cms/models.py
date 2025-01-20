@@ -543,7 +543,7 @@ class NewsItem(models.Model):
 
     def get_related_objects(self):
         links = OrderedDict()
-        links['calendar_items'] = self.calendaritem_set.all().order_by('-dt_from')
+        links['calendar_items'] = self.calendaritem_set.all().order_by('dt_from')
         #links['external'] = []
         #links['categories'] = []
         links['keywords'] = self.keywords_list
