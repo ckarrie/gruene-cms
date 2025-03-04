@@ -175,6 +175,7 @@ class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
 
     def render_to_response(self, context, **response_kwargs):
         requested_file = self.request.GET.get("path")
+        is_embed = self.request.GET.get("is_embed", "") == "on"
         full_path = os.path.join(self.object.local_path + "/", requested_file[1:])
         filename = os.path.basename(full_path)
         file_exists = os.path.isfile(full_path)
@@ -182,7 +183,8 @@ class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
             content_type = mimetypes.guess_type(full_path)[0]
             file_data = open(full_path, "rb").read()
             response = HttpResponse(file_data, content_type=content_type)
-            response["Content-Disposition"] = f'attachment; filename="{filename}"'
+            if not is_embed:
+                response["Content-Disposition"] = f'attachment; filename="{filename}"'
             return response
         return HttpResponse()
 
