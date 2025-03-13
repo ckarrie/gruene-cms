@@ -397,6 +397,11 @@ class NewsFeedReader(models.Model):
                     feed_entry_published_parsed = feed_entry.get('published_parsed')
                     feed_entry_keyswords = feed_entry.get('author_detail', {}).get('name', self.title)
 
+                    # fix gruene-rlp
+                    gruene_rlp_sunflower = 'https://gruene-rlp.de/wp-content/themes/sunflower/assets/img/sunflower1.jpg'
+                    if gruene_rlp_sunflower in newsfeedreader_external_image_url:
+                        newsfeedreader_external_image_url = None
+
                     dt = timezone.datetime.fromtimestamp(time.mktime(feed_entry_published_parsed))
                     published_from = timezone.make_aware(dt, timezone=timezone.get_current_timezone())
                     news_item_slug = slugify(feed_entry_title)[:50]
