@@ -13,12 +13,12 @@
               <ul class="newsticker">
                 {% for item in items %}
                   <li>
-                    <div class="container-full">
+                    <div class="container-full d-print-none">
                       <div class="row">
                         <div class="col-md-6 col-12 text-center text-md-start">
                           <p class="{% if not forloop.first %}mt-3{% endif %}">
                             <span class="headline fw-bold">{{ item.headline }}</span>
-                            <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                            <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
                           </p>
                         </div>
                         <div class="col-md-6 col-12 text-center text-md-end">
@@ -27,6 +27,12 @@
                           <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="d-none d-print-block">
+                        <p class="{% if not forloop.first %}mt-3{% endif %}">
+                          <span class="headline fw-bold">{{ item.headline }}</span>
+                          <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                        </p>
                     </div>
                     <div class="hyphens-auto">
                     {{ item.get_rendered_summary|safe }}
