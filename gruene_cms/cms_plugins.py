@@ -360,7 +360,7 @@ class NewstickerItemListNodePlugin(CMSPluginBase):
         if instance.limit_categories.exists():
             newsticker_items = newsticker_items.filter(category__in=instance.limit_categories.all())
 
-        newsticker_items = newsticker_items.order_by('-created_dt__date', 'category')
+        newsticker_items = newsticker_items.order_by('-created_dt__date', 'category', 'pub_dt')
 
         by_date = OrderedDict()
         for ni in newsticker_items:
