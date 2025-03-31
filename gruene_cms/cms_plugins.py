@@ -360,11 +360,11 @@ class NewstickerItemListNodePlugin(CMSPluginBase):
         if instance.limit_categories.exists():
             newsticker_items = newsticker_items.filter(category__in=instance.limit_categories.all())
 
-        newsticker_items = newsticker_items.order_by('-created_dt__date', 'category', 'pub_dt')
+        newsticker_items = newsticker_items.order_by('-pub_dt__date', 'category', 'pub_dt')
 
         by_date = OrderedDict()
         for ni in newsticker_items:
-            d = ni.created_dt.date()
+            d = timezone.localtime(ni.pub_dt, timezone=timezone.get_current_timezone()).date()
             cat = ni.category
             if d not in by_date:
                 by_date[d] = OrderedDict()

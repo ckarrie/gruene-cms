@@ -1,5 +1,5 @@
 {% for d, categories in by_date.items %}
-    <h3>{{ d }}</h3>
+    <h3 class="{% if not forloop.first %}mt-5{% endif %}">{{ d }}</h3>
     <div class="accordion">
       {% for cat, items in categories.items %}
         <div class="accordion-item">
