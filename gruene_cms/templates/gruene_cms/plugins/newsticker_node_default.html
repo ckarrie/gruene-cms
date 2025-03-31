@@ -13,11 +13,21 @@
               <ul class="newsticker">
                 {% for item in items %}
                   <li>
-                    <p>{{ item.headline }}
-                      {% for ref in item.tickerref_set.all %}
-                        <sup><a href="{{ ref.get_href }}" title="{{ ref.get_href }}">{{ ref.pk }}</a></sup>
-                      {% endfor %}
-                    </p>
+                    <div class="container-full">
+                      <div class="row">
+                        <div class="col-md-6 col-12">
+                          <p>
+                            <span class="headline fw-bold">{{ item.headline }}</span>
+                            <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                          </p>
+                        </div>
+                        <div class="col-md-6 col-12 text-end">
+                          <span class="badge bg-light text-primary fw-light">{{ item.pub_dt|date:"TIME_FORMAT" }}</span>
+                          <span class="badge bg-light text-primary fw-light ">{{ item.publication.name }}</span>
+                          <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
+                        </div>
+                      </div>
+                    </div>
                     {{ item.get_rendered_summary|safe }}
                   </li>
                 {% endfor %}
@@ -40,5 +50,8 @@
   }
   ul.newsticker span.marker {
     background-color: gold;
+  }
+  ul.newsticker span.headline {
+    font-weight: bold;
   }
 </style>
