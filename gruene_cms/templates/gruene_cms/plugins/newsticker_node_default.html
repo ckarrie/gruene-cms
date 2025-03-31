@@ -1,0 +1,44 @@
+{% for d, categories in by_date.items %}
+    <h3>{{ d }}</h3>
+    <div class="accordion">
+      {% for cat, items in categories.items %}
+        <div class="accordion-item">
+          <h4 class="accordion-header" id="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panel-{{ d|date:"dmY" }}-{{ cat.pk }}" aria-expanded="true" aria-controls="panel-{{ d|date:"dmY" }}-{{ cat.pk }}">
+              {{ cat.name }}
+            </button>
+          </h4>
+          <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse show" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
+            <div class="accordion-body">
+              <ul class="newsticker">
+                {% for item in items %}
+                  <li>
+                    <p>{{ item.headline }}
+                      {% for ref in item.tickerref_set.all %}
+                        <sup><a href="{{ ref.get_href }}" title="{{ ref.get_href }}">{{ ref.pk }}</a></sup>
+                      {% endfor %}
+                    </p>
+                    {{ item.get_rendered_summary|safe }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+{% endfor %}
+
+{% comment %}
+<p><code>{{ by_date }}</code></p>
+<p><code>{{ newsticker_items }}</code></p>
+{% endcomment %}
+
+<style>
+  ul.newsticker p {
+    margin-bottom: 0;
+  }
+  ul.newsticker span.marker {
+    background-color: gold;
+  }
+</style>

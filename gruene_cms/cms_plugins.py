@@ -1,7 +1,10 @@
+from collections import OrderedDict
+
 from cms.plugin_base import CMSPluginBase, PluginMenuItem
 from cms.plugin_pool import plugin_pool
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.apps import apps
 
 from . import models, forms
 
@@ -336,3 +339,43 @@ class SimpleMenuNodePlugin(CMSPluginBase):
         context = super(SimpleMenuNodePlugin, self).render(context, instance, placeholder)
         return context
 
+
+@plugin_pool.register_plugin
+class NewstickerItemListNodePlugin(CMSPluginBase):
+    model = models.NewstickerItemListNode
+    name = _('Newsticker List Node')
+    allow_children = False
+    cache = False
+
+    def get_render_template(self, context, instance, placeholder):
+        render_templates = {
+            'default': 'gruene_cms/plugins/newsticker_node_default.html',
+        }
+        return render_templates[instance.render_template]
+
+    def render(self, context, instance, placeholder):
+        context = super(NewstickerItemListNodePlugin, self).render(context, instance, placeholder)
+        newsticker_items = apps.get_model('newsticker.TickerItem').objects.all()
+        newsticker_items = newsticker_items.filter(created_dt__gte=timezone.now() - timezone.timedelta(days=instance.limit_days))
+        if instance.limit_categories.exists():
+            newsticker_items = newsticker_items.filter(category__in=instance.limit_categories.all())
+
+        newsticker_items = newsticker_items.order_by('-created_dt__date', 'category')
+
+        by_date = OrderedDict()
+        for ni in newsticker_items:
+            d = ni.created_dt.date()
+            cat = ni.category
+            if d not in by_date:
+                by_date[d] = OrderedDict()
+
+            if cat not in by_date[d]:
+                by_date[d][cat] = [ni]
+            else:
+                by_date[d][cat].append(ni)
+
+        context.update({
+            'newsticker_items': newsticker_items,
+            'by_date': by_date,
+        })
+        return context

@@ -24,7 +24,6 @@ from lxml import etree
 from bs4 import BeautifulSoup
 import metadata_parser
 
-
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
 )
@@ -1063,4 +1062,11 @@ class SimpleMenuNode(CMSPlugin):
     ), default='as_p')
     
 
+class NewstickerItemListNode(CMSPlugin):
+    limit_days = models.IntegerField(default=3)
+    limit_categories = models.ManyToManyField('newsticker.TickerCategory', blank=True)
+    archive_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True)
+    render_template = models.CharField(max_length=40, choices=(
+        ('default', 'Default'),
+    ))
 
