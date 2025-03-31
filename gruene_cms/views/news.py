@@ -53,10 +53,11 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(NewsTickerView, self).get_context_data(**kwargs)
         limit_days = 3
+        max_limit_days = 10
         get_days = self.request.GET.get('days')
         if get_days:
             try:
-                limit_days = int(get_days)
+                limit_days = min(int(get_days), max_limit_days)
             except ValueError:
                 pass
 
