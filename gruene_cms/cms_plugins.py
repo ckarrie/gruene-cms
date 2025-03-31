@@ -355,27 +355,17 @@ class NewstickerItemListNodePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super(NewstickerItemListNodePlugin, self).render(context, instance, placeholder)
-        newsticker_items = apps.get_model('newsticker.TickerItem').objects.all()
-        newsticker_items = newsticker_items.filter(created_dt__gte=timezone.now() - timezone.timedelta(days=instance.limit_days))
-        if instance.limit_categories.exists():
-            newsticker_items = newsticker_items.filter(category__in=instance.limit_categories.all())
+        newsticker_items = apps.get_model('newsticker.TickerItem').objects.current(
+            limit_days=instance.limit_days,
+            limit_categories_qs=instance.limit_categories.all()
+        )
 
-        newsticker_items = newsticker_items.order_by('-pub_dt__date', 'category', 'pub_dt')
-
-        by_date = OrderedDict()
-        for ni in newsticker_items:
-            d = timezone.localtime(ni.pub_dt, timezone=timezone.get_current_timezone()).date()
-            cat = ni.category
-            if d not in by_date:
-                by_date[d] = OrderedDict()
-
-            if cat not in by_date[d]:
-                by_date[d][cat] = [ni]
-            else:
-                by_date[d][cat].append(ni)
+        by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(qs=newsticker_items)
 
         context.update({
             'newsticker_items': newsticker_items,
             'by_date': by_date,
+            #'today': today,
+            #'start_day': start_day,
         })
         return context

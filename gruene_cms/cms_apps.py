@@ -13,8 +13,11 @@ class NewsPageApphook(CMSApp):
 
     def get_urls(self, page=None, language=None, **kwargs):
         return [
+            path('newsticker/', news_views.NewsTickerView.as_view(), name="newsticker_index"),
             path('<str:slug>/', news_views.NewsDetailView.as_view(cms_page=page), name="detail"),
             path('<str:slug>/ical/', news_views.DownloadICSView.as_view(), name="download_ics"),
+
+
         ]
 
     def get_configs(self):

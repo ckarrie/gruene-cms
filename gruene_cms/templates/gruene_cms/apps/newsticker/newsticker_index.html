@@ -1,0 +1,52 @@
+{% extends "gruene_v1.html" %}
+{% load cms_tags menu_tags sekizai_tags static i18n %}
+{% block page_subtitle %}
+  <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
+  {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
+
+  <!-- {% page_attribute "page_title" %} -->
+{% endblock %}
+
+{% block extra_header %}
+  <!-- block extra_header news/details.html -->
+  <meta name="description" content="Updates aus Berlin, Rheinland-Pfalz, Deutschland, kurioses, Hintergründe und Kontext.">
+  <meta property="article:modified_time" content="{{ now|date:"c" }}">
+  <meta property="og:title" content="Politik-Ticker der GRÜNEN Kandel">
+  <meta property="og:description" content="Updates aus Berlin, Rheinland-Pfalz, Deutschland, kurioses, Hintergründe und Kontext.">
+  <meta property="og:image" content="https://{{ request.META.HTTP_HOST }}{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
+  <meta name="twitter:title" content="Politik-Ticker der GRÜNEN Kandel">
+  <meta name="twitter:description" content="Updates aus Berlin, Rheinland-Pfalz, Deutschland, kurioses, Hintergründe und Kontext.">
+  <meta name="twitter:image" content="https://{{ request.META.HTTP_HOST }}{% static 'sunflower-v2.2.0/assets/img/logo-diegruenen.png' %}">
+{% endblock %}
+
+{% block content %}
+  {% with news_related_objects=object.get_related_objects %}
+
+    <div class="container pt-5">
+      <nav>
+
+      </nav>
+      <div class="row d-print-none mb-5">
+        <div class="col col-12">
+          <h1 class="news-title text-primary text-center">Newsticker</h1>
+          <h2 class="news-subtitle text-secondary text-center">Politik, Wissenschaft und die Grünen</h2>
+          <p class="text-primary text-center questa_slab">
+            <span class="fw-bold">
+              {% if start_day_equal_today %}
+                {{ today|date:"SHORT_DATE_FORMAT" }}
+              {% else %}
+                {{ start_day|date:"SHORT_DATE_FORMAT" }} - {{ today|date:"SHORT_DATE_FORMAT" }}
+              {% endif %}
+            </span>
+          </p>
+          <p class="text-center small"><a href="?days=0">nur heute</a> | <a href="?days=3">letzten 3 Tage</a></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-12">
+          {% include 'gruene_cms/plugins/newsticker_node_default.html' with by_date=newsitems_by_date %}
+        </div>
+      </div>
+    </div>
+  {% endwith %}
+{% endblock %}

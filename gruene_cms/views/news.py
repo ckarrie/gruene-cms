@@ -1,5 +1,7 @@
+from cms.models import Page
 from django.utils import timezone
 from django.views import generic
+from django.apps import apps
 from menus.base import Menu
 from gruene_cms.models import NewsItem
 from gruene_cms.views.base import AppHookConfigMixin
@@ -43,6 +45,38 @@ class NewsDetailView(AppHookConfigMixin, generic.DetailView):
             return self.config.paginate_by
         except AttributeError:
             return 10
+
+
+class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
+    template_name = 'gruene_cms/apps/newsticker/newsticker_index.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(NewsTickerView, self).get_context_data(**kwargs)
+        limit_days = 3
+        get_days = self.request.GET.get('days')
+        if get_days:
+            try:
+                limit_days = int(get_days)
+            except ValueError:
+                pass
+
+        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(limit_days=limit_days)
+        start_day = timezone.localtime(
+            timezone.now() - timezone.timedelta(days=limit_days),
+            timezone=timezone.get_current_timezone()
+        ).date()
+        today = timezone.localtime(timezone.now(), timezone=timezone.get_current_timezone()).date()
+        ctx.update({
+            'newsitems_by_date': newsitems_by_date,
+            'today': today,
+            'start_day': start_day,
+            'start_day_equal_today': today == start_day,
+            'now': timezone.now(),
+            # fixing "Ein Templatetag konnte die Seite `{'reverse_id': ''}` nicht finden:
+            'current_page': self.cms_page or Page.objects.get_home()
+
+        })
+        return ctx
 
 
 class DownloadICSView(NewsDetailView):
