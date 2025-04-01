@@ -365,7 +365,8 @@ class NewstickerItemListNodePlugin(CMSPluginBase):
         context.update({
             'newsticker_items': newsticker_items,
             'by_date': by_date,
-            'show_all': True
+            'show_all': True,
+            'collapse_cat': None
             #'today': today,
             #'start_day': start_day,
         })
