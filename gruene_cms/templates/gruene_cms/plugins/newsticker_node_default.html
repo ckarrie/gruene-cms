@@ -8,7 +8,7 @@
               {{ cat.name }}
             </button>
           </h4>
-          <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse {% if show_all %}show{% endif %}" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
+          <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse {% if show_all or collapse_cat == cat %}show{% endif %}" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
             <div class="accordion-body">
               <ul class="newsticker">
                 {% for item in items %}
