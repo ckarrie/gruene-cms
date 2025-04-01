@@ -272,8 +272,19 @@
           /*min-width: 400mm;*/
           min-width: 100%;
         }
-        .accordion-button, .accordion-button:not(.collapsed) {
+        .accordion-button, .accordion-button:not(.collapsed), button {
           color: #000000 !important;
+          background-color: #ffffff !important;
+          z-index: 2 !important;
+        }
+        .accordion-header {
+            opacity: 1 !important;
+        }
+        ul.newsticker p cite, ul.newsticker p cite .badge {
+          color: rgb(0, 137, 57) !important;
+          background-color: #ffffff  !important;
+          padding: 0;
+          font-size: inherit;
         }
       }
     </style>

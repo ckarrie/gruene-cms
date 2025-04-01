@@ -59,8 +59,14 @@
   ul.newsticker span.marker {
     background-color: gold;
   }
+
   ul.newsticker span.headline {
     font-weight: bold;
+  }
+
+  ul.newsticker p cite {
+    color: rgb(0, 137, 57) !important;
+    font-style: normal;
   }
 
   ul.newsticker li > ul {
@@ -80,3 +86,9 @@
   }
 
 </style>
+<script>
+  $(function () {
+    var c = $('.newsticker cite');
+    c.wrapInner('<span class="badge bg-primary">');
+  });
+</script>
