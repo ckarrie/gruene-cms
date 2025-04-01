@@ -15,9 +15,9 @@
                   <li class="{% if not forloop.last %}mb-3{% endif %}">
                     <div class="container-full d-print-none">
                       <div class="row">
-                        <div class="col-12 col-md-6 col-lg-8" style="border-bottom: 1px solid black">
+                        <div class="col-12 col-md-6 col-lg-8">
                           <p class="">
-                            <span class="headline fw-bold">{{ item.headline }}</span>
+                            <span class="headline fw-bold text-decoration-underline">{{ item.headline }}</span>
                             <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
                           </p>
                         </div>
