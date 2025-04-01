@@ -5,7 +5,9 @@
         <div class="accordion-item">
           <h4 class="accordion-header" id="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
             <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#panel-{{ d|date:"dmY" }}-{{ cat.pk }}" aria-expanded="true" aria-controls="panel-{{ d|date:"dmY" }}-{{ cat.pk }}">
-              {{ cat.name }}
+              {% with cat_parent=cat.get_parent %}
+                {% if cat_parent != None %}{{ cat_parent.name }} &raquo;{% endif %} {{ cat.name }}
+              {% endwith %}
             </button>
           </h4>
           <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse {% if show_all or collapse_cat == cat %}show{% endif %}" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
