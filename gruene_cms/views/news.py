@@ -55,6 +55,7 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
         limit_days = 3
         max_limit_days = 10
         get_days = self.request.GET.get('days')
+        show_all = self.request.GET.get('show_all', '') == 'on'
         if get_days:
             try:
                 limit_days = min(int(get_days), max_limit_days)
@@ -74,7 +75,8 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             'start_day_equal_today': today == start_day,
             'now': timezone.now(),
             # fixing "Ein Templatetag konnte die Seite `{'reverse_id': ''}` nicht finden:
-            'current_page': self.cms_page or Page.objects.get_home()
+            'current_page': self.cms_page or Page.objects.get_home(),
+            'show_all': show_all
 
         })
         return ctx
