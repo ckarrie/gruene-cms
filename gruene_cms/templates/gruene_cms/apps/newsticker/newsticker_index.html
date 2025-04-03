@@ -41,9 +41,9 @@
             </span>
           </p>
           <p class="text-center small">
-            <a href="?days=0">nur heute</a> (<a href="?show_all=on&days=0">alle</a>) |
-            <a href="?days=3">letzten 3 Tage</a> (<a href="?show_all=on&days=3">alle</a>) |
-            <a class="{% if filter_form_has_errors %}text-danger{% endif %}" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter">
+            <a href="?days=0&date={{ today|date:"Y-m-d" }}">nur heute</a> (<a href="?show_all=on&days=0&date={{ today|date:"Y-m-d" }}">ausgeklappt</a>) |
+            <a href="?days=3">letzten 3 Tage</a> (<a href="?show_all=on&days=3">ausgeklappt</a>) |
+            <a class="fw-bold {% if filter_form_has_errors %}text-danger{% endif %}" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter">
               Filtern
             </a>
           </p>
