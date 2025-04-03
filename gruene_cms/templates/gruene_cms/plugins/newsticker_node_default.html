@@ -11,37 +11,37 @@
             </button>
           </h4>
           <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse {% if show_all or collapse_cat == cat %}show{% endif %}" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
-            <div class="accordion-body">
-              <ul class="newsticker">
-                {% for item in items %}
-                  <li class="{% if not forloop.last %}mb-3{% endif %}">
-                    <div class="container-full d-print-none">
-                      <div class="row">
-                        <div class="col-12 col-md-6 col-lg-8">
-                          <p class="">
-                            <span class="headline fw-bold text-decoration-underline">{{ item.headline }}</span>
-                            <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
-                          </p>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-4 text-center text-md-end">
-                          <span class="badge bg-light text-primary fw-light">{{ item.pub_dt|date:"TIME_FORMAT" }}</span>
-                          <span class="badge bg-light text-primary fw-light ">{{ item.publication.name }}</span>
-                          <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
-                        </div>
+            <div class="accordion-body newsticker-list">
+              {% for item in items %}
+                <div class="newsticker-item {% if not forloop.last %}mb-3{% endif %}">
+                  <div class="container-full d-print-none">
+                    <div class="row">
+                      <div class="col-12 col-md-6 col-lg-8">
+                        <h5 class="" style="">
+                          {{ item.headline }}
+                          <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                        </h5>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-4 text-center text-md-end">
+                        <span class="badge bg-light text-primary fw-light">{{ item.pub_dt|date:"TIME_FORMAT" }}</span>
+                        <span class="badge bg-light text-primary fw-light ">{{ item.publication.name }}</span>
+                        <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
                       </div>
                     </div>
-                    <div class="d-none d-print-block">
-                        <p class="{% if not forloop.first %}mt-3{% endif %}">
-                          <span class="headline fw-bold">{{ item.headline }}</span>
-                          <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
-                        </p>
+                  </div>
+                  <div class="d-none d-print-block">
+                      <p class="{% if not forloop.first %}mt-3{% endif %}">
+                        <span class="headline fw-bold">{{ item.headline }}</span>
+                        <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                      </p>
+                  </div>
+                  {% if item.has_summary %}
+                    <div class="newsticker-summary hyphens-auto">
+                      {{ item.get_rendered_summary|safe }}
                     </div>
-                    <div class="hyphens-auto">
-                    {{ item.get_rendered_summary|safe }}
-                    </div>
-                  </li>
-                {% endfor %}
-              </ul>
+                  {% endif %}
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -55,29 +55,25 @@
 {% endcomment %}
 
 <style>
-  ul.newsticker p {
+  .newsticker-summary p {
     margin-bottom: 0;
   }
-  ul.newsticker span.marker {
+  .newsticker-summary span.marker {
     background-color: gold;
   }
 
-  ul.newsticker span.headline {
-    font-weight: bold;
-  }
-
-  ul.newsticker p cite, cite {
+  .newsticker-summary p cite, cite {
     color: rgb(0, 137, 57) !important;
     font-style: normal;
   }
 
-  ul.newsticker li > ul {
+  .newsticker-summary ul li > ul {
     margin-left: 0;
     list-style-type: circle;
     padding-left: 1rem;
   }
 
-  ul.newsticker li > ul li > ul {
+  .newsticker-summary ul li > ul li > ul {
     margin-left: 0;
     list-style-type: square;
     padding-left: 1rem;
@@ -90,7 +86,7 @@
 </style>
 <script>
   $(function () {
-    var c = $('.newsticker cite');
+    var c = $('.newsticker-summary cite');
     c.wrapInner('<span class="badge bg-primary">');
   });
 </script>
