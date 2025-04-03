@@ -33,10 +33,10 @@
           <h2 class="news-subtitle text-secondary text-center">Politik, Wissenschaft und die Grünen</h2>
           <p class="text-primary text-center questa_slab">
             <span class="fw-bold">
-              {% if start_day_equal_today %}
-                {{ today|date:"SHORT_DATE_FORMAT" }}
+              {% if min_max_dt_equal_day %}
+                {{ min_dt|date:"SHORT_DATE_FORMAT" }}
               {% else %}
-                {{ start_day|date:"SHORT_DATE_FORMAT" }} - {{ today|date:"SHORT_DATE_FORMAT" }}
+                {{ min_dt|date:"SHORT_DATE_FORMAT" }} - {{ max_dt|date:"SHORT_DATE_FORMAT" }}
               {% endif %}
             </span>
           </p>

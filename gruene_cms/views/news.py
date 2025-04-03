@@ -1,4 +1,5 @@
 from cms.models import Page
+from django.db.models import Min, Max
 from django.utils import timezone
 from django.views import generic
 from django.apps import apps
@@ -78,7 +79,13 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             ref_date = ff_cd['date']
 
         filter_form_has_errors = len(filter_form.errors) > 0
-        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(limit_days=limit_days, ref_date=ref_date)
+        newsitems = apps.get_model('newsticker.TickerItem').objects.current(ref_date=ref_date, limit_days=limit_days)
+        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(qs=newsitems)
+
+        qs_aggregations = newsitems.aggregate(min_dt=Min('pub_dt'), max_dt=Max('pub_dt'))
+        min_dt = timezone.localtime(qs_aggregations['min_dt'], timezone=timezone.get_current_timezone())
+        max_dt = timezone.localtime(qs_aggregations['max_dt'], timezone=timezone.get_current_timezone())
+        min_max_dt_equal_day = min_dt.date() == max_dt.date()
 
         # vars
         start_day = timezone.localtime(
@@ -90,15 +97,16 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             'newsitems_by_date': newsitems_by_date,
             'today': today,
             'start_day': start_day,
-            'start_day_equal_today': today == start_day,
             'now': timezone.now(),
+            'min_max_dt_equal_day': min_max_dt_equal_day,
             # fixing "Ein Templatetag konnte die Seite `{'reverse_id': ''}` nicht finden:
             'current_page': self.cms_page or Page.objects.get_home(),
             'show_all': show_all,
             'collapse_cat': collapse_cat,
             'filter_form': filter_form,
             'filter_form_has_errors': filter_form_has_errors,
-
+            'min_dt': min_dt,
+            'max_dt': max_dt
         })
         return ctx
 
