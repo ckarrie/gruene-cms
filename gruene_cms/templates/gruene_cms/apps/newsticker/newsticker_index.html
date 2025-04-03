@@ -1,5 +1,5 @@
 {% extends "gruene_v1.html" %}
-{% load cms_tags menu_tags sekizai_tags static i18n %}
+{% load cms_tags menu_tags sekizai_tags static i18n django_bootstrap5 %}
 {% block page_subtitle %}
   <a class="text-white" href="/">{% page_attribute "title" request.current_page.get_root %}</a>
   {% show_breadcrumb 1 "gruene_cms/breadcrumb.html" %}
@@ -27,6 +27,7 @@
 
       </nav>
       <div class="row d-print-none mb-5">
+
         <div class="col col-12">
           <h1 class="news-title text-primary text-center">Newsticker</h1>
           <h2 class="news-subtitle text-secondary text-center">Politik, Wissenschaft und die Grünen</h2>
@@ -39,9 +40,26 @@
               {% endif %}
             </span>
           </p>
-          <p class="text-center small"><a href="?days=0">nur heute</a> (<a href="?show_all=on&days=0">alle</a>) | <a href="?days=3">letzten 3 Tage</a> (<a href="?show_all=on&days=3">alle</a>)</p>
+          <p class="text-center small">
+            <a href="?days=0">nur heute</a> (<a href="?show_all=on&days=0">alle</a>) |
+            <a href="?days=3">letzten 3 Tage</a> (<a href="?show_all=on&days=3">alle</a>) |
+            <a class="{% if filter_form_has_errors %}text-danger{% endif %}" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter">
+              Filtern
+            </a>
+          </p>
+
+          <div class="collapse {% if filter_form_has_errors %}show{% endif %}" id="collapseFilter">
+            <div class="card card-body">
+              <form class="form" target="" method="get">
+                {% bootstrap_form filter_form layout='horizontal' %}
+                {% bootstrap_button button_type="submit" content="Filtern" %}
+              </form>
+            </div>
+          </div>
+
         </div>
       </div>
+
       <div class="row">
         <div class="col col-12">
           {% include 'gruene_cms/plugins/newsticker_node_default.html' with by_date=newsitems_by_date %}
@@ -50,3 +68,4 @@
     </div>
   {% endwith %}
 {% endblock %}
+

@@ -1,7 +1,10 @@
+import datetime
+
 from django import forms
 from gruene_cms.models import TaskItem, CalendarItem
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.apps import apps
 
 
 class TaskCreateForm(forms.ModelForm):
@@ -97,3 +100,27 @@ class CreateCalendarItemModelForm(forms.ModelForm):
             #'hour',
             #'duration',
         ]
+
+
+class NewstickerFilterForm(forms.Form):
+    date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Datum'
+    )
+    days = forms.IntegerField(
+        label='Zusätzliche Tage',
+        required=False,
+        initial=0,
+        max_value=10
+    )
+    collapse_cat = forms.ModelChoiceField(
+        label='Kategorie',
+        queryset=apps.get_model('newsticker.TickerCategory').objects.all(),
+        required=False
+    )
+    show_all = forms.BooleanField(
+        label='Alle Ausklappen',
+        required=False,
+        initial=True
+    )

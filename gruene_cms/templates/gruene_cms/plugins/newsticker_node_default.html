@@ -1,5 +1,5 @@
 {% for d, categories in by_date.items %}
-    <h3 class="{% if not forloop.first %}mt-5{% endif %}">{{ d }}</h3>
+    <h3 class="{% if not forloop.first %}mt-5{% endif %}">{{ d|date:"l" }}, {{ d }}</h3>
     <div class="accordion">
       {% for cat, items in categories.items %}
         <div class="accordion-item">
@@ -47,6 +47,12 @@
         </div>
       {% endfor %}
     </div>
+{% empty %}
+    <p class="text-center">
+      Keine Artikel im ausgewählten Zeitraum. Ggf.
+      <a class="" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter">Filter</a>
+      ändern.
+    </p>
 {% endfor %}
 
 {% comment %}

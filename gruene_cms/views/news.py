@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.views import generic
 from django.apps import apps
 from menus.base import Menu
+
+from gruene_cms.forms import NewstickerFilterForm
 from gruene_cms.models import NewsItem
 from gruene_cms.views.base import AppHookConfigMixin
 from icalendar import Calendar, Event
@@ -54,22 +56,31 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
         ctx = super(NewsTickerView, self).get_context_data(**kwargs)
         limit_days = 3
         max_limit_days = 10
-        get_days = self.request.GET.get('days')
-        show_all = self.request.GET.get('show_all', '') == 'on'
-        collapse_cat = self.request.GET.get('collapse_cat')
-        if get_days:
-            try:
-                limit_days = min(int(get_days), max_limit_days)
-            except ValueError:
-                pass
+        collapse_cat = None
+        show_all = True
+        filter_date = None
+        ref_date = timezone.now().date()
 
-        if collapse_cat:
-            try:
-                collapse_cat = apps.get_model('newsticker.TickerCategory').objects.get(pk=int(collapse_cat))
-            except ValueError:
-                collapse_cat = None
+        if not self.request.GET.get('days', None):
+            filter_form = NewstickerFilterForm(initial={
+                'date': timezone.now().date(),
+                'days': 1,
+                'show_all': True
+            })
+        else:
+            filter_form = NewstickerFilterForm(data=self.request.GET)
 
-        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(limit_days=limit_days)
+        if filter_form.is_valid():
+            ff_cd = filter_form.cleaned_data
+            limit_days = min(int(ff_cd['days'] or '0'), max_limit_days)
+            show_all = ff_cd['show_all']
+            collapse_cat = ff_cd['collapse_cat']
+            ref_date = ff_cd['date']
+
+        filter_form_has_errors = len(filter_form.errors) > 0
+        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(limit_days=limit_days, ref_date=ref_date)
+
+        # vars
         start_day = timezone.localtime(
             timezone.now() - timezone.timedelta(days=limit_days),
             timezone=timezone.get_current_timezone()
@@ -85,6 +96,8 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             'current_page': self.cms_page or Page.objects.get_home(),
             'show_all': show_all,
             'collapse_cat': collapse_cat,
+            'filter_form': filter_form,
+            'filter_form_has_errors': filter_form_has_errors,
 
         })
         return ctx
