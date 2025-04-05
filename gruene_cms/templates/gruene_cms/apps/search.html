@@ -53,22 +53,39 @@
 
           {% if newsticker_qs.exists %}
             <h3 class="">Newsticker</h3>
-            <div class="container-full">
-              <div class="row">
+            <div class="container-full news-item mb-5">
+              <div class="row g-5">
               {% for ni in newsticker_qs %}
                 <div class="col col-12 col-lg-6">
 
-                  <div class="card">
-                    <div class="card-header">
-                      {{ ni.category }} <span class="badge bg-primary-subtle float-end">{{ ni.pub_dt }}</span>
-                    </div>
+                  <div class="card shadow-lg">
                     <div class="card-body">
-                      <h5 class="card-title"><a href="{% url 'gruene_cms_news:newsticker_index' %}?date={{ ni.pub_dt|date:"Y-m-d" }}&days=0&collapse_cat={{ ni.category.pk }}" class="">{{ ni.headline }}</a></h5>
-                      <div class="card-text">
+                      <a href="{% url 'gruene_cms_news:newsticker_index' %}?date={{ ni.pub_dt|date:"Y-m-d" }}&days=0&collapse_cat={{ ni.category.pk }}" class="">
+                        <h3 class="news-title">{{ ni.headline }}</h3>
+                      </a>
+                      <div class="news-summary">
                         {{ ni.get_rendered_summary|truncatewords_html:15|safe }}
                       </div>
-
                     </div>
+                    <div class="card-footer">
+                      <div class="container-fluid px-0">
+                        <div class="row">
+                          <div class="col-6">
+                            <a href="{% url 'gruene_cms_news:newsticker_index' %}?date={{ ni.pub_dt|date:"Y-m-d" }}&days=0&collapse_cat={{ ni.category.pk }}" class="continue-reading pt-0">
+                              Weiter­lesen
+                            </a>
+                          </div>
+                          <div class="col-6 align-content-center">
+                            <span class="text-muted small float-end">
+                              <i>{{ ni.category }}</i>
+                              <span class="meta-seperator"> </span>
+                              <strong>{{ ni.pub_dt|date:"SHORT_DATE_FORMAT" }}</strong>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
 
