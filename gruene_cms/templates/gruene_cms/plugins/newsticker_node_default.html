@@ -1,3 +1,4 @@
+{% load l10n %}
 {% for d, categories in by_date.items %}
     <h3 class="{% if not forloop.first %}mt-5{% endif %}">{{ d|date:"l" }}, {{ d }}</h3>
     <div class="accordion">
@@ -13,7 +14,7 @@
           <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse {% if show_all or collapse_cat == cat %}show{% endif %}" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
             <div class="accordion-body newsticker-list">
               {% for item in items %}
-                <div class="newsticker-item {% if not forloop.last %}mb-3{% endif %}">
+                <div class="newsticker-item {% if not forloop.last %}mb-3{% endif %}" id="ti-{{ item.pk|unlocalize }}">
                   <div class="container-full d-print-none">
                     <div class="row">
                       <div class="col-12 col-md-6 col-lg-8">
@@ -21,7 +22,7 @@
                           {{ item.headline }}
                           {% for ref in item.tickerref_set.all %}
                             <sup>
-                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }} ({{ ref.get_href }})" target="_blank">
+                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if ref.get_is_local %}_blank{% endif %}">
                                   {{ ref.pk }}
                                   {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                   {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
@@ -46,7 +47,7 @@
                         <span class="headline fw-bold">{{ item.headline }}</span>
                         {% for ref in item.tickerref_set.all %}
                           <sup>
-                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }} ({{ ref.get_href }})" target="_blank">
+                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if ref.get_is_local %}_blank{% endif %}">
                                 {{ ref.pk }}
                                 {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                 {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
