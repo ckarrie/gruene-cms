@@ -19,7 +19,18 @@
                       <div class="col-12 col-md-6 col-lg-8">
                         <h5 class="" style="">
                           {{ item.headline }}
-                          <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                          {% for ref in item.tickerref_set.all %}
+                            <sup>
+                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }}: {{ ref.get_href }}" target="_blank">
+                                  {{ ref.pk }}
+                                  {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
+                                  {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
+                                  {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
+                                  {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
+                                </a>
+                                {% if not forloop.last %}, {% endif %}
+                            </sup>
+                          {% endfor %}
                         </h5>
                       </div>
                       <div class="col-12 col-md-6 col-lg-4 text-center text-md-end">
@@ -32,7 +43,18 @@
                   <div class="d-none d-print-block">
                       <p class="{% if not forloop.first %}mt-3{% endif %}">
                         <span class="headline fw-bold">{{ item.headline }}</span>
-                        <sup>{% for ref in item.tickerref_set.all %}<a href="{{ ref.get_href }}" title="{{ ref.get_href }}" target="_blank">{{ ref.pk }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</sup>
+                        {% for ref in item.tickerref_set.all %}
+                          <sup>
+                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }}: {{ ref.get_href }}" target="_blank">
+                                {{ ref.pk }}
+                                {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
+                                {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
+                                {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
+                                {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
+                              </a>
+                              {% if not forloop.last %}, {% endif %}
+                          </sup>
+                        {% endfor %}
                       </p>
                   </div>
                   {% if item.has_summary %}
