@@ -51,6 +51,33 @@
             {% include 'gruene_cms/plugins/news_card_v2_node.html' with news_items=news_qs instance=news_instance %}
           {% endif %}
 
+          {% if newsticker_qs.exists %}
+            <h3 class="">Newsticker</h3>
+            <div class="container-full">
+              <div class="row">
+              {% for ni in newsticker_qs %}
+                <div class="col col-12 col-lg-6">
+
+                  <div class="card">
+                    <div class="card-header">
+                      {{ ni.category }} <span class="badge bg-primary-subtle float-end">{{ ni.pub_dt }}</span>
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title"><a href="{% url 'gruene_cms_news:newsticker_index' %}?date={{ ni.pub_dt|date:"Y-m-d" }}&days=0&collapse_cat={{ ni.category.pk }}" class="">{{ ni.headline }}</a></h5>
+                      <div class="card-text">
+                        {{ ni.get_rendered_summary|truncatewords_html:15|safe }}
+                      </div>
+
+                    </div>
+                  </div>
+
+
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
         </div>
       </div>
     </div>

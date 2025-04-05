@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.views import generic
 from django.db.models import Q
+from django.apps import apps
 from gruene_cms.forms import SearchForm
 from gruene_cms.views.base import AppHookConfigMixin
 from gruene_cms.models import NewsItem, CalendarItem
@@ -53,12 +54,23 @@ class SearchView(AppHookConfigMixin, generic.FormView):
                 if cal.linked_news:
                     cal.linked_url = reverse('gruene_cms_news:detail', kwargs={'slug': cal.linked_news.slug})
 
+            # Newsticker
+            newsticker_qs = apps.get_model('newsticker.TickerItem').objects.none()
+            if (len(q) > 5) or (q in ['CDU', 'CSU', 'AfD', 'Linke', 'Grüne', 'SPD', 'FDP']):
+                newsticker_qs = apps.get_model('newsticker.TickerItem').objects.filter(
+                    Q(headline__icontains=q) |
+                    Q(summary__icontains=q)
+                ).order_by('-pub_dt').distinct()[:10]
+
+
             ctx.update({
                 'news_qs': news_qs,
                 'cal_qs': cal_qs,
+                'newsticker_qs': newsticker_qs,
                 'has_results': any([
                     news_qs.exists(),
                     cal_qs.exists(),
+                    newsticker_qs.exists()
                 ]),
                 # monkeypatch for template:
                 'news_instance': {
