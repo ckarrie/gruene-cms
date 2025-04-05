@@ -21,12 +21,13 @@
                           {{ item.headline }}
                           {% for ref in item.tickerref_set.all %}
                             <sup>
-                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }}: {{ ref.get_href }}" target="_blank">
+                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }} ({{ ref.get_href }})" target="_blank">
                                   {{ ref.pk }}
                                   {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                   {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
                                   {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
                                   {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
+                                  {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
                                 </a>
                                 {% if not forloop.last %}, {% endif %}
                             </sup>
@@ -45,12 +46,13 @@
                         <span class="headline fw-bold">{{ item.headline }}</span>
                         {% for ref in item.tickerref_set.all %}
                           <sup>
-                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }}: {{ ref.get_href }}" target="_blank">
+                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_type_display }} ({{ ref.get_href }})" target="_blank">
                                 {{ ref.pk }}
                                 {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                 {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
                                 {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
                                 {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
+                                {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
                               </a>
                               {% if not forloop.last %}, {% endif %}
                           </sup>
