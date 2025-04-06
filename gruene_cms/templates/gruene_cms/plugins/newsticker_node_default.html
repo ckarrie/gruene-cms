@@ -35,6 +35,7 @@
                           {% endfor %}
                           {% for bref in item.linked_tickerref_set.all %}
                             <sup>
+                                {% if item.tickerref_set.exists %}, {% endif %}
                                 <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
                                   {{ bref.pk }}
                                   <i class="fa fa-rotate-back"></i>
@@ -69,6 +70,7 @@
                         {% endfor %}
                         {% for bref in item.linked_tickerref_set.all %}
                           <sup>
+                              {% if item.tickerref_set.exists %}, {% endif %}
                               <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
                                 {{ bref.pk }}
                                 <i class="fa fa-rotate-back"></i>
