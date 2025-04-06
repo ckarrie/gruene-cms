@@ -22,13 +22,22 @@
                           {{ item.headline }}
                           {% for ref in item.tickerref_set.all %}
                             <sup>
-                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if ref.get_is_local %}_blank{% endif %}">
+                                <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
                                   {{ ref.pk }}
                                   {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                   {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
                                   {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
                                   {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
                                   {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
+                                </a>
+                                {% if not forloop.last %}, {% endif %}
+                            </sup>
+                          {% endfor %}
+                          {% for bref in item.linked_tickerref_set.all %}
+                            <sup>
+                                <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
+                                  {{ bref.pk }}
+                                  <i class="fa fa-rotate-back"></i>
                                 </a>
                                 {% if not forloop.last %}, {% endif %}
                             </sup>
@@ -47,13 +56,22 @@
                         <span class="headline fw-bold">{{ item.headline }}</span>
                         {% for ref in item.tickerref_set.all %}
                           <sup>
-                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if ref.get_is_local %}_blank{% endif %}">
+                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
                                 {{ ref.pk }}
                                 {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                 {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
                                 {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
                                 {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
                                 {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
+                              </a>
+                              {% if not forloop.last %}, {% endif %}
+                          </sup>
+                        {% endfor %}
+                        {% for bref in item.linked_tickerref_set.all %}
+                          <sup>
+                              <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
+                                {{ bref.pk }}
+                                <i class="fa fa-rotate-back"></i>
                               </a>
                               {% if not forloop.last %}, {% endif %}
                           </sup>
