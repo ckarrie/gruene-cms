@@ -30,12 +30,11 @@
                                   {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
                                   {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
                                 </a>
-                                {% if not forloop.last %}, {% endif %}
+                                {% if not forloop.last %}, {% else %}{% if item.linked_tickerref_set.exists %}, {% endif %}{% endif %}
                             </sup>
                           {% endfor %}
                           {% for bref in item.linked_tickerref_set.all %}
                             <sup>
-                                {% if item.tickerref_set.exists %}, {% endif %}
                                 <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
                                   {{ bref.pk }}
                                   <i class="fa fa-rotate-back"></i>
@@ -65,12 +64,11 @@
                                 {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
                                 {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
                               </a>
-                              {% if not forloop.last %}, {% endif %}
+                              {% if not forloop.last %}, {% else %}{% if item.linked_tickerref_set.exists %}, {% endif %}{% endif %}
                           </sup>
                         {% endfor %}
                         {% for bref in item.linked_tickerref_set.all %}
                           <sup>
-                              {% if item.tickerref_set.exists %}, {% endif %}
                               <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
                                 {{ bref.pk }}
                                 <i class="fa fa-rotate-back"></i>
@@ -132,6 +130,9 @@
 
   .hyphens-auto {
     hyphens: auto;
+  }
+  sup {
+    white-space: nowrap;
   }
 
 </style>
