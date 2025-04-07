@@ -20,7 +20,7 @@
                       <div class="col-12 col-md-6 col-lg-8">
                         <h5 class="" style="">
                           {{ item.headline }}
-                          {% for ref in item.tickerref_set.all %}
+                          {% for ref in item.tickerref_set.not_in_summary %}
                             <sup>
                                 <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
                                   {{ ref.pk }}
@@ -54,7 +54,7 @@
                   <div class="d-none d-print-block">
                       <p class="{% if not forloop.first %}mt-3{% endif %}">
                         <span class="headline fw-bold">{{ item.headline }}</span>
-                        {% for ref in item.tickerref_set.all %}
+                        {% for ref in item.tickerref_set.not_in_summary %}
                           <sup>
                               <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
                                 {{ ref.pk }}
