@@ -248,6 +248,7 @@ class CalendarItem(models.Model):
     location = models.CharField(max_length=255, verbose_name=_('Location'))
     linked_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Linked page'))
     linked_news = models.ForeignKey('NewsItem', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Linked News'))
+    external_link = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -307,10 +308,14 @@ class CalendarNode(CMSPlugin):
 
         # Add Link
         for item in calendar_items:
+            item.linked_url_external = False
             if self.linked_news_page and item.linked_news:
                 item.linked_url = reverse('gruene_cms_news:detail', kwargs={'slug': item.linked_news.slug})
             if item.linked_page:
                 item.linked_url = item.linked_page.get_absolute_url()
+            if item.external_link:
+                item.linked_url = item.external_link
+                item.linked_url_external = True
 
         return calendar_items
 

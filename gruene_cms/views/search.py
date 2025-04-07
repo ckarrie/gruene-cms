@@ -49,10 +49,14 @@ class SearchView(AppHookConfigMixin, generic.FormView):
 
             # monkeypatch for template
             for cal in cal_qs:
+                cal.linked_url_external = False
                 if cal.linked_page:
                     cal.linked_url = cal.linked_page.get_absolute_url()
                 if cal.linked_news:
                     cal.linked_url = reverse('gruene_cms_news:detail', kwargs={'slug': cal.linked_news.slug})
+                if cal.external_link:
+                    cal.linked_url = cal.external_link
+                    cal.linked_url_external = True
 
             # Newsticker
             newsticker_qs = apps.get_model('newsticker.TickerItem').objects.none()
