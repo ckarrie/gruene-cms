@@ -50,7 +50,11 @@
                           </div>
                           <div class="col-6 align-content-center">
                             <span class="text-muted small float-end">
-                              {% if instance.show_feed_title %}<i>{{ item.newsfeedreader_source.title|default:item.authors.first.first_name }}</i>{% endif %}
+                              {% if instance.show_feed_title %}
+                                {% if item.newsfeedreader_source %}
+                                  <i>{{ item.newsfeedreader_source.title }}</i>
+                                {% endif %}
+                              {% endif %}
                               {% if instance.show_date and instance.show_feed_title %}<span class="meta-seperator"> </span>{% endif %}
                               {% if instance.show_date %}<strong>{{ item.published_from|date:"d.m.Y" }}</strong>{% endif %}
                             </span>
