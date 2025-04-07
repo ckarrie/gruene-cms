@@ -30,7 +30,7 @@
       </th>
       <td class="w-75">
         {% if item.linked_url %}
-          <a href="{{ item.linked_url }}" {% if item.linked_url_external %}target="_blank"{% endif %}>{{ item.title }}{% if item.linked_url_external %}<i class="fa fa-external-link"></i>{% endif %}</a>
+          <a href="{{ item.linked_url }}" {% if item.linked_url_external %}target="_blank"{% endif %}>{{ item.title }}{% if item.linked_url_external %}&nbsp;<sup><i class="fa fa-external-link"></i></sup>{% endif %}</a>
         {% else %}
           {{ item.title }}
         {% endif %}
