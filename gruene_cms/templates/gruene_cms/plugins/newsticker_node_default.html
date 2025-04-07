@@ -14,13 +14,48 @@
           <div id="panel-{{ d|date:"dmY" }}-{{ cat.pk }}" class="accordion-collapse collapse {% if show_all or collapse_cat == cat %}show{% endif %}" aria-labelledby="panelheader-{{ d|date:"dmY" }}-{{ cat.pk }}">
             <div class="accordion-body newsticker-list">
               {% for item in items %}
-                <div class="newsticker-item {% if not forloop.last %}mb-3{% endif %}" id="ti-{{ item.pk|unlocalize }}">
-                  <div class="container-full d-print-none">
-                    <div class="row">
-                      <div class="col-12 col-md-6 col-lg-8">
-                        <h5 class="" style="">
-                          {{ item.headline }}
-                          {% for ref in item.tickerref_set.not_in_summary %}
+                {% with rendered_summary=item.get_rendered_summary refs_not_in_summary=item.tickerref_set.not_in_summary backlinks=item.linked_tickerref_set.all %}
+                  <div class="newsticker-item {% if not forloop.last %}mb-3{% endif %}" id="ti-{{ item.pk|unlocalize }}">
+                    <div class="container-full d-print-none">
+                      <div class="row">
+                        <div class="col-12 col-md-6 col-lg-8">
+                          <h5 class="" style="">
+                            {{ item.headline }}
+                            {% for ref in refs_not_in_summary %}
+                              <sup>
+                                  <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
+                                    {{ ref.pk }}
+                                    {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
+                                    {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
+                                    {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
+                                    {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
+                                    {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
+                                  </a>
+                                  {% if not forloop.last %}, {% else %}{% if item.linked_tickerref_set.exists %}, {% endif %}{% endif %}
+                              </sup>
+                            {% endfor %}
+                            {% for bref in backlinks %}
+                              <sup>
+                                  <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
+                                    {{ bref.pk }}
+                                    <i class="fa fa-rotate-back"></i>
+                                  </a>
+                                  {% if not forloop.last %}, {% endif %}
+                              </sup>
+                            {% endfor %}
+                          </h5>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 text-center text-md-end">
+                          <span class="badge bg-light text-primary fw-light">{{ item.pub_dt|date:"TIME_FORMAT" }}</span>
+                          <span class="badge bg-light text-primary fw-light ">{{ item.publication.name }}</span>
+                          <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-none d-print-block">
+                        <p class="{% if not forloop.first %}mt-3{% endif %}">
+                          <span class="headline fw-bold">{{ item.headline }}</span>
+                          {% for ref in refs_not_in_summary %}
                             <sup>
                                 <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
                                   {{ ref.pk }}
@@ -33,7 +68,7 @@
                                 {% if not forloop.last %}, {% else %}{% if item.linked_tickerref_set.exists %}, {% endif %}{% endif %}
                             </sup>
                           {% endfor %}
-                          {% for bref in item.linked_tickerref_set.all %}
+                          {% for bref in backlinks %}
                             <sup>
                                 <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
                                   {{ bref.pk }}
@@ -42,48 +77,15 @@
                                 {% if not forloop.last %}, {% endif %}
                             </sup>
                           {% endfor %}
-                        </h5>
-                      </div>
-                      <div class="col-12 col-md-6 col-lg-4 text-center text-md-end">
-                        <span class="badge bg-light text-primary fw-light">{{ item.pub_dt|date:"TIME_FORMAT" }}</span>
-                        <span class="badge bg-light text-primary fw-light ">{{ item.publication.name }}</span>
-                        <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
-                      </div>
+                        </p>
                     </div>
+                    {% if item.has_summary %}
+                      <div class="newsticker-summary hyphens-auto">
+                        {{ rendered_summary|safe }}
+                      </div>
+                    {% endif %}
                   </div>
-                  <div class="d-none d-print-block">
-                      <p class="{% if not forloop.first %}mt-3{% endif %}">
-                        <span class="headline fw-bold">{{ item.headline }}</span>
-                        {% for ref in item.tickerref_set.not_in_summary %}
-                          <sup>
-                              <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
-                                {{ ref.pk }}
-                                {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
-                                {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
-                                {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
-                                {% if ref.ref_type == 'image' %}<i class="fa fa-image"></i>{% endif %}
-                                {% if ref.ref_type == 'tickeritem' %}<i class="fa fa-link"></i>{% endif %}
-                              </a>
-                              {% if not forloop.last %}, {% else %}{% if item.linked_tickerref_set.exists %}, {% endif %}{% endif %}
-                          </sup>
-                        {% endfor %}
-                        {% for bref in item.linked_tickerref_set.all %}
-                          <sup>
-                              <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
-                                {{ bref.pk }}
-                                <i class="fa fa-rotate-back"></i>
-                              </a>
-                              {% if not forloop.last %}, {% endif %}
-                          </sup>
-                        {% endfor %}
-                      </p>
-                  </div>
-                  {% if item.has_summary %}
-                    <div class="newsticker-summary hyphens-auto">
-                      {{ item.get_rendered_summary|safe }}
-                    </div>
-                  {% endif %}
-                </div>
+                {% endwith %}
               {% endfor %}
             </div>
           </div>
