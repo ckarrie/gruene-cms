@@ -146,7 +146,7 @@
     /* Replace <var> */
     $('.newsticker-item var').each(function(i){
         var content = $(this).html();
-        $(this).replaceWith('<sup class="var-more-trigger"><a href="#var' + i + '" data-bs-toggle="collapse"><i class="fa fa-plus"></i></a></sup><div class="collapse" id="var' + i + '">' + content + '</div>');
+        $(this).replaceWith('<sup class="var-more-trigger"><a href="#var' + i + '" data-bs-toggle="collapse"><i class="fa fa-plus"></i></a></sup><div class="collapse var-more-content" id="var' + i + '">' + content + '</div>');
     });
     $('.var-more-trigger a').click(function(e){
         if ($(this).hasClass('collapsed')){
