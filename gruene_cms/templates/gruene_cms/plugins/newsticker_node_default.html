@@ -140,7 +140,22 @@
 </style>
 <script>
   $(function () {
+    /* Replace <cite> */
     var c = $('.newsticker-summary cite');
     c.wrapInner('<span class="badge bg-primary">');
+    /* Replace <var> */
+    $('.newsticker-item var').each(function(i){
+        var content = $(this).html();
+        $(this).replaceWith('<sup class="var-more-trigger"><a href="#var' + i + '" data-bs-toggle="collapse"><i class="fa fa-plus"></i></a></sup><div class="collapse" id="var' + i + '">' + content + '</div>');
+    });
+    $('.var-more-trigger a').click(function(e){
+        if ($(this).hasClass('collapsed')){
+          $( this ).find('i').removeClass('fa-minus');
+          $( this ).find('i').addClass('fa-plus');
+        } else {
+          $( this ).find('i').removeClass('fa-plus');
+          $( this ).find('i').addClass('fa-minus');
+        }
+    });
   });
 </script>
