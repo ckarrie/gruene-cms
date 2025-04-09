@@ -24,7 +24,7 @@
                             {% for ref in refs_not_in_summary %}
                               <sup>
                                   <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
-                                    {{ ref.pk }}
+                                    {% comment %}{{ ref.pk }}{% endcomment %}
                                     {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                     {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
                                     {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
@@ -37,7 +37,7 @@
                             {% for bref in backlinks %}
                               <sup>
                                   <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
-                                    {{ bref.pk }}
+                                    {% comment %}{{ bref.pk }}{% endcomment %}
                                     <i class="fa fa-rotate-back"></i>
                                   </a>
                                   {% if not forloop.last %}, {% endif %}
@@ -58,7 +58,7 @@
                           {% for ref in refs_not_in_summary %}
                             <sup>
                                 <a href="{{ ref.get_href }}" title="{{ ref.get_ref_title }} ({{ ref.get_href }})" target="{% if not ref.get_is_local %}_blank{% endif %}">
-                                  {{ ref.pk }}
+                                  {% comment %}{{ ref.pk }}{% endcomment %}
                                   {% if ref.ref_type == 'website' %}<i class="fa fa-globe"></i>{% endif %}
                                   {% if ref.ref_type == 'pdf' %}<i class="fa fa-file-pdf"></i>{% endif %}
                                   {% if ref.ref_type == 'video' %}<i class="fa fa-video"></i>{% endif %}
@@ -71,7 +71,7 @@
                           {% for bref in backlinks %}
                             <sup>
                                 <a class="text-warning" href="{{ bref.item.get_absolute_url }}" title="{{ bref.item }} " target="">
-                                  {{ bref.pk }}
+                                  {% comment %}{{ bref.pk }}{% endcomment %}
                                   <i class="fa fa-rotate-back"></i>
                                 </a>
                                 {% if not forloop.last %}, {% endif %}
