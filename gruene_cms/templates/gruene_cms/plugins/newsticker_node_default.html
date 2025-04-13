@@ -18,7 +18,7 @@
                   <div class="newsticker-item {% if not forloop.last %}mb-3{% endif %}" id="ti-{{ item.pk|unlocalize }}">
                     <div class="container-full d-print-none">
                       <div class="row">
-                        <div class="col-12 col-md-6 col-lg-8">
+                        <div class="col-12 col-sm-6 col-lg-8">
                           <h5 class="" style="">
                             {{ item.headline }}
                             {% for ref in refs_not_in_summary %}
@@ -45,7 +45,7 @@
                             {% endfor %}
                           </h5>
                         </div>
-                        <div class="col-12 col-md-6 col-lg-4 text-center text-md-end">
+                        <div class="col-12 col-sm-6 col-lg-4 text-md-end pb-2 pb-md-0">
                           <span class="badge bg-light text-primary fw-light">{{ item.pub_dt|date:"TIME_FORMAT" }}</span>
                           <span class="badge bg-light text-primary fw-light ">{{ item.publication.name }}</span>
                           <span class="badge bg-secondary" style="{% if item.item_type.color %}background-color: #{{ item.item_type.color }} !important;{% endif %}">{{ item.item_type.name }}</span>
@@ -152,6 +152,12 @@
 
   .newsticker-summary td ul {
       margin-bottom: 0;
+  }
+
+  .newsticker-item u {
+    text-decoration-style: solid;
+    text-decoration-color: #fdef79;
+    text-decoration-thickness: 5px;
   }
 
 
