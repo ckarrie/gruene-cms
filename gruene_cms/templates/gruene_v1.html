@@ -99,7 +99,7 @@
                     <a title="Dashboard" href="{% page_url "dashboard" %}" class="nav-link">Dashboard</a>
                   </li>
                   <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1916 nav-item">
-                    <form action="{% url 'admin:logout' %}?next=/" method="post">
+                    <form action="{% url 'gruene_cms_dashboard:db_logout' %}?next=/" method="post">
                       {% csrf_token %}
                       <button title="Benutzer abmelden" class="nav-link" type="submit" style="padding-top: 8px;">Abmelden</button>
                     </form>

@@ -312,3 +312,5 @@ class CalendarItemCreateView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic
         if next_param:
             return next_param
         return '/'
+
+

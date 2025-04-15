@@ -2,6 +2,7 @@ from cms.app_base import CMSApp
 from cms.apphook_pool import apphook_pool
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import path, reverse
+from django.contrib.auth.views import LogoutView, PasswordChangeView
 from gruene_cms.views import news as news_views, dashboard as dashboard_views, search as search_views
 from gruene_cms.models import NewsPageConfig
 
@@ -54,6 +55,9 @@ class DashboardApphook(CMSApp):
             path('webdav/<int:pk>/upload_file/', dashboard_views.WebDAVUploadView.as_view(cms_page=page), name="webdav_upload_file"),
             # cal
             path('cal/add/', dashboard_views.CalendarItemCreateView.as_view(cms_page=page), name="calendaritem_add"),
+            # auth/user
+            path('logout/', LogoutView.as_view(), name="db_logout"),
+            path('change-password/', PasswordChangeView.as_view(), name="db_pwchange"),
         ]
 
 
