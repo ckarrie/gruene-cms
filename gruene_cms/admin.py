@@ -48,7 +48,7 @@ class NewsAttachmentInlineAdmin(admin.TabularInline):
 
 class NewsItemAdmin(admin.ModelAdmin):
     list_display = ['title', 'published_from', 'newsfeedreader_source']
-    list_filter = ['newsfeedreader_source']
+    list_filter = ['categories', 'newsfeedreader_source']
     inlines = [NewsImageInlineAdmin, NewsAttachmentInlineAdmin]
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ['title', 'subtitle']
