@@ -81,10 +81,12 @@ class WebDAVViewLocalFileView(
         ctx = super(WebDAVViewLocalFileView, self).get_context_data(**kwargs)
         requested_file = self.request.GET.get("path")
         full_path = os.path.join(self.object.local_path + "/", requested_file[1:])
+        full_path_splitted = requested_file.split('/')
         file_exists = os.path.isfile(full_path)
         is_dir = os.path.isdir(full_path)
         is_image = False
         is_embed = False
+        is_audio = False
         html_content = None
         is_markdown = False
         calendar_events = []
@@ -126,6 +128,13 @@ class WebDAVViewLocalFileView(
             # result = result.replace('<table>', '<table class="table">')
             html_content = result
 
+        if content_type in [
+            'audio/mpeg',
+            'audio/ogg',
+            'audio/aac',
+        ]:
+            is_audio = True
+
         if content_type == 'text/x-vcalendar':
             with open(full_path) as f:
                 calendar = icalendar.Calendar.from_ical(f.read())
@@ -155,6 +164,7 @@ class WebDAVViewLocalFileView(
                 "file_exists": file_exists,
                 "is_image": is_image,
                 "is_embed": is_embed,
+                "is_audio": is_audio,
                 "is_markdown": is_markdown,
                 "is_dir": is_dir,
                 "content_type": content_type,
@@ -163,7 +173,8 @@ class WebDAVViewLocalFileView(
                 "html_content": html_content,
                 "calendar_events": calendar_events,
                 "contacts": contacts,
-                "upload_form": upload_form
+                "upload_form": upload_form,
+                "full_path_splitted": full_path_splitted,
             }
         )
         return ctx

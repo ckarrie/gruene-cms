@@ -235,11 +235,33 @@
     <script>
 	$(function () {
   		$('[data-toggle="tooltip"]').tooltip();
-		
+
+
+		  /* webdav */
       $('.level-3').hide();
+      /*
       $('.level-2.folder').click(function() {
           $(this).find('.level-3').slideToggle();
       });
+      */
+
+      /*
+      $('[data-is-current="yes"]').show();
+      $('[data-is-current="yes"]').siblings().show();
+      $('[data-is-current="yes"]').children('ul').show();
+      $('[data-is-current="yes"]').parent().show();
+      $('[data-is-current="yes"]').parent().parent().show();
+      */
+
+
+      {% if full_path_splitted %}
+        {% for p in full_path_splitted %}
+          $('[data-tree-item-name="{{ p }}"]').show();
+          $('[data-tree-item-name="{{ p }}"]').children('ul').show();
+          $('[data-tree-item-name="{{ p }}"]').children('ul').children('li').show();
+        {% endfor %}
+      {% endif %}
+      /* search */
 
       $('.show-search').on('click', function () {
         $('.topmenu .search input' ).toggleClass('active');

@@ -1017,6 +1017,8 @@ class WebDAVClient(models.Model):
                 d['mtype'] = mimetypes.guess_type(d['name'])[0]
                 if d['mtype'] and d['mtype'].startswith('image/'):
                     d['type'] = "image"
+                if d['mtype'] and d['mtype'].startswith('audio/'):
+                    d['type'] = 'audio'
             return d
 
         if entry_path:

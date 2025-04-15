@@ -400,6 +400,10 @@ input#id_q, input[name="q"] {
     list-style-image: url('/static/images/Icons-mini-image.gif');
 }
 
+.folder-list li.audio {
+    list-style-image: url('/static/images/Icons-mini-page_sound.gif');
+}
+
 .folder-list li > ul, .folder-list li > ol {
     margin-bottom: 0;
     margin-left: 0;

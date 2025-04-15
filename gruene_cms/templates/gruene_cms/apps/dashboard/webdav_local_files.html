@@ -16,6 +16,9 @@
               <h2 class="text-truncate mb-0">
                 {{ object.title|default:requested_file }}
               </h2>
+              {% comment %}
+              <p><code>{{ full_path_splitted }}</code></p>
+              {% endcomment %}
             </div>
             <div class="">
               <p class="mb-0">
@@ -48,7 +51,7 @@
 
       </div>
 
-      {% if is_image or is_embed or html_content or contacts %}
+      {% if is_image or is_embed or is_audio or html_content or contacts %}
 
         <div class="col-xxl-9 col col-lg-12 overflow-auto">
           {% if is_image %}
@@ -56,6 +59,13 @@
           {% endif %}
           {% if is_embed %}
             <embed src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' webdav_client_object.pk %}?path={{ requested_file }}&is_embed=on" type="{{ content_type }}" width="100%" height="1000">
+          {% endif %}
+          {% if is_audio %}
+            <h4>Audiodatei abspielen</h4>
+            <audio controls>
+              <source src="{% url 'gruene_cms_dashboard:webdav_serve_local_file' webdav_client_object.pk %}?path={{ requested_file }}&is_embed=on" type="{{ content_type }}">
+            Your browser does not support the audio element.
+            </audio>
           {% endif %}
           {% if html_content %}
             {% if is_markdown %}
@@ -159,9 +169,12 @@
 {% block js_end %}
 <script>
 	$(function () {
-		$('.level-2').show();
-    $('.level-3').show();
-    $('.level-4').show();
+		//$('.level-2').show();
+    //$('.level-3').show();
+    //$('.level-4').show();
+    {% for sp in full_path_splitted %}
+
+    {% endfor %}
 	});
 	</script>
 {% endblock %}

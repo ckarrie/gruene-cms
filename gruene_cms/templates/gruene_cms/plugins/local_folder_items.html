@@ -1,4 +1,4 @@
-<li class="{{ tree_node.type }} level-{{ tree_node.level }}">
+<li class="{{ tree_node.type }} level-{{ tree_node.level }}" {% if tree_node.path == current_item %}data-is-current="yes"{% endif %} data-tree-item-name="{{ tree_node.name }}">
   <a href="{% url 'gruene_cms_dashboard:webdav_view_local_file' webdav_client_object.pk %}?path={{ tree_node.path }}" class="text-truncate {% if tree_node.path == current_item %}bg-primary-subtle{% endif %}">{{ tree_node.name }}</a>
   <ul class="level-{{ tree_node.level }}">
   {% for sub in tree_node.content %}
