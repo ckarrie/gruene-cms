@@ -8,8 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, decorators
 from django.views import generic
+from django.views.decorators.cache import never_cache
 from odf.odf2xhtml import ODF2XHTML
 import icalendar
 from gruene_cms import forms, models
@@ -63,6 +64,7 @@ class TaskEditView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.UpdateVie
         return reverse("gruene_cms_dashboard:task_list")
 
 
+@decorators.method_decorator(never_cache, name="dispatch")
 class WebDAVViewLocalFileView(
     AppHookConfigMixin, AuthenticatedOnlyMixin, generic.DetailView
 ):
@@ -180,6 +182,7 @@ class WebDAVViewLocalFileView(
         return ctx
 
 
+@decorators.method_decorator(never_cache, name="dispatch")
 class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
     model = models.WebDAVClient
     template_name = "gruene_cms/apps/dashboard/webdav_local_files.html"
@@ -200,6 +203,7 @@ class WebDAVServeLocalFileView(WebDAVViewLocalFileView):
         return HttpResponse()
 
 
+@decorators.method_decorator(never_cache, name="dispatch")
 class WebDAVUploadView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic.FormView):
     form_class = forms.WebDAVUploadForm
     template_name = 'gruene_cms/apps/dashboard/webdav_upload_file.html'
