@@ -107,8 +107,9 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
         short_link_get = self.request.GET.get('s', None)
         if short_link_get:
             short_link_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=short_link_get).first()
-            if short_link_obj:
-                short_link_obj.add_request(self.request)
+            # commented this out, we only want to track real shortlink clicks
+            #if short_link_obj:
+            #    short_link_obj.add_request(self.request)
 
         existing_shortlinks = apps.get_model('newsticker.ShareLink').objects.filter(valid_until__gte=timezone.now())
         for sl in existing_shortlinks:
