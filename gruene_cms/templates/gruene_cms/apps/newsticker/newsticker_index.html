@@ -26,8 +26,7 @@
       <nav>
 
       </nav>
-      <div class="row d-print-none mb-5">
-
+      <div class="row d-print-none mb-5 justify-content-center">
         <div class="col col-12">
           <h1 class="news-title text-primary text-center">Newsticker</h1>
           <h2 class="news-subtitle text-secondary text-center">Politik, Wissenschaft und die Grünen</h2>
@@ -41,8 +40,8 @@
             </span>
           </p>
           <p class="text-center small">
-            <a href="?days=0&date={{ today|date:"Y-m-d" }}">nur heute</a> (<a href="?show_all=on&days=0&date={{ today|date:"Y-m-d" }}">+</a>) |
-            <a href="?days=3">letzten 3 Tage</a> (<a href="?show_all=on&days=3">+</a>) |
+            <a href="{% querystring days=0 date=today|date:"Y-m-d" show_all=None collapse_cat=None %}">nur heute</a> (<a href="{% querystring collapse_cat=None days=0 date=today|date:"Y-m-d" show_all="on" %}">+</a>) |
+            <a href="{% querystring days=3 date=today|date:"Y-m-d" show_all=None collapse_cat=None %}">letzten 3 Tage</a> (<a href="{% querystring collapse_cat=None days=3 date=today|date:"Y-m-d" show_all="on" %}">+</a>) |
             <a href="#" class="toggle-var-more-btn">Toggle <i class="fa fa-caret-down"></i> <i class="fa fa-caret-up"></i></a> |
             <a class="fw-bold {% if filter_form_has_errors %}text-danger{% endif %}" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" aria-controls="collapseFilter">
               Filtern
@@ -52,6 +51,9 @@
           <div class="collapse {% if filter_form_has_errors %}show{% endif %}" id="collapseFilter">
             <div class="card card-body">
               <form class="form" target="" method="get">
+                {% if shortlink %}
+                  <input type="hidden" name="s" value="{{ shortlink.short }}">
+                {% endif %}
                 {% bootstrap_form filter_form layout='horizontal' %}
                 {% bootstrap_button button_type="submit" content="Filtern" %}
               </form>
@@ -59,6 +61,45 @@
           </div>
 
         </div>
+        {% if shortlink %}
+            <div class="col col-12">
+              <p class="text-center"><span class="badge bg-primary">Link läuft in {{ shortlink.valid_until|timeuntil }} ab &ndash; Aufrufe werden mitgezeichnet</span> </p>
+            </div>
+          {% endif %}
+          {% if user.is_staff %}
+            <div class="col col-auto small">
+              <table class="table table-striped w-auto">
+                <thead>
+                  <tr>
+                    <th>Share Link</th>
+                    <th>Aufrufe</th>
+                    <th>Gültig</th>
+                    <th>noch</th>
+                    <th>Notizen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for sl in existing_shortlinks %}
+                    <tr>
+                      <td><a href="{{ sl.share_link }}">{{ sl.short }}</a></td>
+                      <td>{{ sl.clicks_counter }}</td>
+                      <td>{{ sl.valid_until|date:"SHORT_DATETIME_FORMAT" }}</td>
+                      <td>{{ sl.valid_until|timeuntil }}</td>
+                      <td>{{ sl.shared_with_notes|default:'' }}</td>
+                    </tr>
+                  {% endfor %}
+
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="5" class="text-center">
+                      <a href="/admin/newsticker/sharelink/add/" target="_blank">Neuen Link erstellen</a>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          {% endif %}
       </div>
 
       <div class="row">

@@ -1,16 +1,16 @@
 from cms.models import Page
 from django.db.models import Min, Max
+from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 from django.apps import apps
-from menus.base import Menu
 
 from gruene_cms.forms import NewstickerFilterForm
 from gruene_cms.models import NewsItem
 from gruene_cms.views.base import AppHookConfigMixin
 from icalendar import Calendar, Event
 from django.contrib.sites.models import Site
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 class NewsDetailView(AppHookConfigMixin, generic.DetailView):
@@ -53,6 +53,14 @@ class NewsDetailView(AppHookConfigMixin, generic.DetailView):
 class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
     template_name = 'gruene_cms/apps/newsticker/newsticker_index.html'
 
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            get_short = request.GET.get('s', None)
+            short_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=get_short, valid_until__gte=timezone.now())
+            if not short_obj.exists():
+                return HttpResponseRedirect('/')
+        return super(NewsTickerView, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         ctx = super(NewsTickerView, self).get_context_data(**kwargs)
         limit_days = 3
@@ -93,6 +101,19 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             timezone=timezone.get_current_timezone()
         ).date()
         today = timezone.localtime(timezone.now(), timezone=timezone.get_current_timezone()).date()
+
+        # short link
+        short_link_obj = None
+        short_link_get = self.request.GET.get('s', None)
+        if short_link_get:
+            short_link_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=short_link_get).first()
+            if short_link_obj:
+                short_link_obj.add_request(self.request)
+
+        existing_shortlinks = apps.get_model('newsticker.ShareLink').objects.filter(valid_until__gte=timezone.now())
+        for sl in existing_shortlinks:
+            sl.share_link = self.request.build_absolute_uri(sl.get_short_link_url())
+
         ctx.update({
             'newsitems_by_date': newsitems_by_date,
             'today': today,
@@ -106,7 +127,9 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             'filter_form': filter_form,
             'filter_form_has_errors': filter_form_has_errors,
             'min_dt': min_dt,
-            'max_dt': max_dt
+            'max_dt': max_dt,
+            'shortlink': short_link_obj,
+            'existing_shortlinks': existing_shortlinks
         })
         return ctx
 
@@ -135,3 +158,22 @@ class DownloadICSView(NewsDetailView):
         response = HttpResponse(cal.to_ical(), content_type="text/calendar")
         response['Content-Disposition'] = 'attachment; filename=%s.ics' % self.object.slug
         return response
+
+
+class NewsTickerShareLinkView(AppHookConfigMixin, generic.RedirectView):
+    #url = reverse('gruene_cms_news:newsticker_index')
+    permanent = False
+
+    def get(self, request, *args, **kwargs):
+        get_short = kwargs.get('short', None)
+        self.url = '/'
+        if get_short:
+            short_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=get_short, valid_until__gte=timezone.now()).first()
+            if short_obj:
+                self.url = short_obj.resolve_url()
+                short_obj.add_request(request)
+
+        return super(NewsTickerShareLinkView, self).get(request, *args, **kwargs)
+
+
+
