@@ -15,8 +15,9 @@ class NewsPageApphook(CMSApp):
     def get_urls(self, page=None, language=None, **kwargs):
         return [
             path('newsticker/', news_views.NewsTickerView.as_view(), name="newsticker_index"),
+            #path('newsticker/<int:year>-<int:month>-<int:day>', news_views.NewsTickerDayView.as_view(), name="newsticker_day"),
+            #path('newsticker/<int:year>-<int:month>-<int:day>/<int:ti>', news_views.NewsTickerDayView.as_view(), name="newsticker_day"),
             path('newsticker/s/<str:short>', news_views.NewsTickerShareLinkView.as_view(), name="newsticker_share"),
-            #path('newsticker/share/<slug>/', news_views.NewsTickerShareView.as_view(), name="newsticker_index"),
 
             path('<str:slug>/', news_views.NewsDetailView.as_view(cms_page=page), name="detail"),
             path('<str:slug>/ical/', news_views.DownloadICSView.as_view(), name="download_ics"),

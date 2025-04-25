@@ -10,7 +10,8 @@ from gruene_cms.models import NewsItem
 from gruene_cms.views.base import AppHookConfigMixin
 from icalendar import Calendar, Event
 from django.contrib.sites.models import Site
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
+from django.template import defaultfilters
 
 
 class NewsDetailView(AppHookConfigMixin, generic.DetailView):
@@ -117,6 +118,18 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
         for sl in existing_shortlinks:
             sl.share_link = self.request.build_absolute_uri(sl.get_short_link_url())
 
+        shortlink_options_qd = QueryDict('', mutable=True)
+        share_link_valid_until = timezone.now() + timezone.timedelta(days=7)
+        shortlink_options = {
+            'display_days': str(limit_days),
+            'display_date': defaultfilters.date(ref_date, "SHORT_DATE_FORMAT"),  # ref_date.strftime("%Y-%m-%d"),
+            # 'valid_until': defaultfilters.date(share_link_valid_until, "SHORT_DATETIME_FORMAT")
+            # 'valid_until': share_link_valid_until.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            # 'valid_until_0': share_link_valid_until.strftime("%Y-%m-%d"),
+            # 'valid_until_1': share_link_valid_until.strftime("%H:%M:%S"),
+        }
+        shortlink_options_qd.update(shortlink_options)
+
         ctx.update({
             'newsitems_by_date': newsitems_by_date,
             'today': today,
@@ -132,7 +145,10 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             'min_dt': min_dt,
             'max_dt': max_dt,
             'shortlink': short_link_obj,
-            'existing_shortlinks': existing_shortlinks
+            'existing_shortlinks': existing_shortlinks,
+            'shortlink_options_qd': shortlink_options_qd,
+            'shortlink_options': shortlink_options,
+
         })
         return ctx
 
