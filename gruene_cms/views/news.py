@@ -86,9 +86,18 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             collapse_cat = ff_cd['collapse_cat']
             ref_date = ff_cd['date']
 
+        # short link
+        short_link_obj = None
+        short_link_get = self.request.GET.get('s', None)
+        if short_link_get:
+            short_link_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=short_link_get).first()
+            # commented this out, we only want to track real shortlink clicks
+            # if short_link_obj:
+            #    short_link_obj.add_request(self.request)
+
         filter_form_has_errors = len(filter_form.errors) > 0
         newsitems = apps.get_model('newsticker.TickerItem').objects.current(ref_date=ref_date, limit_days=limit_days)
-        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(qs=newsitems)
+        newsitems_by_date = apps.get_model('newsticker.TickerItem').objects.current_by_date(qs=newsitems, short_link=short_link_obj)
 
         qs_aggregations = newsitems.aggregate(min_dt=Min('pub_dt'), max_dt=Max('pub_dt'))
         min_dt = timezone.localtime(qs_aggregations['min_dt'], timezone=timezone.get_current_timezone())
@@ -101,15 +110,6 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             timezone=timezone.get_current_timezone()
         ).date()
         today = timezone.localtime(timezone.now(), timezone=timezone.get_current_timezone()).date()
-
-        # short link
-        short_link_obj = None
-        short_link_get = self.request.GET.get('s', None)
-        if short_link_get:
-            short_link_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=short_link_get).first()
-            # commented this out, we only want to track real shortlink clicks
-            #if short_link_obj:
-            #    short_link_obj.add_request(self.request)
 
         existing_shortlinks = apps.get_model('newsticker.ShareLink').objects.filter(valid_until__gte=timezone.now())
         for sl in existing_shortlinks:
