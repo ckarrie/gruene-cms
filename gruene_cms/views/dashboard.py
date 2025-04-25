@@ -5,6 +5,7 @@ import re
 
 import vobject
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -313,4 +314,24 @@ class CalendarItemCreateView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic
             return next_param
         return '/'
 
+
+class DashboardLoginView(AppHookConfigMixin, LoginView):
+    template_name = 'gruene_cms/apps/login.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(DashboardLoginView, self).get_context_data(**kwargs)
+        error_msgs = {
+            'share': 'Share-Link ungültig oder abgelaufen'
+        }
+        defalt_message = 'Zugangsdaten erforderlich'
+
+        error_code = self.request.GET.get('code', None)
+        if error_code and error_code in error_msgs.keys():
+            error_msg = error_msgs.get(error_code) or defalt_message
+        else:
+            error_msg = defalt_message
+
+        ctx['error_msg'] = error_msg
+
+        return ctx
 

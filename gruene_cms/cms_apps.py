@@ -58,6 +58,7 @@ class DashboardApphook(CMSApp):
             path('cal/add/', dashboard_views.CalendarItemCreateView.as_view(cms_page=page), name="calendaritem_add"),
             # auth/user
             path('logout/', LogoutView.as_view(), name="db_logout"),
+            path('login/', dashboard_views.DashboardLoginView.as_view(cms_page=page), name="db_login"),
             path('change-password/', PasswordChangeView.as_view(), name="db_pwchange"),
         ]
 

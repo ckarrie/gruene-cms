@@ -58,7 +58,9 @@ class NewsTickerView(AppHookConfigMixin, generic.TemplateView):
             get_short = request.GET.get('s', None)
             short_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=get_short, valid_until__gte=timezone.now())
             if not short_obj.exists():
-                return HttpResponseRedirect('/')
+                login_url = reverse('gruene_cms_dashboard:db_login')
+                login_page_param = '?next=' + reverse('gruene_cms_news:newsticker_index') + '&code=share'
+                return HttpResponseRedirect(login_url + login_page_param)
         return super(NewsTickerView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -167,7 +169,9 @@ class NewsTickerShareLinkView(AppHookConfigMixin, generic.RedirectView):
 
     def get(self, request, *args, **kwargs):
         get_short = kwargs.get('short', None)
-        self.url = '/'
+        login_url = reverse('gruene_cms_dashboard:db_login')
+        login_page_param = '?next=' + reverse('gruene_cms_news:newsticker_index') + '&code=share'
+        self.url = login_url + login_page_param
         if get_short:
             short_obj = apps.get_model('newsticker.ShareLink').objects.filter(short=get_short, valid_until__gte=timezone.now()).first()
             if short_obj:
