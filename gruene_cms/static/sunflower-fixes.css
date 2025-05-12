@@ -441,6 +441,7 @@ nav.subpages.navbar-light .navbar-nav > .nav-item.active {
 
 /* Newsticker */
 .newsticker-item blockquote {
+    margin-top: 1rem;
     margin-left: 1rem;
     margin-right: 2rem;
     border-left: 3px solid #eee;
