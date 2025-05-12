@@ -248,7 +248,7 @@ class CalendarItem(models.Model):
     location = models.CharField(max_length=255, verbose_name=_('Location'))
     linked_page = models.ForeignKey(Page, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Linked page'))
     linked_news = models.ForeignKey('NewsItem', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Linked News'))
-    external_link = models.URLField(null=True, blank=True)
+    external_link = models.URLField(null=True, blank=True, max_length=300)
 
     def __str__(self):
         return self.title
@@ -323,7 +323,7 @@ class CalendarNode(CMSPlugin):
 class Category(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField()
-    url = models.URLField(null=True, blank=True)
+    url = models.URLField(null=True, blank=True, max_length=300)
     logo = FilerImageField(null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     is_public = models.BooleanField(default=True)
 
@@ -337,7 +337,7 @@ class Category(models.Model):
 
 class NewsFeedReader(models.Model):
     title = models.CharField(max_length=255)
-    url = models.URLField()
+    url = models.URLField(max_length=300)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     last_updated = models.DateTimeField(null=True, blank=True)
     author_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
@@ -487,8 +487,8 @@ class NewsItem(models.Model):
     ))
     # For NewsReader
     newsfeedreader_source = models.ForeignKey(NewsFeedReader, null=True, blank=True, on_delete=models.CASCADE)
-    newsfeedreader_external_link = models.URLField(null=True, blank=True)
-    newsfeedreader_external_image_url = models.URLField(null=True, blank=True)
+    newsfeedreader_external_link = models.URLField(null=True, blank=True, max_length=300)
+    newsfeedreader_external_image_url = models.URLField(null=True, blank=True, max_length=300)
 
     @property
     def is_public(self):
