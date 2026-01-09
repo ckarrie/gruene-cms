@@ -82,8 +82,22 @@ class WebDAVViewLocalFileView(
 
     def get_context_data(self, **kwargs):
         ctx = super(WebDAVViewLocalFileView, self).get_context_data(**kwargs)
-        requested_file = self.request.GET.get("path")
-        full_path = os.path.join(self.object.local_path + "/", requested_file[1:])
+        requested_file = self.request.GET.get("path", "")
+        base_path = os.path.normpath(self.object.local_path)
+        # Ensure requested_file is treated as a relative path
+        if requested_file.startswith("/"):
+            relative_requested = requested_file[1:]
+        else:
+            relative_requested = requested_file
+        # Build and normalize the full path
+        full_path = os.path.normpath(os.path.join(base_path, relative_requested))
+        # Prevent directory traversal: ensure full_path is within base_path
+        try:
+            if os.path.commonpath([base_path, full_path]) != base_path:
+                return HttpResponse(status=400)
+        except ValueError:
+            # In case base_path and full_path are on different drives or invalid
+            return HttpResponse(status=400)
         full_path_splitted = requested_file.split('/')
         file_exists = os.path.isfile(full_path)
         is_dir = os.path.isdir(full_path)
