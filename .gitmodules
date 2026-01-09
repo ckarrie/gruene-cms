@@ -1,3 +1,6 @@
 [submodule "external_repos/verdigado/sunflower"]
 	path = external_repos/verdigado/sunflower
 	url = https://github.com/verdigado/sunflower
+[submodule "external_repos/chartjs/Chart.js"]
+	path = external_repos/chartjs/Chart.js
+	url = https://github.com/chartjs/Chart.js/
