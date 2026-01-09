@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone, decorators
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import generic
 from django.views.decorators.cache import never_cache
 from odf.odf2xhtml import ODF2XHTML
@@ -310,7 +311,11 @@ class CalendarItemCreateView(AppHookConfigMixin, AuthenticatedOnlyMixin, generic
 
     def get_success_url(self):
         next_param = self.request.GET.get('next')
-        if next_param:
+        if next_param and url_has_allowed_host_and_scheme(
+                url=next_param,
+                allowed_hosts={self.request.get_host()},
+                require_https=self.request.is_secure(),
+        ):
             return next_param
         return '/'
 
