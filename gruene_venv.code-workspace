@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "../../venvs/gruene_venv"
+			"path": "../../../venvs/gruene_venv"
 		},
 		{
 			"path": "."
