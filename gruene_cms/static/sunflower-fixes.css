@@ -652,3 +652,11 @@ nav.subpages.navbar-light .navbar-nav > .nav-item.active {
         max-width: 40%;
     }
 }
+
+
+/* fix btn visited */
+
+a.btn-primary.btn:visited, a.btn-secondary.btn {
+    color: #eee;
+}
+
