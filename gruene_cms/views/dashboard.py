@@ -83,9 +83,21 @@ class WebDAVViewLocalFileView(
 
     def get_context_data(self, **kwargs):
         ctx = super(WebDAVViewLocalFileView, self).get_context_data(**kwargs)
-        requested_file = self.request.GET.get("path")
-        full_path = os.path.join(self.object.local_path + "/", requested_file[1:])
-        full_path_splitted = requested_file.split('/')
+        requested_file = self.request.GET.get("path") or ""
+        # Normalize and constrain the requested path to stay within local_path
+        base_path = os.path.abspath(self.object.local_path)
+        # Ensure requested_file is treated as relative (strip leading slashes)
+        relative_path = requested_file.lstrip("/")
+        full_path_candidate = os.path.normpath(os.path.join(base_path, relative_path))
+        # Verify that the normalized path is still inside the base_path
+        if os.path.commonpath([base_path, full_path_candidate]) != base_path:
+            # Fallback to base_path if an invalid or unsafe path was supplied
+            full_path = base_path
+            safe_requested_file = ""
+        else:
+            full_path = full_path_candidate
+            safe_requested_file = "/" + relative_path if relative_path else ""
+        full_path_splitted = safe_requested_file.split('/') if safe_requested_file else []
         file_exists = os.path.isfile(full_path)
         is_dir = os.path.isdir(full_path)
         is_image = False
