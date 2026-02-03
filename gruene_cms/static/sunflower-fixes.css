@@ -697,8 +697,8 @@ blockquote span {
   margin-top:1em;
 }
 
-/* Media Query für Desktop (Bootstrap 'md' Breakpoint ab 768px) */
-@media (min-width: 768px) {
+/* Media Query für Desktop (Bootstrap 'lg' Breakpoint ab 992px) */
+@media (min-width: 992px) {
     blockquote {
         width: 50%; /* Deine gewünschte Breite für Desktop */
     }
