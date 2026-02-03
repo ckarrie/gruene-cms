@@ -662,7 +662,8 @@ a.btn-primary.btn:visited, a.btn-secondary.btn {
 
 /* blockquote fix */
 blockquote {
-    width: 60%;
+    width: 100%;             /* Standard für Mobile */
+    max-width: 100%;
     margin: 1rem 0;
     font-family: Open Sans;
     font-style: italic;
@@ -672,7 +673,6 @@ blockquote {
     line-height: 1.6;
     position: relative;
     background: #EDEDED;
-    z-index: -1;
 }
 
 blockquote::before {
@@ -695,4 +695,11 @@ blockquote span {
   font-style: normal;
   font-weight: bold;
   margin-top:1em;
+}
+
+/* Media Query für Desktop (Bootstrap 'md' Breakpoint ab 768px) */
+@media (min-width: 768px) {
+    blockquote {
+        width: 50%; /* Deine gewünschte Breite für Desktop */
+    }
 }
