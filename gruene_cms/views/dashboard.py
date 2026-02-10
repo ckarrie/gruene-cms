@@ -212,9 +212,6 @@ class WebDAVViewLocalFileView(
                 "folder_objects": folder_objects,
             }
         )
-        print("safe_requested_file", safe_requested_file)
-        print("full-path", full_path)
-        print("folder_objects", folder_objects)
         return ctx
 
 

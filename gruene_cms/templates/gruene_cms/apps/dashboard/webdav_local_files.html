@@ -136,7 +136,7 @@
               <div class="me-auto">
                 <a href="{% url 'gruene_cms_dashboard:webdav_view_local_file' object.pk %}?path={{ folder_object.path }}">
                   <i class="fa fa-{{ folder_object.type }}"></i>
-                  {{ folder_object.path }}
+                  {{ folder_object.name }}
                 </a>
               </div>
               <div class="text-end">

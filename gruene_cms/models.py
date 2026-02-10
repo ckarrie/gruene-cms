@@ -1012,6 +1012,7 @@ class WebDAVClient(models.Model):
             d['path'] = path.replace(self.local_path, '')
             d['level'] = sub_level
             d['modified'] = datetime.datetime.fromtimestamp(os.path.getmtime(path)) if os.path.exists(path) else None
+            d['entry_visible_in_tree'] = True
             if os.path.isdir(path):
                 d['type'] = "folder"
                 content = [path_to_dict(os.path.join(path, x), sub_level=sub_level + 1) for x in sorted(os.listdir(path))]
@@ -1023,6 +1024,8 @@ class WebDAVClient(models.Model):
                     d['type'] = "image"
                 if d['mtype'] and d['mtype'].startswith('audio/'):
                     d['type'] = 'audio'
+                if self.force_mimetype is None:
+                    d['entry_visible_in_tree'] = False
             return d
 
         if entry_path:
