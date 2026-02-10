@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -29,6 +29,10 @@ dependencies = [
   'vobject',
   'metadata_parser'
 ]
+
+[tool.setuptools.packages.find]
+include = ["gruene_cms*"]  # Only include your main package
+exclude = ["external_repos*"] # Specifically ignore the other one
 
 [project.urls]
 Homepage = "https://github.com/ckarrie/gruene-cms"
