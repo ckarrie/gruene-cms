@@ -23,6 +23,8 @@ from filer.models import Folder as FilerFolder, File as FilerFile, Image as File
 from lxml import etree
 from bs4 import BeautifulSoup
 import metadata_parser
+import datetime
+
 
 TOKEN_CHOICES = (
     ('BEARER', 'BEARER'),
@@ -1009,6 +1011,7 @@ class WebDAVClient(models.Model):
             d['name'] = os.path.basename(path)
             d['path'] = path.replace(self.local_path, '')
             d['level'] = sub_level
+            d['modified'] = datetime.datetime.fromtimestamp(os.path.getmtime(path)) if os.path.exists(path) else None
             if os.path.isdir(path):
                 d['type'] = "folder"
                 content = [path_to_dict(os.path.join(path, x), sub_level=sub_level + 1) for x in sorted(os.listdir(path))]

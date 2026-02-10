@@ -127,6 +127,25 @@
           {% endif %}
         </div>
       {% endif %}
+
+      {% if is_dir %}
+        <div class="col-xxl-9 col col-lg-12 overflow-auto">
+          <h3>Inhalt des Ordners</h3>
+          {% for folder_object in folder_objects %}
+            <div class="d-flex p-2 border-bottom">
+              <div class="me-auto">
+                <a href="{% url 'gruene_cms_dashboard:webdav_view_local_file' object.pk %}?path={{ folder_object.path }}">
+                  <i class="fa fa-{{ folder_object.type }}"></i>
+                  {{ folder_object.path }}
+                </a>
+              </div>
+              <div class="text-end">
+                <span class="small text-muted">{{ folder_object.modified|date:"d.m.Y H:i" }}</span>                  
+              </div>
+            </div>
+          {% endfor %}
+        </div>  
+      {% endif %}
     </div>
   </div>
 

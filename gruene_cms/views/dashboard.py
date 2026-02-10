@@ -173,6 +173,24 @@ class WebDAVViewLocalFileView(
             'location_dir':  current_folder
         })
 
+        folder_objects = None
+
+        def find_content_by_path(data, target_path):
+            # Check if the current node is the one we're looking for
+            if data.get('path') == target_path:
+                return data.get('content')
+            # If not, look through the children in 'content'
+            for item in data.get('content', []):
+                result = find_content_by_path(item, target_path)
+                # If result is not None, we found it!
+                if result is not None:
+                    return result
+            # Return None if the path wasn't found in this branch
+            return None
+
+        if is_dir:
+            folder_objects = find_content_by_path(tree_items, requested_file)
+
         ctx.update(
             {
                 "requested_file": requested_file,
@@ -191,8 +209,12 @@ class WebDAVViewLocalFileView(
                 "contacts": contacts,
                 "upload_form": upload_form,
                 "full_path_splitted": full_path_splitted,
+                "folder_objects": folder_objects,
             }
         )
+        print("safe_requested_file", safe_requested_file)
+        print("full-path", full_path)
+        print("folder_objects", folder_objects)
         return ctx
 
 
