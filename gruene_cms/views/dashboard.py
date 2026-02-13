@@ -191,6 +191,17 @@ class WebDAVViewLocalFileView(
         if is_dir:
             folder_objects = find_content_by_path(tree_items, requested_file)
 
+        next_file = None
+        previous_file = None
+        if folder_objects:
+            file_paths = [obj['path'] for obj in folder_objects if obj['type'] == 'file']
+            if requested_file in file_paths:
+                current_index = file_paths.index(requested_file)
+                if current_index < len(file_paths) - 1:
+                    next_file = file_paths[current_index + 1]
+                if current_index > 0:
+                    previous_file = file_paths[current_index - 1]   
+
         ctx.update(
             {
                 "requested_file": requested_file,
@@ -210,6 +221,8 @@ class WebDAVViewLocalFileView(
                 "upload_form": upload_form,
                 "full_path_splitted": full_path_splitted,
                 "folder_objects": folder_objects,
+                'next_file': next_file,
+                'previous_file': previous_file,
             }
         )
         return ctx

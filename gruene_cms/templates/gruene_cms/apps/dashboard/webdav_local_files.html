@@ -9,7 +9,7 @@
 
 {% block content %}
   <div class="container-full my-5 mx-5">
-    <div class="row ">
+    <div class=" d-print-none row">
       <div class="col col-12 ">
         <div class="d-md-flex shadow p-3 mb-5 bg-body-tertiary rounded">
             <div class="me-auto">
@@ -37,6 +37,13 @@
                   </button>
                 {% endif %}
 
+                {% if next_file %}
+                  <a class="btn btn-outline-secondary" href="{% url 'gruene_cms_dashboard:webdav_view_local_file' object.pk %}?path={{ next_file.path }}"><i class="fa fa-long-arrow-left"></i></a>
+                {% endif %}
+                {% if previous_file %}
+                  <a class="btn btn-outline-secondary" href="{% url 'gruene_cms_dashboard:webdav_view_local_file' object.pk %}?path={{ previous_file.path }}"><i class="fa fa-long-arrow-right"></a>
+                {% endif %}
+
 
               </p>
             </div>
@@ -44,7 +51,7 @@
       </div>
     </div>
     <div class="row-cols-1 row g-5 row-cols-xxl-4 row-cols-md-12 row-cols-lg-2 row-cols-sm-1 row-cols-xl-2">
-      <div class="col-xxl-3 col col-lg-12 overflow-auto">
+      <div class="d-print-none col-xxl-3 col col-lg-12 overflow-auto">
 
         <h3>{{ object.entry_path_title|default:object.entry_path }}</h3>
         {% include 'gruene_cms/plugins/local_folder_node.html' with hide_expand_hint=True show_root_node=False tree_items=tree_items current_item=requested_file extra_css_classes='folder-list small' %}
