@@ -188,7 +188,10 @@ class WebDAVViewLocalFileView(
             # Return None if the path wasn't found in this branch
             return None
 
-        folder_objects = find_content_by_path(tree_items, requested_file)
+        if is_dir:
+            folder_objects = find_content_by_path(tree_items, requested_file)
+        else:
+            folder_objects = find_content_by_path(tree_items, os.path.dirname(requested_file))
 
         next_file = None
         previous_file = None
