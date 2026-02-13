@@ -228,8 +228,8 @@ class WebDAVViewLocalFileView(
             }
         )
         #print("folder_objects", folder_objects)
-        print("next_file", next_file)
-        print("previous_file", previous_file)
+        #print("next_file", next_file)
+        #print("previous_file", previous_file)
 
         return ctx
 
