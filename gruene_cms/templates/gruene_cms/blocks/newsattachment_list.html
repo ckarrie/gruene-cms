@@ -3,12 +3,12 @@
   <tbody>
     {% for att in newsattachments %}
       <tr>
-        <td class="">
+        <td class="col-1">
           <a href="{{ att.url }}" target="_blank">
             <img src="{{ att.icon_url }}" alt="{{ att.title }}" class="img-fluid">
           </a>
         </td>
-        <td class="">
+        <td class="col-7">
           <p class="mb-0">
             <a href="{{ att.url }}" target="_blank">
               {{ att.title }}
@@ -19,7 +19,7 @@
           {% endif %}
 
         </td>
-        <td class="">
+        <td class="col-4 text-end">
           <p class="mb-0"><a href="{{ att.url }}" target="_blank"><i class="fa fa-download"></i> {{ att.size|filesizeformat }}</a></p>
         </td>
       </tr>
