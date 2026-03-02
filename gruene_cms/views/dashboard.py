@@ -144,6 +144,9 @@ class WebDAVViewLocalFileView(
             # result = result.replace('<table>', '<table class="table">')
             html_content = result
 
+        if content_type in ['html', 'text/html']:
+            html_content = open(full_path).read()
+
         if content_type in [
             'audio/mpeg',
             'audio/ogg',
