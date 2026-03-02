@@ -153,7 +153,17 @@
             <div class="d-flex p-2 border-bottom">
               <div class="me-auto">
                 <a href="{% url 'gruene_cms_dashboard:webdav_view_local_file' object.pk %}?path={{ folder_object.path }}">
-                  <i class="fa fa-{{ folder_object.type }}"></i>
+                  {% if folder_object.type == 'audio' %}
+                    <i class="fa fa-file-audio"></i>
+                  {% elif folder_object.type == 'video' %}
+                    <i class="fa fa-file-video"></i>
+                  {% elif folder_object.type == 'image' %}
+                    <i class="fa fa-file-image"></i>
+                  {% elif folder_object.type == 'directory' %}
+                    <i class="fa fa-folder"></i>
+                  {% else %}
+                     <i class="fa fa-file"></i>
+                  {% endif %}
                   {{ folder_object.name }}
                 </a>
               </div>
