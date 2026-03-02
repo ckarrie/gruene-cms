@@ -145,7 +145,7 @@ class WebDAVViewLocalFileView(
             html_content = result
 
         if content_type in ['html', 'text/html']:
-            html_content = open(full_path).read()
+            is_embed = True
 
         if content_type in [
             'audio/mpeg',
