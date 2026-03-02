@@ -228,6 +228,7 @@ class WebDAVViewLocalFileView(
                 "folder_objects": folder_objects,
                 'next_file': next_file,
                 'previous_file': previous_file,
+                'file_name': os.path.basename(full_path) if file_exists else None
             }
         )
         #print("folder_objects", folder_objects)
